@@ -36,7 +36,7 @@ y = 400
 velocity = 1  #Increased for smoother movement
 
 running = True
-dragging = False  #To track if tower is being dragged
+dragging = False  #If tower is being dragged
 
 while running:
     screen.fill("white")  #Clear screen at the start of the frame
