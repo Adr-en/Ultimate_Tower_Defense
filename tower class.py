@@ -1,4 +1,3 @@
-"""Tower class still not finished, please don't use it """
 import pygame as p
 
 class Tower : 
