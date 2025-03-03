@@ -1,5 +1,5 @@
 import pygame as p
-
+import time as t
 class Tower : 
     def __init__(self, x,y):
         screen = p.display.set_mode((1540,800))
@@ -8,6 +8,9 @@ class Tower :
         self.tower = p.Rect(x,y,35,60)
         self.surf.fill((255,255,255))
         self.built = False
+        self.attack_speed = 0.5
+        self.activated = False
+        self.ammo = # Raphael!!!!!!!!!!!
     
     def draw(self) :
         screen.blit(self.surf, self.dest)
@@ -43,6 +46,12 @@ class Tower :
         self.surf.fill((255,255,255))
         self.built = False
         screen.blit(self.surf,self.dest)
+
+    def fire(self):
+        while self.activated :
+            t.sleep(self.attack_speed)
+            #fire
+
 
 tower1 = Tower(100,100)
 tower2 = Tower(300,100)
