@@ -24,5 +24,7 @@ credits_button_image = pygame.transform.smoothscale(credits_button_image, size)
 credits_button = pygame.Surface((200, 75))
 credits_button_rect = credits_button.get_rect(topleft=(705, 735))
 
+quit_button_image = pygame.image.load('Assets/Quit_button.png')
+quit_button_image = pygame.transform.smoothscale(quit_button_image, size)
 quit_button = pygame.Surface((130, 65))
 quit_button_rect = quit_button.get_rect(topleft=(1470, 0))
