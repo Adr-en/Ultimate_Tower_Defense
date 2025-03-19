@@ -1,67 +1,71 @@
 from Definitions.definitions_main_menu import*
 from Definitions.definitions_choose_menu import*
 
+
+#Definition of the booleans which will be used to navigate between menus and the game
 main_menu_boolean = True
 choose_menu_boolean = False
 
+#Map pointer is a variable used to navigate and choose between the maps in the maps menu
 map_pointer = 0
 
+
+#The map menu function create and display the main menu of the game when the boolean "main menu boolean" is true
+#It takes defined elements in "definitions_main_menu" and display them in order to create the main menu of the game
 def main_menu() :
 
     exit_game = True
-    mouse_x, mouse_y = pygame.mouse.get_pos()
+    mouse_x, mouse_y = pygame.mouse.get_pos()       #Save the mouse position in the x/y plan
 
-    screen.blit(start_button, start_button_rect)
-    screen.blit(option_button, option_button_rect)
-    screen.blit(credits_button, credits_button_rect)
-    screen.blit(quit_button, quit_button_rect)
-    screen.blit(main_menu_background, (0, 0))  # MUST put the background on top of the buttons
+    screen.blit(main_menu_background, (0, 0))       #Display the background
 
-    if 710 <= mouse_x <= 910 and 590 <= mouse_y < 665 :
+    if 710 <= mouse_x <= 910 and 590 <= mouse_y < 665 :     #If the mouse position is on the start button
         screen.blit(start_button_image, (0,0))
 
-    if 710 <= mouse_x <= 910 and 665 <= mouse_y < 740 :
+    if 710 <= mouse_x <= 910 and 665 <= mouse_y < 740 :     #If the mouse position is on the option button
         screen.blit(option_button_image, (0, 0))
 
-    if 710 <= mouse_x <= 910 and 740 <= mouse_y < 815 :
+    if 710 <= mouse_x <= 910 and 740 <= mouse_y < 815 :     #If the mouse position is on the credits button
         screen.blit(credits_button_image, (0,0))
 
-    if 1470 <= mouse_x <= 1600 and 0 <= mouse_y < 65 :
+    if 1470 <= mouse_x <= 1600 and 0 <= mouse_y < 65 :     #If the mouse position is on the quit button
         screen.blit(quit_button_image, (0, 0))
 
-    for event in pygame.event.get():
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if start_button_rect.collidepoint(event.pos):
+    for event in pygame.event.get():        #Loop that verify if there is an event occurring
+
+        if event.type == pygame.MOUSEBUTTONDOWN:        #If the mouse is clicked
+            if start_button_rect.collidepoint(event.pos):       #If the user is clicking ON the start button
 
                 global main_menu_boolean
                 global choose_menu_boolean
                 main_menu_boolean = False
                 choose_menu_boolean = True
-                return exit_game, main_menu_boolean, choose_menu_boolean
+                return exit_game, main_menu_boolean, choose_menu_boolean        #If the start button is clicked, the menu changes
 
-            if option_button_rect.collidepoint(event.pos):
+            if option_button_rect.collidepoint(event.pos):      #If the user is clicking ON the start button
                 print("Option")
 
-            if credits_button_rect.collidepoint(event.pos):
+            if credits_button_rect.collidepoint(event.pos):     #If the user is clicking ON the credits button
                 print("Credits")
 
-            if quit_button_rect.collidepoint(event.pos):
+            if quit_button_rect.collidepoint(event.pos):        #If the user is clicking ON the option button
                 exit_game = False
 
-    return exit_game, main_menu_boolean, choose_menu_boolean
+    return exit_game, main_menu_boolean, choose_menu_boolean        #Return the values of the different booleans used to navigate between menus
 
 
-
+#The choose menu function create and display the choose menu when the boolean "choose menu boolean" is true
+#It takes defined elements in "definitions_choose_menu" and display them in order to create the choose menu of the game
 def choose_map_menu() :
 
     exit_game = True
     open_game_menu = False
-    mouse_x, mouse_y = pygame.mouse.get_pos()
+    mouse_x, mouse_y = pygame.mouse.get_pos()       #Save the mouse position in the x/y plan
 
     global map_pointer
 
-    map_pointer = (map_pointer + 3) % 3  #Ensures map_pointer stays within [0, 1, 2]
+    map_pointer = (map_pointer + 3) % 3      #Ensures map_pointer stays within [0, 1, 2]
     match map_pointer:
         case 0:
             screen.blit(choose_menu_option1, (0, 0))
