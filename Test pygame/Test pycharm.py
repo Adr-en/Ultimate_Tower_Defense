@@ -8,12 +8,15 @@ projectiles = []
 
 #Window settings
 pygame.display.set_caption("UTD - Ultimate Tower Defense")
-screen = pygame.display.set_mode((1540, 800))
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+size = screen.get_size()
 clock = pygame.time.Clock()
 
 #Load images
 test = pygame.image.load("test.png").convert()
 test = pygame.transform.smoothscale(test, (50, 50))  #Resize image
+background = pygame.image.load("background.jpeg").convert()
+background = pygame.transform.smoothscale(background, (size))
 
 tower = pygame.image.load("test_tower.png").convert()
 tower = pygame.transform.smoothscale(tower, (100, 100))  #Resize tower
@@ -36,7 +39,7 @@ y = 400
 velocity = 1  #Increased for smoother movement
 
 running = True
-dragging = False  #To track if tower is being dragged
+dragging = False  #If tower is being dragged
 
 while running:
     screen.fill("white")  #Clear screen at the start of the frame
@@ -51,14 +54,15 @@ while running:
                 dragging = True  #Start dragging
 
         elif event.type == pygame.MOUSEBUTTONUP:
-            dragging = False  #Stop dragging when mouse is released
-            tower_rect = tower.get_rect(topleft=(1300, 600))
 
-            if emp1_rect.collidepoint(event.pos) :
+            if emp1_rect.collidepoint(event.pos) and dragging:
                 emplacement_1 = True
 
-            if emp2_rect.collidepoint(event.pos) :
+            if emp2_rect.collidepoint(event.pos) and dragging :
                 emplacement_2 = True
+
+            dragging = False  # Stop dragging when mouse is released
+            tower_rect = tower.get_rect(topleft=(1300, 600))
 
         elif event.type == pygame.MOUSEMOTION and dragging :
             tower_rect.center = event.pos  #Move tower while dragging
@@ -69,6 +73,7 @@ while running:
 
     screen.blit(test, (pos_adrien - 25, y - 25))  #Draw character
     screen.blit(tower, tower_rect)  #Draw tower
+    screen.blit(background, (0, 0))
 
     screen.blit(emp1, (800, 600))  #Draw placement areas
     screen.blit(emp2, (800, 200))
