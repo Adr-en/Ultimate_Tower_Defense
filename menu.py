@@ -19,16 +19,16 @@ def main_menu() :
 
     screen.blit(main_menu_background, (0, 0))       #Display the background
 
-    if 710 <= mouse_x <= 910 and 590 <= mouse_y < 665 :     #If the mouse position is on the start button
+    if 675 <= mouse_x <= 845 and 495 <= mouse_y < 570 :     #If the mouse position is on the start button
         screen.blit(start_button_image, (0,0))
 
-    if 710 <= mouse_x <= 910 and 665 <= mouse_y < 740 :     #If the mouse position is on the option button
+    if 675 <= mouse_x <= 845 and 570 <= mouse_y < 635 :     #If the mouse position is on the option button
         screen.blit(option_button_image, (0, 0))
 
-    if 710 <= mouse_x <= 910 and 740 <= mouse_y < 815 :     #If the mouse position is on the credits button
+    if 675 <= mouse_x <= 845 and 635 <= mouse_y < 700 :     #If the mouse position is on the credits button
         screen.blit(credits_button_image, (0,0))
 
-    if 1470 <= mouse_x <= 1600 and 0 <= mouse_y < 65 :     #If the mouse position is on the quit button
+    if 1470 <= mouse_x <= 1520 and 0 <= mouse_y < 70 :     #If the mouse position is on the quit button
         screen.blit(quit_button_image, (0, 0))
 
 
@@ -74,10 +74,10 @@ def choose_map_menu() :
         case 2:
             screen.blit(choose_menu_option3, (0, 0))
 
-    if 525 <= mouse_x <= 625 and 815 <= mouse_y < 865 :
+    if 500 <= mouse_x <= 590 and 705 <= mouse_y < 745 :
         screen.blit(left_arrow_highlight, (0,0))
 
-    if 985 <= mouse_x <= 1085 and 815 <= mouse_y < 865 :
+    if 940 <= mouse_x <= 1030 and 705 <= mouse_y < 745 :
         screen.blit(right_arrow_highlight, (0, 0))
 
     for event in pygame.event.get():
