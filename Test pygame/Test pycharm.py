@@ -15,7 +15,7 @@ clock = pygame.time.Clock()
 #Load images
 test = pygame.image.load("test.png").convert()
 test = pygame.transform.smoothscale(test, (50, 50))  #Resize image
-background = pygame.image.load("background.jpeg").convert()
+background = pygame.image.load("../Assets/background_level_1.jpeg").convert()
 background = pygame.transform.smoothscale(background, (size))
 
 tower = pygame.image.load("test_tower.png").convert()
