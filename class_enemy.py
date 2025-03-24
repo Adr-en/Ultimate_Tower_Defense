@@ -4,10 +4,11 @@ from pygame.math import Vector2
 import math
 
 
-liste_ennemy = []                    # list of all of the ennemies alive on the board
+liste_ennemy = []
+ # list of all of the ennemies alive on the board
 dico_type ={                                        # dictionnary containing all different types of ennemies and their associated attributes
-            1 : ["test.png", (50,50), 100],         # number of the type : image, size, health
-            2 : ["test.png", (70,70), 200],
+            1 : ["Test pygame/test.png", (50,50), 100],         # number of the type : image, size, health
+            2 : ["Test pygame/test.png", (70,70), 200, 3],
            }
 
 
@@ -21,13 +22,13 @@ class Ennemy:
     movements and his health."""
 
 
-    def __init__(self, waypoints, image, size, health_init):
+    def __init__(self, waypoints, image, size, health_init, speed = 5+ randint(-1,1)):
         self.image = image
         self.waypoints = waypoints              #liste of points of the trajectory
         self.pos = Vector2(self.waypoints[0])
         self.target_waypoint = 1                # position of the actual point of the trajectory
         self.size = size
-        self.speed = 5 + randint(-1,1)
+        self.speed = speed
         self.health = health_init
         self.health_init =health_init
 
@@ -111,6 +112,8 @@ class Ennemy:
 def spawn(type):
     """Make an ennemy spawn and put him in the list"""
 
+    ### load in another file to get the same image
+
     ennemy_py = pygame.image.load(dico_type[type][0]).convert()
     ennemy_py = pygame.transform.smoothscale(ennemy_py, dico_type[type][1])  # Resize image
     ennemy_py.set_colorkey((0, 0, 0))
@@ -126,17 +129,6 @@ def ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr():
     return
 
 
-def projectile(self):
-    """Vérifier les attribues de la classe projectile"""
-
-
-    for element in liste_ennemy:
-        distance = math.sqrt((projectile.pos[0] - element.pos[0])**2 + (projectile.pos[1] - element.pos[1])**2)
-
-        if distance < projectile.zone :
-            element.health_management(projectile.damage)
-            if projectile.target == 1 :
-                return
 
 
 waypoints = [(000,400),
@@ -151,6 +143,31 @@ waypoints = [(000,400),
 
 
 
+def is_in_range(tower):
+    """Return the furthest ennemy in range of the tower
+        Tower is an object of type tower
+        element and ele are object of type Ennemy"""
+
+    tower_pos = Vector2(tower.dest)
+    list_range = []
+    for element in liste_ennemy:
+        dist = tower_pos - element.pos
+        dist = dist.length()
+        if dist <= tower.range :
+            list_range.append(element)
+
+        furthest_ele = list_range[0]
+        for elem in list_range:
+            if furthest_ele.pos[0] < elem.pos[0]:
+                furthest_ele = elem
+        return furthest_ele
+
+
+
+
+
+
+
 
 """ 
 Reste à faire : 
@@ -158,7 +175,7 @@ Reste à faire :
 - vague
 - waypoints
 - différents ennemies
-- 
+
 
 """
 
