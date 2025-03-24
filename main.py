@@ -14,7 +14,6 @@ while running:
     if main_menu_boolean:
         running, main_menu_boolean, choose_menu_boolean = main_menu()
 
-        pygame.draw.rect(screen,'black',((610,590),(710,665)))
     if choose_menu_boolean:
         choose_map_menu()
 
