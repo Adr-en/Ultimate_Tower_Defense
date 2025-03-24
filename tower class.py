@@ -63,7 +63,7 @@ run = True
 font = p.font.SysFont(None, 50)
 speciality = ["A = archer", "Z = bomber", "E = slow", "R = fire", "T = adrien"]
 x = 40
-y = 750
+y = 750 # ta grand mère
 
 for n in speciality:
     text = font.render(n, True, (255, 255, 255))
