@@ -6,7 +6,7 @@ class Tower:
     def __init__(self, x, y):  # definition of the class
         self.screen = p.display.set_mode((1540, 800))
         self.dest = (x, y)
-        self.surf = p.image.load("default_tower.png")  # surface of the tower
+        self.surf = p.image.load("Assets/default_tower.png")  # surface of the tower
         self.tower = p.Rect(x, y, 90, 180)  # the tower itself
         self.built = False  # to know if the tower is built
         self.attack_speed = 0.5  # attack speed of the tower
@@ -18,34 +18,34 @@ class Tower:
 
     def archer(self):
         try:
-            self.surf = p.image.load("archer_tower.png")  # where we'll have the skin of the mob
+            self.surf = p.image.load("Assets/archer_tower.png")  # where we'll have the skin of the mob
             self.built = True
             self.screen.blit(self.surf, self.dest)
         except p.error as e:
             print(e)
 
     def bomber(self):
-        self.surf = p.image.load("rock_tower.png")
+        self.surf = p.image.load("Assets/rock_tower.png")
         self.built = True
         self.screen.blit(self.surf, self.dest)
 
     def slow(self):
-        self.surf = p.image.load("ice_tower.png")
+        self.surf = p.image.load("Assets/ice_tower.png")
         self.built = True
         self.screen.blit(self.surf, self.dest)
 
     def fire(self):
-        self.surf = p.image.load("fire_tower.png")
+        self.surf = p.image.load("Assets/fire_tower.png")
         self.built = True
         self.screen.blit(self.surf, self.dest)
 
     def adrien(self):
-        self.surf = p.image.load("adrien_tower.png")
+        self.surf = p.image.load("Assets/adrien_tower.png")
         self.built = True
         self.screen.blit(self.surf, self.dest)
 
     def supr(self):
-        self.surf = p.image.load("default_tower.png")
+        self.surf = p.image.load("Assets/default_tower.png")
         self.built = False
         self.screen.blit(self.surf, self.dest)
 
@@ -57,7 +57,7 @@ tower2 = Tower(530, 280)
 tower3 = Tower(1050, 350)
 screen = p.display.set_mode((0,0),p.FULLSCREEN)
 size = screen.get_size()
-background = p.image.load("level1.jpg")
+background = p.image.load("Assets/Level1.jpg")
 background = p.transform.smoothscale(background, size)
 run = True
 font = p.font.SysFont(None, 50)
