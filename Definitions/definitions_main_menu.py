@@ -7,7 +7,7 @@ import pygame
 
 #Initializing window settings
 pygame.display.set_caption("Zombie Assault: Hopeless Resistance Against Annihilation")
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1520, 775),0)
 size = screen.get_size()
 clock = pygame.time.Clock()
 

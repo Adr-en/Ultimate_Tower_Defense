@@ -6,7 +6,7 @@ import pygame
 '''
 
 #Initializing window settings
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1520, 775))
 size = screen.get_size()
 
 
