@@ -1,5 +1,6 @@
 import pygame
 from menu import*
+from Class Ennemy import *
 
 pygame.init()
 

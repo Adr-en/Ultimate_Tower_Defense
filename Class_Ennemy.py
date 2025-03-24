@@ -125,6 +125,7 @@ def ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr():
     #fonction de perte de HP quand un zombie passe
     return
 
+
 def projectile(self):
     """Vérifier les attribues de la classe projectile"""
 
