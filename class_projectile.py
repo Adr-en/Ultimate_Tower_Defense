@@ -1,5 +1,6 @@
 import pygame
 import math
+import time
 
 # Initialisation de Pygame
 pygame.init()
@@ -11,23 +12,26 @@ clock = pygame.time.Clock()
 GRAVITY = 1
 
 # Chargement de l'image de la flèche
-arrow_img = pygame.image.load("arrow.png").convert_alpha()
+arrow_img = pygame.image.load("Assets/arrow.png").convert_alpha()
 arrow_img = pygame.transform.scale(arrow_img, (50, 70))
 
-fireball_img = pygame.image.load("Boule.png").convert_alpha()
-fireball_img = pygame.transform.scale(fireball_img, (50, 70))
+fireball_img = pygame.image.load("Assets/fireball.png").convert_alpha()
+fireball_img = pygame.transform.scale(fireball_img, (80, 70))
 
-rock_img = pygame.image.load("arrow.png").convert_alpha()
-rock_img = pygame.transform.scale(rock_img, (50, 70))
+rock_img = pygame.image.load("Assets/rock.png").convert_alpha()
+rock_img = pygame.transform.scale(rock_img, (80, 70))
 
-iceball_img = pygame.image.load("Boule.png").convert_alpha()
+iceball_img = pygame.image.load("Assets/arrow.png").convert_alpha()
 iceball_img = pygame.transform.scale(iceball_img, (50, 70))
+
+dot_img = pygame.image.load("Assets/ice_tower.png").convert_alpha()
+dot_img = pygame.transform.scale(dot_img, (50, 50))
 
 
 class Arrow:
-    def __init__(self, start, end):
+    def __init__(self, start, enemy):
         self.x0, self.y0 = start
-        self.x1, self.y1 = end
+        self.x1, self.y1 = enemy.pos
 
         self.dx = self.x1 - self.x0
         self.dy = self.y1 - self.y0
@@ -53,6 +57,9 @@ class Arrow:
         self.t = 0
         self.active = True
 
+        #others:
+        self.damage = 30
+
     def update(self, dt):
         if not self.active:
             return None
@@ -64,6 +71,9 @@ class Arrow:
 
         if self.t >= self.time:
             self.active = False
+
+
+
 
     def draw(self, surface):
         if not self.active:
@@ -98,7 +108,7 @@ class FireBall:
         self.time = abs(self.dx) / abs(self.vx) if self.vx != 0 else 1
 
         # Calcul de vy selon la physique
-        self.vy = (self.dy - 0.5 * GRAVITY * 3000 * self.time ** 2) / self.time
+        self.vy = (self.dy - 0.5 * GRAVITY * 1000 * self.time ** 2) / self.time
 
         self.x = self.x0
         self.y = self.y0
@@ -112,16 +122,17 @@ class FireBall:
         self.t += dt
 
         self.x = self.x0 + self.vx * self.t
-        self.y = self.y0 + self.vy * self.t + 0.5 * GRAVITY * 3000 * self.t ** 2
+        self.y = self.y0 + self.vy * self.t + 0.5 * GRAVITY * 1000 * self.t ** 2
 
         if self.t >= self.time:
             self.active = False
+            projectiles.append(Dot((self.x-50, self.y)))
 
     def draw(self, surface):
         if not self.active:
             return
 
-        vy_inst = self.vy + GRAVITY * 3000 * self.t
+        vy_inst = self.vy + GRAVITY * 1000 * self.t
         angle = math.degrees(math.atan2(vy_inst, self.vx))+180
 
         rotated = pygame.transform.rotate(fireball_img, -angle)
@@ -232,15 +243,43 @@ class Iceball:
         rect = rotated.get_rect(center=(self.x, self.y))
         surface.blit(rotated, rect.topleft)
 
-# Liste de flèches
+class Dot:
+    def __init__(self, coor):
+        self.coord = coor
+        self.chrono = time.time()
+        self.active = True
+        self.damage = 10
+        self.ticks = 0
+        self.next_tick_time = 1
+        self.t = 0
+
+    def update(self, dt):
+        self.t += dt
+        if self.t >= self.next_tick_time and self.ticks < 8:
+
+            self.ticks += 1
+            self.next_tick_time += 0.5
+            print(f"Tick {self.ticks}: Dot inflige {self.damage} dégâts à {self.coord}")
+
+        if time.time() - self.chrono >= 4:
+            self.active = False
+
+        #for enemy in enemies:
+          #  if self.coor
+
+    def draw(self, surface):
+        if self.active:
+            surface.blit(dot_img, self.coord)
+
+
+
+
 projectiles = []
-projectiles.append(Arrow((200, 500), (300, 480)))
-projectiles.append(Rock((200, 500), (300, 480)))
-projectiles.append(FireBall((200, 500), (300, 480)))
-projectiles.append(Iceball((200, 500), (300, 480)))
-# Pour tester d'autres directions :
-# arrows.append(Arrow((1300, 200), (300, 500)))  # droite → gauche
-# arrows.append(Arrow((750, 650), (750, 200)))   # tir vertical
+#projectiles.append(Arrow((200, 500), (600, 480)))
+#projectiles.append(Rock((200, 500), (200, 400)))
+projectiles.append(FireBall((200, 500), (1000, 300)))
+#projectiles.append(Iceball((200, 500), (600, 480)))
+
 
 running = True
 while running:
@@ -253,12 +292,14 @@ while running:
 
     for element in projectiles:
         element.update(dt)
+        if not element.active:
+            projectiles.remove(element)
         element.draw(screen)
 
     # Points de repère
-    for arrow in projectiles:
-        pygame.draw.circle(screen, (255, 0, 0), (int(arrow.x0), int(arrow.y0)), 5)
-        pygame.draw.circle(screen, (0, 128, 0), (int(arrow.x1), int(arrow.y1)), 5)
+    #for arrow in projectiles:
+      #  pygame.draw.circle(screen, (255, 0, 0), (int(arrow.x0), int(arrow.y0)), 5)
+       # pygame.draw.circle(screen, (0, 128, 0), (int(arrow.x1), int(arrow.y1)), 5)
 
     pygame.display.flip()
 
