@@ -11,21 +11,21 @@ clock = pygame.time.Clock()
 GRAVITY = 1
 
 # Chargement de l'image de la flèche
-arrow_img = pygame.image.load("arrow.png").convert_alpha()
+arrow_img = pygame.image.load("Assets/arrow.png").convert_alpha()
 arrow_img = pygame.transform.scale(arrow_img, (50, 70))
 
-fireball_img = pygame.image.load("Boule.png").convert_alpha()
-fireball_img = pygame.transform.scale(fireball_img, (50, 70))
+fireball_img = pygame.image.load("Assets/fireball.png").convert_alpha()
+fireball_img = pygame.transform.scale(fireball_img, (80, 70))
 
-rock_img = pygame.image.load("arrow.png").convert_alpha()
-rock_img = pygame.transform.scale(rock_img, (50, 70))
+rock_img = pygame.image.load("Assets/rock.png").convert_alpha()
+rock_img = pygame.transform.scale(rock_img, (80, 70))
 
-iceball_img = pygame.image.load("Boule.png").convert_alpha()
+iceball_img = pygame.image.load("Assets/arrow.png").convert_alpha()
 iceball_img = pygame.transform.scale(iceball_img, (50, 70))
 
 
 class Arrow:
-    def __init__(self, start, end):
+    def __init__(self, start, end, enemy):
         self.x0, self.y0 = start
         self.x1, self.y1 = end
 
@@ -53,6 +53,8 @@ class Arrow:
         self.t = 0
         self.active = True
 
+        #others:
+
     def update(self, dt):
         if not self.active:
             return None
@@ -64,6 +66,8 @@ class Arrow:
 
         if self.t >= self.time:
             self.active = False
+            enemy.
+
 
     def draw(self, surface):
         if not self.active:
@@ -98,7 +102,7 @@ class FireBall:
         self.time = abs(self.dx) / abs(self.vx) if self.vx != 0 else 1
 
         # Calcul de vy selon la physique
-        self.vy = (self.dy - 0.5 * GRAVITY * 3000 * self.time ** 2) / self.time
+        self.vy = (self.dy - 0.5 * GRAVITY * 1000 * self.time ** 2) / self.time
 
         self.x = self.x0
         self.y = self.y0
@@ -112,7 +116,7 @@ class FireBall:
         self.t += dt
 
         self.x = self.x0 + self.vx * self.t
-        self.y = self.y0 + self.vy * self.t + 0.5 * GRAVITY * 3000 * self.t ** 2
+        self.y = self.y0 + self.vy * self.t + 0.5 * GRAVITY * 1000 * self.t ** 2
 
         if self.t >= self.time:
             self.active = False
@@ -121,7 +125,7 @@ class FireBall:
         if not self.active:
             return
 
-        vy_inst = self.vy + GRAVITY * 3000 * self.t
+        vy_inst = self.vy + GRAVITY * 1000 * self.t
         angle = math.degrees(math.atan2(vy_inst, self.vx))+180
 
         rotated = pygame.transform.rotate(fireball_img, -angle)
@@ -234,10 +238,10 @@ class Iceball:
 
 # Liste de flèches
 projectiles = []
-projectiles.append(Arrow((200, 500), (300, 480)))
-projectiles.append(Rock((200, 500), (300, 480)))
-projectiles.append(FireBall((200, 500), (300, 480)))
-projectiles.append(Iceball((200, 500), (300, 480)))
+projectiles.append(Arrow((200, 500), (600, 480)))
+projectiles.append(Rock((200, 500), (200, 400)))
+projectiles.append(FireBall((200, 500), (200, 400)))
+projectiles.append(Iceball((200, 500), (600, 480)))
 # Pour tester d'autres directions :
 # arrows.append(Arrow((1300, 200), (300, 500)))  # droite → gauche
 # arrows.append(Arrow((750, 650), (750, 200)))   # tir vertical
