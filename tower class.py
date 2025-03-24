@@ -52,33 +52,28 @@ class Tower:
 
 p.init()
 
-tower1 = Tower(110, 500)
-tower2 = Tower(530, 280)
-tower3 = Tower(1050, 350)
-screen = p.display.set_mode((0,0),p.FULLSCREEN)
+tower1 = Tower(80, 260)
+tower2 = Tower(410, 120)
+tower3 = Tower(820, 165)
+tower4 = Tower(1175,356)
+tower5 = Tower(1320,150)
+screen = p.display.set_mode((1520,775))
 size = screen.get_size()
 background = p.image.load("Assets/Level1.jpg")
 background = p.transform.smoothscale(background, size)
 run = True
-font = p.font.SysFont(None, 50)
-speciality = ["A = archer", "Z = bomber", "E = slow", "R = fire", "T = adrien"]
+
 x = 40
 y = 750 # ta grand mère
 
-for n in speciality:
-    text = font.render(n, True, (255, 255, 255))
-    temp_surface = p.Surface((text.get_width(), text.get_height()))
-    temp_surface.fill((50, 50, 50))
-    temp_surface.blit(text, (0, 0))
-    screen.blit(temp_surface, (x, y))
-    x += text.get_width() + 30
 
 while run:
     screen.blit(background, (0, 0))
     tower3.draw()
     tower1.draw()
     tower2.draw()
-
+    tower4.draw()
+    tower5.draw()
 
     keys = p.key.get_pressed()
     mouse_pos = (p.mouse.get_pos())
@@ -89,6 +84,10 @@ while run:
             tower2.archer()
         elif tower3.tower.collidepoint(mouse_pos) and not tower3.built:
             tower3.archer()
+        elif tower4.tower.collidepoint(mouse_pos) and not tower4.built:
+            tower4.archer()
+        elif tower5.tower.collidepoint(mouse_pos) and not tower5.built:
+            tower5.archer()
     if keys[p.K_z]:
         if tower1.tower.collidepoint(mouse_pos) and not tower1.built:
             tower1.bomber()
@@ -96,6 +95,10 @@ while run:
             tower2.bomber()
         elif tower3.tower.collidepoint(mouse_pos) and not tower3.built:
             tower3.bomber()
+        elif tower4.tower.collidepoint(mouse_pos) and not tower4.built:
+            tower4.bomber()
+        elif tower5.tower.collidepoint(mouse_pos) and not tower5.built:
+            tower5.bomber()
     if keys[p.K_e]:
         if tower1.tower.collidepoint(mouse_pos) and not tower1.built:
             tower1.slow()
@@ -103,6 +106,10 @@ while run:
             tower2.slow()
         elif tower3.tower.collidepoint(mouse_pos) and not tower3.built:
             tower3.slow()
+        elif tower4.tower.collidepoint(mouse_pos) and not tower4.built:
+            tower4.slow()
+        elif tower5.tower.collidepoint(mouse_pos) and not tower5.built:
+            tower5.slow()
 
     if keys[p.K_r]:
         if tower1.tower.collidepoint(mouse_pos) and not tower1.built:
@@ -111,6 +118,10 @@ while run:
             tower2.fire()
         elif tower3.tower.collidepoint(mouse_pos) and not tower3.built:
             tower3.fire()
+        elif tower4.tower.collidepoint(mouse_pos) and not tower4.built:
+            tower4.fire()
+        elif tower5.tower.collidepoint(mouse_pos) and not tower5.built:
+            tower5.fire()
 
     if keys[p.K_t]:
         if tower1.tower.collidepoint(mouse_pos) and not tower1.built:
@@ -119,6 +130,10 @@ while run:
             tower2.adrien()
         elif tower3.tower.collidepoint(mouse_pos) and not tower3.built:
             tower3.adrien()
+        elif tower4.tower.collidepoint(mouse_pos) and not tower4.built:
+            tower4.adrien()
+        elif tower5.tower.collidepoint(mouse_pos) and not tower5.built:
+            tower5.adrien()
 
     if keys[p.K_d]:
         if tower1.tower.collidepoint(mouse_pos) and tower1.built:
@@ -127,7 +142,10 @@ while run:
             tower2.supr()
         elif tower3.tower.collidepoint(mouse_pos) and tower3.built:
             tower3.supr()
-
+        elif tower4.tower.collidepoint(mouse_pos) and tower4.built:
+            tower4.supr()
+        elif tower5.tower.collidepoint(mouse_pos) and tower5.built:
+            tower5.supr()
     for event in p.event.get():
         if event.type == p.QUIT:
             run = False
