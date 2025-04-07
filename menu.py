@@ -5,6 +5,7 @@ from Definitions.definitions_choose_menu import*
 #Definition of the booleans which will be used to navigate between menus and the game
 main_menu_boolean = True
 choose_menu_boolean = False
+choosen_map = 0
 
 #Map pointer is a variable used to navigate and choose between the maps in the maps menu
 map_pointer = 0
@@ -41,7 +42,7 @@ def main_menu() :
                 global choose_menu_boolean
                 main_menu_boolean = False
                 choose_menu_boolean = True
-                return exit_game, main_menu_boolean, choose_menu_boolean        #If the start button is clicked, the menu changes
+                return exit_game, main_menu_boolean, choose_menu_boolean, choosen_map       #If the start button is clicked, the menu changes
 
             if option_button_rect.collidepoint(event.pos):      #If the user is clicking ON the start button
                 print("Option")
@@ -52,7 +53,7 @@ def main_menu() :
             if quit_button_rect.collidepoint(event.pos):        #If the user is clicking ON the option button
                 exit_game = False
 
-    return exit_game, main_menu_boolean, choose_menu_boolean        #Return the values of the different booleans used to navigate between menus
+    return exit_game, main_menu_boolean, choose_menu_boolean, choosen_map        #Return the values of the different booleans used to navigate between menus
 
 
 #The choose menu function create and display the choose menu when the boolean "choose menu boolean" is true
@@ -91,6 +92,13 @@ def choose_map_menu() :
             if right_arrow.collidepoint(event.pos):
                 map_pointer += 1
 
+            if selection_map.collidepoint(event.pos) and map_pointer == 0:
+                global choose_menu_boolean
+                choose_menu_boolean = False
+                global choosen_map
+                choosen_map = 1
+                return exit_game, main_menu_boolean, choose_menu_boolean,choosen_map
+
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_ESCAPE:
@@ -99,5 +107,4 @@ def choose_map_menu() :
             if event.key == pygame.K_ESCAPE and open_game_menu == True:
                 open_game_menu = False
 
-
-    return exit_game
+    return exit_game, main_menu_boolean, choose_menu_boolean,choosen_map
