@@ -5,6 +5,8 @@ import pygame
                         to display them to create the main menu of the game 
 '''
 
+
+
 #Initializing window settings
 pygame.display.set_caption("Zombie Assault: Hopeless Resistance Against Annihilation")
 screen = pygame.display.set_mode((1520, 775),0)

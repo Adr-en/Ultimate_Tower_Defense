@@ -37,3 +37,7 @@ right_arrow_highlight = pygame.image.load("Assets/Right_Arrow_highlighted.png")
 right_arrow_highlight = pygame.transform.smoothscale(right_arrow_highlight, size)
 right_arrow = pygame.Surface((90, 40))
 right_arrow = right_arrow.get_rect(topleft=(940, 705))
+
+#Initializing the selection of the map by clicking on the map
+selection_map = pygame.Surface((805, 560))
+selection_map = selection_map.get_rect(topleft=(360, 120))

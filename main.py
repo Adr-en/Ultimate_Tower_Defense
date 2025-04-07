@@ -1,12 +1,10 @@
 import pygame
 from menu import*
-from class_enemy import *
-
 
 pygame.init()
 
 running = True
-i = 0
+
 while running:
 
     screen.fill("white")  #Clear screen at the start of the frame
@@ -21,8 +19,6 @@ while running:
 
         if event.type == pygame.QUIT:
             running = False
-
-
 
     pygame.display.flip()
     clock.tick(60)
