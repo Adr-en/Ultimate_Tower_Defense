@@ -15,34 +15,25 @@ class Tower:
         self.ammo = None
         self.range = 0
 
+    def trigger(self):
+        """Return the furthest enemy in range of the tower
+            Tower is an object of type tower
+            element and ele are object of type Enemy"""
+        tower_pos = p.math.Vector2(self.dest)
+        list_range = [] # list of enemies in range
+        for element in en.liste_ennemy: # allows us to know if there is enemies in range
+            dist = tower_pos - element.pos
+            dist = dist.length()
+            if dist <= self.range:
+                list_range.append(element)
+            # this checks which enemy is the furthest
+            furthest_ele = list_range[0]
+            for elem in list_range:
+                if furthest_ele.pos[0] < elem.pos[0]:
+                    furthest_ele = elem
+            self.ammo(furthest_ele.pos,self.pos)
 
-        while self.built:
-                """Return the furthest enemy in range of the tower
-                    Tower is an object of type tower 
-                    element and ele are object of type Enemy"""
-
-                tower_pos = p.math.Vector2(self.dest)
-                list_range = [] # list of enemies in range
-                for element in en.liste_ennemy: # allows us to know if there is enemies in range
-                    dist = tower_pos - element.pos
-                    dist = dist.length()
-                    if dist <= self.range:
-                        list_range.append(element)
-                    # this checks which enemy is the furthest
-                    furthest_ele = list_range[0]
-                    for elem in list_range:
-                        if furthest_ele.pos[0] < elem.pos[0]:
-                            furthest_ele = elem
-                    # now we locked the enemy
-                    while furthest_ele in list_range: # while this enemy is in range
-                        #self.ammo(...)
-                        list_range = []
-                        for element in en.liste_ennemy:  # we update the list to see if the enemy is still in range
-                            dist = tower_pos - element.pos
-                            dist = dist.length()
-                            if dist <= self.range:
-                                list_range.append(element)
-
+    """in the main program, add a list (maybe called active_tower) and add every active tower. then in the main loop, make sure to to run through this list and trigger"""
 
 
 
@@ -57,6 +48,7 @@ class Tower:
         self.built = True # states that the tower is active
         self.ammo = self.list_ammo[0]
         self.screen.blit(self.surf, self.dest) #prints the tower
+        self.range = 120
 
     """same patern everywhere"""
     def bomber(self):
@@ -64,24 +56,31 @@ class Tower:
         self.built = True
         self.ammo = self.list_ammo[1]
         self.screen.blit(self.surf, self.dest)
+        self.range =
+        #self.active()
 
     def slow(self):
         self.surf = p.image.load("Assets/ice_tower.png")
         self.built = True
         self.ammo = self.list_ammo[2]
         self.screen.blit(self.surf, self.dest)
+        self.range = 120
+        #self.active()
 
     def fire(self):
         self.surf = p.image.load("Assets/fire_tower.png")
         self.built = True
         self.ammo = self.list_ammo[3]
         self.screen.blit(self.surf, self.dest)
+        self.range = 250
+        #self.active()
 
     def adrien(self):
         self.surf = p.image.load("Assets/adrien_tower.png")
         self.built = True
         self.ammo = self.list_ammo[4]
         self.screen.blit(self.surf, self.dest)
+        #self.active()
     """method to delete a tower"""
     def supr(self):
         self.surf = p.image.load("Assets/available_tower.png")
@@ -106,6 +105,8 @@ run = True
 x = 40
 y = 750 # ta grand mère
 
+def last_enemy():
+
 
 while run:
     screen.blit(background, (0, 0))
@@ -114,7 +115,7 @@ while run:
     tower2.draw()
     tower4.draw()
     tower5.draw()
-
+    p.draw.rect(screen, (0, 0, 0),p.Rect(0,20,300,40))
     keys = p.key.get_pressed()
     mouse_pos = (p.mouse.get_pos())
     if keys[p.K_a]:
