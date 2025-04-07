@@ -5,44 +5,34 @@ import class_projectile as pro
 
 class Tower:
     def __init__(self, x, y):  # definition of the class
-        self.screen = p.display.set_mode((1540, 800))
+        self.screen = p.display.set_mode((1540, 775))
         self.dest = (x, y)
         self.surf = p.image.load("Assets/available_tower.png")  # surface of the tower
         self.tower = p.Rect(x, y, 90, 180)  # the tower itself
         self.built = False  # to know if the tower is built
-        self.attack_speed = 0.5  # attack speed of the tower
-        self.list_ammo = ["..."]
+        self.list_ammo = [pro.Arrow,pro.Rock,pro.Iceball,pro.FireBall,None] # list of possible ammo
         self.ammo = None
         self.range = 0
 
+    def trigger(self,last_enemy):
+        """Return the furthest enemy in range of the tower
+            Tower is an object of type tower
+            element and ele are object of type Enemy"""
+        tower_pos = p.math.Vector2(self.dest)
+        list_range = [] # list of enemies in range
+        for element in en.liste_ennemy: # allows us to know if there is enemies in range
+            dist = tower_pos - element.pos
+            dist = dist.length()
+            if dist <= self.range:
+                list_range.append(element)
+            # this checks which enemy is the furthest
+            furthest_ele = list_range[0]
+            for elem in list_range:
+                if furthest_ele.pos[0] < elem.pos[0]:
+                    furthest_ele = elem
+            self.ammo(furthest_ele.pos,self.pos,last_enemy)
 
-        while self.built:
-                """Return the furthest ennemy in range of the tower
-                    Tower is an object of type tower 
-                    element and ele are object of type Ennemy"""
-
-                tower_pos = p.math.Vector2(self.dest)
-                list_range = [] # list of enemies in range
-                for element in en.liste_ennemy: # allows us to know if there is enemies in range
-                    dist = tower_pos - element.pos
-                    dist = dist.length()
-                    if dist <= self.range:
-                        list_range.append(element)
-                    # this checks which enemy is the furthest
-                    furthest_ele = list_range[0]
-                    for elem in list_range:
-                        if furthest_ele.pos[0] < elem.pos[0]:
-                            furthest_ele = elem
-                    # now we locked the enemy
-                    while furthest_ele in list_range: # while this enemy is in range
-                        #self.ammo()
-                        list_range = []
-                        for element in en.liste_ennemy:  # we update the list to see if the enemy is still in range
-                            dist = tower_pos - element.pos
-                            dist = dist.length()
-                            if dist <= self.range:
-                                list_range.append(element)
-
+    """in the main program, add a list (maybe called active_tower) and add every active tower. then in the main loop, make sure to to run through this list and trigger"""
 
 
 
@@ -57,6 +47,7 @@ class Tower:
         self.built = True # states that the tower is active
         self.ammo = self.list_ammo[0]
         self.screen.blit(self.surf, self.dest) #prints the tower
+        self.range = 120
 
     """same patern everywhere"""
     def bomber(self):
@@ -64,24 +55,30 @@ class Tower:
         self.built = True
         self.ammo = self.list_ammo[1]
         self.screen.blit(self.surf, self.dest)
+        self.range = 250
 
     def slow(self):
         self.surf = p.image.load("Assets/ice_tower.png")
         self.built = True
         self.ammo = self.list_ammo[2]
         self.screen.blit(self.surf, self.dest)
+        self.range = 120
+        #self.active()
 
     def fire(self):
         self.surf = p.image.load("Assets/fire_tower.png")
         self.built = True
         self.ammo = self.list_ammo[3]
         self.screen.blit(self.surf, self.dest)
+        self.range = 250
+        #self.active()
 
     def adrien(self):
         self.surf = p.image.load("Assets/adrien_tower.png")
         self.built = True
         self.ammo = self.list_ammo[4]
         self.screen.blit(self.surf, self.dest)
+        #self.active()
     """method to delete a tower"""
     def supr(self):
         self.surf = p.image.load("Assets/available_tower.png")
@@ -104,7 +101,25 @@ background = p.transform.smoothscale(background, size)
 run = True
 
 x = 40
-y = 750 # ta grand mère
+y = 750
+
+def lastEnemy(tower):
+    tower_pos = p.math.Vector2(tower.dest)
+    list_range = []  # list of enemies in range
+    for element in en.liste_ennemy:  # allows us to know if there is enemies in range
+        dist = tower_pos - element.pos
+        dist = dist.length()
+        if dist <= tower.range:
+            list_range.append(element)
+        # this checks which enemy is the furthest
+        furthest_ele = list_range[0]
+        for elem in list_range:
+            if furthest_ele.pos[0] < elem.pos[0]:
+                furthest_ele = elem
+    return furthest_ele
+
+def upgrade(self):
+    self.range += 20
 
 
 while run:
@@ -114,7 +129,7 @@ while run:
     tower2.draw()
     tower4.draw()
     tower5.draw()
-
+    p.draw.rect(screen, (0, 0, 0),p.Rect(0,20,300,40))
     keys = p.key.get_pressed()
     mouse_pos = (p.mouse.get_pos())
     if keys[p.K_a]:
