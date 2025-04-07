@@ -5,21 +5,21 @@ import class_projectile as pro
 
 class Tower:
     def __init__(self, x, y):  # definition of the class
-        self.screen = p.display.set_mode((1540, 800))
+        self.screen = p.display.set_mode((1540, 775))
         self.dest = (x, y)
         self.surf = p.image.load("Assets/available_tower.png")  # surface of the tower
         self.tower = p.Rect(x, y, 90, 180)  # the tower itself
         self.built = False  # to know if the tower is built
         self.attack_speed = 0.5  # attack speed of the tower
-        self.list_ammo = ["..."]
+        self.list_ammo = [pro.Arrow,pro.Rock,pro.Iceball,pro.FireBall,None] # list of possible ammo
         self.ammo = None
         self.range = 0
 
 
         while self.built:
-                """Return the furthest ennemy in range of the tower
+                """Return the furthest enemy in range of the tower
                     Tower is an object of type tower 
-                    element and ele are object of type Ennemy"""
+                    element and ele are object of type Enemy"""
 
                 tower_pos = p.math.Vector2(self.dest)
                 list_range = [] # list of enemies in range
@@ -35,7 +35,7 @@ class Tower:
                             furthest_ele = elem
                     # now we locked the enemy
                     while furthest_ele in list_range: # while this enemy is in range
-                        #self.ammo()
+                        #self.ammo(...)
                         list_range = []
                         for element in en.liste_ennemy:  # we update the list to see if the enemy is still in range
                             dist = tower_pos - element.pos
