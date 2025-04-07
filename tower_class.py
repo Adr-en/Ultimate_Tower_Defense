@@ -10,12 +10,11 @@ class Tower:
         self.surf = p.image.load("Assets/available_tower.png")  # surface of the tower
         self.tower = p.Rect(x, y, 90, 180)  # the tower itself
         self.built = False  # to know if the tower is built
-        self.attack_speed = 0.5  # attack speed of the tower
         self.list_ammo = [pro.Arrow,pro.Rock,pro.Iceball,pro.FireBall,None] # list of possible ammo
         self.ammo = None
         self.range = 0
 
-    def trigger(self):
+    def trigger(self,last_enemy):
         """Return the furthest enemy in range of the tower
             Tower is an object of type tower
             element and ele are object of type Enemy"""
@@ -31,7 +30,7 @@ class Tower:
             for elem in list_range:
                 if furthest_ele.pos[0] < elem.pos[0]:
                     furthest_ele = elem
-            self.ammo(furthest_ele.pos,self.pos)
+            self.ammo(furthest_ele.pos,self.pos,last_enemy)
 
     """in the main program, add a list (maybe called active_tower) and add every active tower. then in the main loop, make sure to to run through this list and trigger"""
 
@@ -56,8 +55,7 @@ class Tower:
         self.built = True
         self.ammo = self.list_ammo[1]
         self.screen.blit(self.surf, self.dest)
-        self.range =
-        #self.active()
+        self.range = 250
 
     def slow(self):
         self.surf = p.image.load("Assets/ice_tower.png")
@@ -103,9 +101,25 @@ background = p.transform.smoothscale(background, size)
 run = True
 
 x = 40
-y = 750 # ta grand mère
+y = 750
 
-def last_enemy():
+def lastEnemy(tower):
+    tower_pos = p.math.Vector2(tower.dest)
+    list_range = []  # list of enemies in range
+    for element in en.liste_ennemy:  # allows us to know if there is enemies in range
+        dist = tower_pos - element.pos
+        dist = dist.length()
+        if dist <= tower.range:
+            list_range.append(element)
+        # this checks which enemy is the furthest
+        furthest_ele = list_range[0]
+        for elem in list_range:
+            if furthest_ele.pos[0] < elem.pos[0]:
+                furthest_ele = elem
+    return furthest_ele
+
+def upgrade(self):
+    self.range += 20
 
 
 while run:
