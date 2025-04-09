@@ -37,7 +37,7 @@ dot2_img.set_alpha(128)
 class Arrow:
     def __init__(self, start, enemy, unused):
         self.x0, self.y0 = start
-        self.x1, self.y1 = enemy.pos
+        self.x1, self.y1 = (enemy.pos[0], enemy.pos[1])
 
         self.dx = self.x1 - self.x0
         self.dy = self.y1 - self.y0
@@ -97,7 +97,7 @@ class Arrow:
 class FireBall:
     def __init__(self, start, enemy, unused):
         self.x0, self.y0 = start
-        self.x1, self.y1 = enemy.pos
+        self.x1, self.y1 = enemy
 
         self.dx = self.x1 - self.x0
         self.dy = self.y1 - self.y0
@@ -308,13 +308,13 @@ class Dot:
         if self.active:
             surface.blit(self.current_dot, self.coord)
 
-
+"""
 
 
 projectiles = []
 #projectiles.append(Arrow((200, 500), (600, 480)))
 #projectiles.append(Rock((200, 500), (200, 400)))
-projectiles.append(FireBall((200, 500), (1000, 300)))
+projectiles.append(FireBall((200, 500), (1000, 300), None))
 #projectiles.append(Iceball((200, 500), (600, 480)))
 
 
@@ -341,3 +341,4 @@ while running:
     pygame.display.flip()
 
 pygame.quit()
+"""
