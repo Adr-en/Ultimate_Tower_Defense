@@ -2,6 +2,9 @@ import pygame as p
 import math
 import class_enemy as en
 import class_projectile as pro
+from class_projectile import*
+
+active_towers = []
 
 class Tower:
     def __init__(self, x, y):
@@ -13,6 +16,7 @@ class Tower:
         self.list_ammo = [pro.Arrow, pro.Rock, pro.Iceball, pro.FireBall, None]
         self.ammo = None
         self.range = 0
+        self.attackspeed = time.time()
 
     def trigger(self):
         tower_pos = p.math.Vector2(self.dest)
@@ -30,10 +34,7 @@ class Tower:
             if elem.pos[0] > furthest_ele.pos[0]:
                 furthest_ele = elem
 
-        print(furthest_ele)
-        self.ammo(self.dest,en.list_enemy(furthest_ele).pos, lastEnemy)
-
-        print(1)
+        projectiles.append(self.ammo(self.dest,furthest_ele, lastEnemy))
 
     def draw(self):
         self.screen.blit(self.surf, self.dest)

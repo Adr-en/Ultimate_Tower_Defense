@@ -1,21 +1,24 @@
 from Definitions.definitions_game_map import*
 from class_enemy import*
+from class_projectile import*
 
 from tower_class import*
 
 dragging_card = None
 
 tempura = 0 ## temporaire
-active_towers = []
 
 def game_map_1(dragging):
 
+    dt = (clock.tick(60) / 1000)
     global dragging_card
     global card_archer_rect
     global card_firemage_rect
     global card_icemage_rect
     global card_rockshooter_rect
     global tempura
+    global active_towers
+    global projectiles
 
 
     for event in pygame.event.get():
@@ -116,11 +119,14 @@ def game_map_1(dragging):
     for el in active_towers :
         el.trigger()
 
-
     screen.blit(card_archer, card_archer_rect)
     screen.blit(card_firemage, card_firemage_rect)
     screen.blit(card_icemage, card_icemage_rect)
     screen.blit(card_rockshooter, card_rockshooter_rect)
+
+    for el in projectiles:
+        el.update(dt)
+        el.draw(screen)
 
     if tower1.built:
         tower1.draw()

@@ -64,7 +64,7 @@ class enemy:
            normalize() to """
 
         self.healthbar()                        #not sur we need it here
-        self.damaged(0.15)            #not sur we need it here
+        #self.damaged(0.15)            #not sur we need it here
 
         target = Vector2(self.waypoints[self.target_waypoint]) + self.variation #represent the point of the trajectory that we target in teh form of a vector
         movement = target - self.pos                    #represent the distance between the target and the position (it's a vector)
@@ -126,6 +126,8 @@ class enemy:
 
     def die(self):
         """Remove an object enemy from the list and give the player the associated exp and money """
+        if not self in list_enemy :
+            return
         list_enemy.remove(self)
         ##rajouter les thunes et l'exp??
 

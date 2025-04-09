@@ -1,6 +1,9 @@
 import pygame
 import math
 import time
+from class_enemy import*
+
+projectiles = []
 
 # Initialization
 pygame.init()
@@ -305,8 +308,8 @@ class Dot:
                 self.current_dot = dot1_img
             else :
                 self.current_dot = dot2_img
-            for el in enemies:
-                dis_enemy = math.sqrt((el.pos[1] - self.coor[1])**2 + (el.pos[0] - self.coor[0])**2)
+            for el in list_enemy:
+                dis_enemy = math.sqrt((el.pos[1] - self.coord[1])**2 + (el.pos[0] - self.coord[0])**2)
                 if dis_enemy <= 100:
                     el.damaged(self.damage)
 
@@ -326,28 +329,3 @@ class Dot:
 
 
 projectiles = []
-#projectiles.append(Arrow((200, 500), (600, 480), None))
-#projectiles.append(Rock((200, 500), (200, 400), None))
-projectiles.append(FireBall((200, 500), (1000, 300), None))
-#projectiles.append(Iceball((200, 500), (600, 480), None))
-
-
-running = True
-while running:
-    dt = clock.tick(60) / 1000  # Delta time en secondes
-    screen.fill("yellow")
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    for element in projectiles:
-        element.update(dt)
-        if not element.active:
-            projectiles.remove(element)
-        else:
-            element.draw(screen)
-
-    pygame.display.flip()
-
-pygame.quit()
