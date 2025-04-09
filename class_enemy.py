@@ -8,8 +8,8 @@ import math
 liste_ennemy = []
  # list of all of the ennemies alive on the board
 dico_type ={                                        # dictionnary containing all different types of ennemies and their associated attributes
-            1 : ["Test pygame/test.png", (50,50), 100],         # number of the type : image, size, health
-            2 : ["Test pygame/test.png", (70,70), 200, 3],
+            1 : ["Assets/zombie1.png", (50,50), 100,1],         # number of the type : image, size, health
+            2 : ["Assets/zombie2.png", (70,70), 400, 1],
            }
 
 
@@ -23,15 +23,22 @@ class Ennemy:
     movements and his health."""
 
 
-    def __init__(self, waypoints, image, size, health_init, speed = 5+ randint(-1,1)):
+    def __init__(self, image, size, health_init,speed):
+        #affichage
         self.image = image
+        self.size = size
+
+        #trajectoire
         self.waypoints = waypoints              #liste of points of the trajectory
         self.pos = Vector2(self.waypoints[0])
         self.target_waypoint = 1                # position of the actual point of the trajectory
-        self.size = size
         self.speed = speed
+        self.variation = (randint(-20, 20),randint(-20, 20))
+
+        #autre
         self.health = health_init
         self.health_init =health_init
+        self.status = ""   #integer et on fait baisser de tps en tps quand ça arrive à 0 ils ne sont plus concernés
 
 
 
@@ -43,9 +50,9 @@ class Ennemy:
            normalize() to """
 
         self.healthbar()                        #not sur we need it here
-        self.health_management(0.15)            #not sur we need it here
+        self.damaged(0.15)            #not sur we need it here
 
-        target = Vector2(self.waypoints[self.target_waypoint])  #represent the point of the trajectory that we target in teh form of a vector
+        target = Vector2(self.waypoints[self.target_waypoint]) + self.variation #represent the point of the trajectory that we target in teh form of a vector
         movement = target - self.pos                    #represent the distance between the target and the position (it's a vector)
         dist = movement.length()                        # represent the distance in the form of an integer not a vector
 
@@ -67,7 +74,7 @@ class Ennemy:
 
 
 
-    def health_management(self, damage):
+    def damaged(self, damage):
         """Allow to make an ennemy take damage and make him die if necessary
         Parameter : an object of type Ennemy and the damage that he have to take of type integer
         Return : nothing"""
@@ -115,11 +122,14 @@ def spawn(type):
 
     ### load in another file to get the same image
 
-    ennemy_py = pygame.image.load(dico_type[type][0]).convert()
+    ennemy_py = pygame.image.load(dico_type[type][0]).convert_alpha()
     ennemy_py = pygame.transform.smoothscale(ennemy_py, dico_type[type][1])  # Resize image
     ennemy_py.set_colorkey((0, 0, 0))
+    current = ennemy_py
 
-    bad_guy = Ennemy(waypoints, ennemy_py, dico_type[type][1], dico_type[type][2])
+
+
+    bad_guy = Ennemy(ennemy_py, dico_type[type][1], dico_type[type][2], dico_type[type][3])
 
     liste_ennemy.append(bad_guy)
 
@@ -132,14 +142,20 @@ def ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr():
 
 
 
-waypoints = [(000,400),
-             (300,400),
-             (300,250),
-             (700,250),
-             (700,500),
-             (1050,500),
-             (1050, 400),
-             (1540, 400)
+waypoints = [(-100,310),
+             (-50 ,310),
+             (250,320),
+             (400, 435),
+             (500,485),
+             (620,480),
+             (670, 395),
+             (710,250),
+             (800,180),
+             (930,220),
+             (980,310),
+             (1050,380),
+             (1150, 400),
+             (1540,400)
              ]
 
 
@@ -164,6 +180,11 @@ def is_in_range(tower):
         return furthest_ele
 
 
+def vague(nb_pelo, type):
+    # pas oublier if liste_ennemy = [] lancer vague suivante (ds 30 sec)
+    skibidi = 4
+    return skibidi
+
 
 
 
@@ -176,7 +197,7 @@ Reste à faire :
 - vague
 - waypoints
 - différents ennemies
-
+- load les images
 
 """
 
