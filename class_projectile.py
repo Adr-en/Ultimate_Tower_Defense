@@ -2,16 +2,16 @@ import pygame
 import math
 import time
 
-# Initialisation de Pygame
+# Initialization
 pygame.init()
 WIDTH, HEIGHT = 1500, 700
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SRCALPHA)
 clock = pygame.time.Clock()
 
-# Constante gravité (pixels/s²)
+# Gravity constant
 GRAVITY = 9.81
 
-# Chargement de l'image de la flèche
+# We load all our images, set the size and the transparency if necessary
 arrow_img = pygame.image.load("Assets/arrow.png").convert_alpha()
 arrow_img = pygame.transform.scale(arrow_img, (50, 70))
 
@@ -24,47 +24,55 @@ rock_img = pygame.transform.scale(rock_img, (80, 70))
 iceball_img = pygame.image.load("Assets/arrow.png").convert_alpha()
 iceball_img = pygame.transform.scale(iceball_img, (50, 70))
 
-dot1_img = pygame.image.load("Assets/dot1.png").convert_alpha()
+dot1_img = pygame.image.load("Assets/placement_spell.png").convert_alpha()
 dot1_img = pygame.transform.scale(dot1_img, (50, 50))
 dot1_img.set_alpha(128)
 
-dot2_img = pygame.image.load("Assets/dot2.png").convert_alpha()
+dot2_img = pygame.image.load("Assets/placement_spell_effects.png").convert_alpha()
 dot2_img = pygame.transform.scale(dot2_img, (50, 50))
 dot2_img.set_alpha(128)
 
 
-
 class Arrow:
     def __init__(self, start, enemy, unused):
+        #We get the starting positions, and the ending position where the enemy is located
         self.x0, self.y0 = start
-        self.x1, self.y1 = (enemy.pos[0], enemy.pos[1])
+        self.x1, self.y1 = enemy.pos
 
+        #We calculate the distance that our projectile will travel
         self.dx = self.x1 - self.x0
         self.dy = self.y1 - self.y0
 
         distance_x = abs(self.dx)
 
-        # Vitesse horizontale "idéale"
-        min_t = 0.8  # temps minimum de vol en secondes
-        max_vx = 800        # vitesse maximale autorisée
 
-        # Calcul de vx selon la distance, mais limité par max_vx
+        min_t = 0.8  # As we need to see an arrow even when the enemy is very close to the tower (=short distance to travel), we set a minimum travel time for our projectiles so the user can see them
+        max_vx = 800   # We also set a maximum travel speed as if the arrow is too fast, the user can't see it as well
+
+        #We calculate vx depending to distance_x, which cannot exceed max_vx
         raw_vx = distance_x / min_t if min_t > 0 else max_vx
         self.vx = min(raw_vx, max_vx) * (1 if self.dx >= 0 else -1)
 
         # Recalcul du temps de vol avec vx ajusté
+        # We calculate the time our projectile will take to reach it ending position considering only the horizontal axis
         self.time = abs(self.dx) / abs(self.vx) if self.vx != 0 else 1
 
-        # Calcul de vy selon la physique
-        self.vy = (self.dy - 0.5 * GRAVITY * self.time ** 2) / self.time
+        #We adapt the gravity factor to get a smoother trajectory
+        self.gravity_factor = GRAVITY*100
 
+        # Calcul de vy selon la physique
+        # We calculate then the projectile speed on the y axis, using physics
+        self.vy = (self.dy - 0.5 * self.gravity_factor * self.time ** 2) / self.time
+
+        # We define the coordinates that we will change for our projectile along its path
         self.x = self.x0
         self.y = self.y0
+
+        #
         self.t = 0
+
         self.enemy = enemy
         self.active = True
-
-        #others:
         self.damage = 30
 
     def update(self, dt):
@@ -74,7 +82,7 @@ class Arrow:
         self.t += dt
 
         self.x = self.x0 + self.vx * self.t
-        self.y = self.y0 + self.vy * self.t + 0.5 * GRAVITY * self.t ** 2
+        self.y = self.y0 + self.vy * self.t + 0.5 * self.gravity_factor * self.t ** 2
 
         if self.t >= self.time:
             self.enemy.damaged(self.damage)
@@ -87,7 +95,7 @@ class Arrow:
         if not self.active:
             return
 
-        vy_inst = self.vy + GRAVITY * self.t
+        vy_inst = self.vy + self.gravity_factor * self.t
         angle = math.degrees(math.atan2(vy_inst, self.vx))+180
 
         rotated = pygame.transform.rotate(arrow_img, -angle)
@@ -97,7 +105,7 @@ class Arrow:
 class FireBall:
     def __init__(self, start, enemy, unused):
         self.x0, self.y0 = start
-        self.x1, self.y1 = enemy
+        self.x1, self.y1 = enemy.pos
 
         self.dx = self.x1 - self.x0
         self.dy = self.y1 - self.y0
@@ -115,8 +123,10 @@ class FireBall:
         # Recalcul du temps de vol avec vx ajusté
         self.time = abs(self.dx) / abs(self.vx) if self.vx != 0 else 1
 
+        self.gravity_factor = GRAVITY
+
         # Calcul de vy selon la physique
-        self.vy = (self.dy - 0.5 * GRAVITY * 100 * self.time ** 2) / self.time
+        self.vy = (self.dy - 0.5 * self.gravity_factor * self.time ** 2) / self.time
 
         self.x = self.x0
         self.y = self.y0
@@ -131,7 +141,7 @@ class FireBall:
         self.t += dt
 
         self.x = self.x0 + self.vx * self.t
-        self.y = self.y0 + self.vy * self.t + 0.5 * GRAVITY * 100 * self.t ** 2
+        self.y = self.y0 + self.vy * self.t + 0.5 * self.gravity_factor * self.t ** 2
 
         if self.t >= self.time:
             self.active = False
@@ -141,7 +151,7 @@ class FireBall:
         if not self.active:
             return
 
-        vy_inst = self.vy + GRAVITY * 100 * self.t
+        vy_inst = self.vy + self.gravity_factor * self.t
         angle = math.degrees(math.atan2(vy_inst, self.vx))+180
 
         rotated = pygame.transform.rotate(fireball_img, -angle)
@@ -169,8 +179,10 @@ class Rock:
         # Recalcul du temps de vol avec vx ajusté
         self.time = abs(self.dx) / abs(self.vx) if self.vx != 0 else 1
 
+        self.gravity_factor = GRAVITY
+
         # Calcul de vy selon la physique
-        self.vy = (self.dy - 0.5 * GRAVITY * 2000 * self.time ** 2) / self.time
+        self.vy = (self.dy - 0.5 * self.gravity_factor * 2000 * self.time ** 2) / self.time
 
         self.x = self.x0
         self.y = self.y0
@@ -188,7 +200,7 @@ class Rock:
         self.t += dt
 
         self.x = self.x0 + self.vx * self.t
-        self.y = self.y0 + self.vy * self.t + 0.5 * GRAVITY * 2000 * self.t ** 2
+        self.y = self.y0 + self.vy * self.t + 0.5 * self.gravity_factor * self.t ** 2
 
         if self.t >= self.time:
             if self.last_enemy != None:
@@ -204,7 +216,7 @@ class Rock:
         if not self.active:
             return
 
-        vy_inst = self.vy + GRAVITY * 2000 * self.t
+        vy_inst = self.vy + self.gravity_factor * self.t
         angle = math.degrees(math.atan2(vy_inst, self.vx))+180
 
         rotated = pygame.transform.rotate(rock_img, -angle)
@@ -232,8 +244,10 @@ class Iceball:
         # Recalcul du temps de vol avec vx ajusté
         self.time = abs(self.dx) / abs(self.vx) if self.vx != 0 else 1
 
+        self.gravity_factor = GRAVITY
+
         # Calcul de vy selon la physique
-        self.vy = (self.dy - 0.5 * GRAVITY * self.time ** 2) / self.time
+        self.vy = (self.dy - 0.5 * self.gravity_factor * self.time ** 2) / self.time
 
         self.x = self.x0
         self.y = self.y0
@@ -249,7 +263,7 @@ class Iceball:
         self.t += dt
 
         self.x = self.x0 + self.vx * self.t
-        self.y = self.y0 + self.vy * self.t + 0.5 * GRAVITY * self.t ** 2
+        self.y = self.y0 + self.vy * self.t + 0.5 * self.gravity_factor * self.t ** 2
 
         if self.t >= self.time:
             self.enemy.damaged(self.damage)
@@ -262,7 +276,7 @@ class Iceball:
         if not self.active:
             return
 
-        vy_inst = self.vy + GRAVITY * self.t
+        vy_inst = self.vy + self.gravity_factor * self.t
         angle = math.degrees(math.atan2(vy_inst, self.vx))+180
 
         rotated = pygame.transform.rotate(iceball_img, -angle)
@@ -308,14 +322,14 @@ class Dot:
         if self.active:
             surface.blit(self.current_dot, self.coord)
 
-"""
+
 
 
 projectiles = []
-#projectiles.append(Arrow((200, 500), (600, 480)))
-#projectiles.append(Rock((200, 500), (200, 400)))
+#projectiles.append(Arrow((200, 500), (600, 480), None))
+#projectiles.append(Rock((200, 500), (200, 400), None))
 projectiles.append(FireBall((200, 500), (1000, 300), None))
-#projectiles.append(Iceball((200, 500), (600, 480)))
+#projectiles.append(Iceball((200, 500), (600, 480), None))
 
 
 running = True
@@ -331,14 +345,9 @@ while running:
         element.update(dt)
         if not element.active:
             projectiles.remove(element)
-        element.draw(screen)
-
-    # Points de repère
-    #for arrow in projectiles:
-      #  pygame.draw.circle(screen, (255, 0, 0), (int(arrow.x0), int(arrow.y0)), 5)
-       # pygame.draw.circle(screen, (0, 128, 0), (int(arrow.x1), int(arrow.y1)), 5)
+        else:
+            element.draw(screen)
 
     pygame.display.flip()
 
 pygame.quit()
-"""
