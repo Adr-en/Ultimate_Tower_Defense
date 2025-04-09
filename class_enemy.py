@@ -1,9 +1,7 @@
 from random import *
-import pygame
 from pygame.math import Vector2
 from menu import screen
 from Definitions.definition_enemies import *
-import math
 
 
 list_enemy = []
@@ -47,8 +45,9 @@ class enemy:
         self.waypoints = waypoints              #list of points of the trajectory
         self.pos = Vector2(self.waypoints[0])
         self.target_waypoint = 1                # position of the actual point of the trajectory
-        self.speed = speed
+
         self.variation = (randint(-20, 20),randint(-20, 20))
+        self.speed = speed + self.variation[0] // 21
 
         #autre
         self.health = health_init
