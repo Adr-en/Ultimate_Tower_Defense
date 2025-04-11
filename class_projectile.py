@@ -40,7 +40,8 @@ class Arrow:
     def __init__(self, start, enemy, unused):
         #We get the starting positions, and the ending position where the enemy is located
         self.x0, self.y0 = start
-        self.x1, self.y1 = enemy.pos
+        self.x1, self.y1 = enemy.pos + Vector2(enemy.size)//2 #(enemy.pos[0] + enemy.size[0] //2 ,enemy.pos[1]+ enemy)
+
 
         #We calculate the distance that our projectile will travel
         self.dx = self.x1 - self.x0
@@ -49,7 +50,7 @@ class Arrow:
         distance_x = abs(self.dx)
 
 
-        min_t = 0.8  # As we need to see an arrow even when the enemy is very close to the tower (=short distance to travel), we set a minimum travel time for our projectiles so the user can see them
+        min_t = 0.01  # As we need to see an arrow even when the enemy is very close to the tower (=short distance to travel), we set a minimum travel time for our projectiles so the user can see them
         max_vx = 800   # We also set a maximum travel speed as if the arrow is too fast, the user can't see it as well
 
         #We calculate vx depending to distance_x, which cannot exceed max_vx
@@ -61,7 +62,7 @@ class Arrow:
         self.time = abs(self.dx) / abs(self.vx) if self.vx != 0 else 1
 
         #We adapt the gravity factor to get a smoother trajectory
-        self.gravity_factor = GRAVITY*100
+        self.gravity_factor = GRAVITY*10
 
         # Calcul de vy selon la physique
         # We calculate then the projectile speed on the y axis, using physics

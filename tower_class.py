@@ -5,6 +5,8 @@ import class_projectile as pro
 from class_projectile import*
 
 active_towers = []
+global time_counting
+time_counting = 0
 
 class Tower:
     def __init__(self, x, y):
@@ -16,9 +18,11 @@ class Tower:
         self.list_ammo = [pro.Arrow, pro.Rock, pro.Iceball, pro.FireBall, None]
         self.ammo = None
         self.range = 0
-        self.attackspeed = time.time()
+        self.attackspeed = 20
 
     def trigger(self):
+        global time_counting
+        time_counting += 1 / len(active_towers)
         tower_pos = p.math.Vector2(self.dest)
         list_range = []
         for element in en.list_enemy:
@@ -34,7 +38,8 @@ class Tower:
             if elem.pos[0] > furthest_ele.pos[0]:
                 furthest_ele = elem
 
-        projectiles.append(self.ammo(self.dest,furthest_ele, lastEnemy))
+        if time_counting % self.attackspeed < 1 :
+            projectiles.append(self.ammo(self.dest,furthest_ele, lastEnemy))
 
     def draw(self):
         self.screen.blit(self.surf, self.dest)
@@ -45,7 +50,8 @@ class Tower:
         self.built = True
         self.ammo = self.list_ammo[0]
         self.screen.blit(self.surf, self.dest)
-        self.range = 120
+        self.range = 200
+        self.attackspeed = 60
 
     def bomber(self):
         self.surf = p.image.load("Assets/rock_tower.png")

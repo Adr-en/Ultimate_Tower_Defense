@@ -1,7 +1,4 @@
 from Definitions.definitions_game_map import*
-from class_enemy import*
-from class_projectile import*
-
 from tower_class import*
 
 dragging_card = None
@@ -10,7 +7,6 @@ tempura = 0 ## temporaire
 
 def game_map_1(dragging):
 
-    dt = (clock.tick(60) / 1000)
     global dragging_card
     global card_archer_rect
     global card_firemage_rect
@@ -19,7 +15,6 @@ def game_map_1(dragging):
     global tempura
     global active_towers
     global projectiles
-
 
     for event in pygame.event.get():
 
@@ -109,9 +104,9 @@ def game_map_1(dragging):
 
         # Ennemies
     tempura += 1
-    if tempura % 50 == 0:
+    if tempura % 5 == 0:
         en.spawn(1)
-
+        en.spawn(2)
     for element in list_enemy:
         element.move()
         screen.blit(element.image, element.pos)
