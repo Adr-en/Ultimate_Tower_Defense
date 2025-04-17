@@ -1,6 +1,6 @@
 import pygame
 import math
-import time
+
 from class_enemy import*
 
 projectiles = []
@@ -21,18 +21,19 @@ arrow_img = pygame.transform.scale(arrow_img, (50, 70))
 fireball_img = pygame.image.load("Assets/fireball.png").convert_alpha()
 fireball_img = pygame.transform.scale(fireball_img, (80, 70))
 
+global rock_img
 rock_img = pygame.image.load("Assets/rock.png").convert_alpha()
-rock_img = pygame.transform.scale(rock_img, (80, 70))
+rock_img = pygame.transform.smoothscale(rock_img, (80, 70))
 
-iceball_img = pygame.image.load("Assets/arrow.png").convert_alpha()
+iceball_img = pygame.image.load("Assets/iceball.png").convert_alpha()
 iceball_img = pygame.transform.scale(iceball_img, (50, 70))
 
 dot1_img = pygame.image.load("Assets/placement_spell.png").convert_alpha()
-dot1_img = pygame.transform.scale(dot1_img, (50, 50))
+dot1_img = pygame.transform.scale(dot1_img, (150, 150))
 dot1_img.set_alpha(128)
 
 dot2_img = pygame.image.load("Assets/placement_spell_effects.png").convert_alpha()
-dot2_img = pygame.transform.scale(dot2_img, (50, 50))
+dot2_img = pygame.transform.scale(dot2_img, (150, 150))
 dot2_img.set_alpha(128)
 
 
@@ -184,10 +185,10 @@ class Rock:
         # Recalcul du temps de vol avec vx ajusté
         self.time = abs(self.dx) / abs(self.vx) if self.vx != 0 else 1
 
-        self.gravity_factor = GRAVITY
+        self.gravity_factor = GRAVITY*100
 
         # Calcul de vy selon la physique
-        self.vy = (self.dy - 0.5 * self.gravity_factor * 2000 * self.time ** 2) / self.time
+        self.vy = (self.dy - 0.5 * self.gravity_factor * self.time ** 2) / self.time
 
         self.x = self.x0
         self.y = self.y0
@@ -197,6 +198,7 @@ class Rock:
         self.active = True
         self.compteur = 0
         self.damage = 10
+        self.rock_img = rock_img
 
     def update(self, dt):
         if not self.active:
@@ -211,8 +213,10 @@ class Rock:
             if self.last_enemy != None:
                 if self.enemy == self.last_enemy:
                     self.compteur += 10
+                    self.rock_img = pygame.transform.smoothscale(self.rock_img, (80+self.compteur, 70+self.compteur))
                 else:
                     self.compteur = 0
+                    self.rock_img = pygame.transform.smoothscale(self.rock_img, (80, 70))
             self.enemy.damaged(self.damage + self.compteur)
             self.active = False
 
@@ -224,7 +228,7 @@ class Rock:
         vy_inst = self.vy + self.gravity_factor * self.t
         angle = math.degrees(math.atan2(vy_inst, self.vx))+180
 
-        rotated = pygame.transform.rotate(rock_img, -angle)
+        rotated = pygame.transform.rotate(self.rock_img, -angle)
         rect = rotated.get_rect(center=(self.x, self.y))
         surface.blit(rotated, rect.topleft)
 
@@ -239,7 +243,7 @@ class Iceball:
         distance_x = abs(self.dx)
 
         # Vitesse horizontale "idéale"
-        min_t = 0.8  # temps minimum de vol en secondes
+        min_t = 0.1  # temps minimum de vol en secondes
         max_vx = 800        # vitesse maximale autorisée
 
         # Calcul de vx selon la distance, mais limité par max_vx
@@ -258,7 +262,7 @@ class Iceball:
         self.y = self.y0
         self.t = 0
         self.enemy = enemy
-        self.damage = 10
+        self.damage = 5
         self.active = True
 
     def update(self, dt):
@@ -272,7 +276,8 @@ class Iceball:
 
         if self.t >= self.time:
             self.enemy.damaged(self.damage)
-            self.enemy.slow()
+
+            self.enemy.slowed()
             self.active = False
 
 
@@ -291,7 +296,7 @@ class Iceball:
 class Dot:
     def __init__(self, coor):
         self.coord = coor
-        self.chrono = time.time()
+        self.chrono = time()
         self.active = True
         self.damage = 10
         self.ticks = 0
@@ -316,7 +321,7 @@ class Dot:
                     el.damaged(self.damage)
 
 
-        if time.time() - self.chrono >= 4:
+        if time() - self.chrono >= 4:
             self.active = False
 
 
