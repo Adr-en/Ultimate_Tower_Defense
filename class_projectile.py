@@ -21,9 +21,8 @@ arrow_img = pygame.transform.scale(arrow_img, (50, 70))
 fireball_img = pygame.image.load("Assets/fireball.png").convert_alpha()
 fireball_img = pygame.transform.scale(fireball_img, (80, 70))
 
-global rock_img
 rock_img = pygame.image.load("Assets/rock.png").convert_alpha()
-rock_img = pygame.transform.smoothscale(rock_img, (80, 70))
+rock_im = pygame.transform.smoothscale(rock_img, (80, 70))
 
 iceball_img = pygame.image.load("Assets/iceball.png").convert_alpha()
 iceball_img = pygame.transform.scale(iceball_img, (50, 70))
@@ -198,7 +197,9 @@ class Rock:
         self.active = True
         self.compteur = last_enemy[1]
         self.damage = 5
-        self.rock_img = rock_img
+
+        new_size = (80 + self.compteur*5, 70 + self.compteur*5)
+        self.rock_img = pygame.transform.smoothscale(rock_img, new_size)
 
     def update(self, dt):
         if not self.active:
@@ -210,25 +211,9 @@ class Rock:
         self.y = self.y0 + self.vy * self.t + 0.5 * self.gravity_factor * self.t ** 2
 
         if self.t >= self.time:
-            if self.compteur != 0:
-                    self.rock_img = pygame.transform.smoothscale(self.rock_img, (80+self.compteur, 70+self.compteur))
-            else:
-                    self.rock_img = pygame.transform.smoothscale(self.rock_img, (80, 70))
-
-
-
             self.enemy.damaged(self.damage + self.compteur)
             print(self.damage+self.compteur)
             self.active = False
-
-    '''        if self.t >= self.time:
-                if self.last_enemy != None:
-                    if self.enemy == self.last_enemy:
-                        self.compteur += 10
-                        self.rock_img = pygame.transform.smoothscale(self.rock_img, (80+self.compteur, 70+self.compteur))
-                    else:
-                        self.compteur = 0
-                        self.rock_img = pygame.transform.smoothscale(self.rock_img, (80, 70))'''
 
 
     def draw(self, surface):
