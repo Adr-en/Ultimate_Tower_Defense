@@ -19,6 +19,8 @@ class Tower:
         self.ammo = None
         self.range = 0
         self.attackspeed = 20
+        self.last_enemy = None
+        self.compteur = 0
 
     def trigger(self):
         global time_counting
@@ -39,7 +41,13 @@ class Tower:
                 furthest_ele = elem
 
         if time_counting % self.attackspeed < 1 :
-            projectiles.append(self.ammo(self.dest,furthest_ele, lastEnemy))
+            if self.last_enemy == furthest_ele:
+                self.compteur += 5
+            else:
+                self.compteur = 0
+            projectiles.append(self.ammo(self.dest,furthest_ele, (self.last_enemy, self.compteur)))
+
+            self.last_enemy = furthest_ele
 
     def draw(self):
         self.screen.blit(self.surf, self.dest)
@@ -76,6 +84,7 @@ class Tower:
         self.ammo = self.list_ammo[3]
         self.screen.blit(self.surf, self.dest)
         self.range = 250
+        self.attackspeed = 120
 
     def adrien(self):
         self.surf = p.image.load("Assets/adrien_tower.png")

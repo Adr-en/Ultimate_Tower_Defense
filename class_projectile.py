@@ -40,7 +40,7 @@ dot2_img.set_alpha(128)
 class Arrow:
     def __init__(self, start, enemy, unused):
         #We get the starting positions, and the ending position where the enemy is located
-        self.x0, self.y0 = start
+        self.x0, self.y0 = start[0]+50, start[1]+25
         self.x1, self.y1 = enemy.pos + Vector2(enemy.size)//2 #(enemy.pos[0] + enemy.size[0] //2 ,enemy.pos[1]+ enemy)
 
 
@@ -110,8 +110,8 @@ class Arrow:
 
 class FireBall:
     def __init__(self, start, enemy, unused):
-        self.x0, self.y0 = start
-        self.x1, self.y1 = enemy.pos
+        self.x0, self.y0 = start[0]+50, start[1]+25
+        self.x1, self.y1 = enemy.pos + Vector2(enemy.size)//2
 
         self.dx = self.x1 - self.x0
         self.dy = self.y1 - self.y0
@@ -129,7 +129,7 @@ class FireBall:
         # Recalcul du temps de vol avec vx ajusté
         self.time = abs(self.dx) / abs(self.vx) if self.vx != 0 else 1
 
-        self.gravity_factor = GRAVITY
+        self.gravity_factor = GRAVITY*100
 
         # Calcul de vy selon la physique
         self.vy = (self.dy - 0.5 * self.gravity_factor * self.time ** 2) / self.time
@@ -151,7 +151,7 @@ class FireBall:
 
         if self.t >= self.time:
             self.active = False
-            projectiles.append(Dot((self.x-50, self.y)))
+            projectiles.append(Dot((self.x-75, self.y-75)))
 
     def draw(self, surface):
         if not self.active:
@@ -166,8 +166,8 @@ class FireBall:
 
 class Rock:
     def __init__(self, start, enemy, last_enemy):
-        self.x0, self.y0 = start
-        self.x1, self.y1 = enemy.pos
+        self.x0, self.y0 = start[0]+50, start[1]+25
+        self.x1, self.y1 = enemy.pos + Vector2(enemy.size)//2
 
         self.dx = self.x1 - self.x0
         self.dy = self.y1 - self.y0
@@ -185,7 +185,7 @@ class Rock:
         # Recalcul du temps de vol avec vx ajusté
         self.time = abs(self.dx) / abs(self.vx) if self.vx != 0 else 1
 
-        self.gravity_factor = GRAVITY*100
+        self.gravity_factor = GRAVITY*200
 
         # Calcul de vy selon la physique
         self.vy = (self.dy - 0.5 * self.gravity_factor * self.time ** 2) / self.time
@@ -196,8 +196,8 @@ class Rock:
         self.enemy = enemy
         self.last_enemy = last_enemy
         self.active = True
-        self.compteur = 0
-        self.damage = 10
+        self.compteur = last_enemy[1]
+        self.damage = 5
         self.rock_img = rock_img
 
     def update(self, dt):
@@ -210,15 +210,25 @@ class Rock:
         self.y = self.y0 + self.vy * self.t + 0.5 * self.gravity_factor * self.t ** 2
 
         if self.t >= self.time:
-            if self.last_enemy != None:
-                if self.enemy == self.last_enemy:
-                    self.compteur += 10
+            if self.compteur != 0:
                     self.rock_img = pygame.transform.smoothscale(self.rock_img, (80+self.compteur, 70+self.compteur))
-                else:
-                    self.compteur = 0
+            else:
                     self.rock_img = pygame.transform.smoothscale(self.rock_img, (80, 70))
+
+
+
             self.enemy.damaged(self.damage + self.compteur)
+            print(self.damage+self.compteur)
             self.active = False
+
+    '''        if self.t >= self.time:
+                if self.last_enemy != None:
+                    if self.enemy == self.last_enemy:
+                        self.compteur += 10
+                        self.rock_img = pygame.transform.smoothscale(self.rock_img, (80+self.compteur, 70+self.compteur))
+                    else:
+                        self.compteur = 0
+                        self.rock_img = pygame.transform.smoothscale(self.rock_img, (80, 70))'''
 
 
     def draw(self, surface):
@@ -234,8 +244,8 @@ class Rock:
 
 class Iceball:
     def __init__(self, start, enemy, unused):
-        self.x0, self.y0 = start
-        self.x1, self.y1 = enemy.pos
+        self.x0, self.y0 = start[0]+50, start[1]+25
+        self.x1, self.y1 = enemy.pos + Vector2(enemy.size)//2
 
         self.dx = self.x1 - self.x0
         self.dy = self.y1 - self.y0
@@ -262,7 +272,7 @@ class Iceball:
         self.y = self.y0
         self.t = 0
         self.enemy = enemy
-        self.damage = 5
+        self.damage = 10
         self.active = True
 
     def update(self, dt):
@@ -300,7 +310,7 @@ class Dot:
         self.active = True
         self.damage = 10
         self.ticks = 0
-        self.next_tick_time = 1
+        self.next_tick_time = 0
         self.t = 0
         self.current_dot = dot1_img
 
@@ -316,8 +326,8 @@ class Dot:
             else :
                 self.current_dot = dot2_img
             for el in list_enemy:
-                dis_enemy = math.sqrt((el.pos[1] - self.coord[1])**2 + (el.pos[0] - self.coord[0])**2)
-                if dis_enemy <= 100:
+                dis_enemy = math.sqrt(((el.pos[1]-el.size[1]/2) - self.coord[1])**2 + ((el.pos[0]-el.size[0]/2) - self.coord[0])**2)
+                if dis_enemy <= 75:
                     el.damaged(self.damage)
 
 
