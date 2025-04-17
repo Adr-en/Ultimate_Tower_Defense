@@ -4,10 +4,10 @@ from menu import screen
 from Definitions.definition_enemies import *
 from time import time
 
+pygame.init()
+
 list_enemy = []         # list of all of the enemies alive on the board
 
- 
- 
 waypoints = [(-100,310),
              (-50 ,310),
              (250,320),
@@ -25,10 +25,22 @@ waypoints = [(-100,310),
              ]
 
 
+class Currency:
+    """Class to manage the gold gain when killing enemies and ending waves"""
+    def __init__(self):
+        self.value = 0  # Start with 0 currency
+
+    def add(self, amount):
+        self.value += amount
+
+    def get(self):
+        return self.value
+
+currency = Currency()
 
 
 
-class enemy:
+class Enemy:
     """Classe enemy representing the enemies trying to go trough the map, it helps with moving them, interacting with
     them manipulating each entities separatly.
     It allows to make an enemy with some personal attributes, his representation on the map, some points by which he has to pass
@@ -52,20 +64,16 @@ class enemy:
 
         #autre
         self.health = health_init
-        self.health_init =health_init
+        self.health_init = health_init
 
 
         self.chrono_slowed = 0
-
-
 
 
     def enemy_management(self):
         """Centralization of every function to make enemies work, however it is to be completed"""
         self.move()
         self.healthbar()
-
-
 
 
 
@@ -76,7 +84,8 @@ class enemy:
            length() to get the distance
            normalize() to """
 
-        self.healthbar()                        #not sur we need it here if enemy_management() works
+        self.healthbar()
+
 
         target = Vector2(self.waypoints[self.target_waypoint]) + self.variation #represent the point of the trajectory that we target in teh form of a vector
         movement = target - self.pos                    #represent the distance between the target and the position (it's a vector)
@@ -117,6 +126,7 @@ class enemy:
         Parameter : an object of type enemy and the damage that he have to take of type integer
         Return : nothing"""
 
+
         self.health -= damage
         if self.health <= 0 :
             self.health = 0
@@ -150,11 +160,18 @@ class enemy:
 
     def die(self):
         """Remove an object enemy from the list and give the player the associated exp and money """
+
+        currency.add(3)
+
         if not self in list_enemy :
-            return
+            return currency
         list_enemy.remove(self)
+
+
+
         ##rajouter les thunes et l'exp??
 
+        return currency
 
     def slowed(self):
         self.chrono_slowed = time()
@@ -171,7 +188,7 @@ def spawn(type):
     ### load in another file to get the same image
 
 
-    bad_guy = enemy(list_load[type-1], dico_type[type][1], dico_type[type][2], dico_type[type][3])
+    bad_guy = Enemy(list_load[type-1], dico_type[type][1], dico_type[type][2], dico_type[type][3])
     list_enemy.append(bad_guy)
 
 
@@ -219,11 +236,9 @@ def vague(nb_pelo, type):
 
 """ 
 Reste à faire : 
-
 - vague
 - différents enemies
--slow
-
+- or et exp (change main for global variable and then add with die function and then make )
 """
 
 
