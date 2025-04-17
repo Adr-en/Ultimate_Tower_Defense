@@ -67,7 +67,7 @@ class Tower:
         self.built = True
         self.ammo = self.list_ammo[2]
         self.screen.blit(self.surf, self.dest)
-        self.range = 120
+        self.range = 250
 
     def fire(self):
         self.surf = p.image.load("Assets/fire_tower.png")
