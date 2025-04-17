@@ -2,10 +2,10 @@ from random import *
 from pygame.math import Vector2
 from menu import screen
 from Definitions.definition_enemies import *
+from time import time
 
+list_enemy = []         # list of all of the enemies alive on the board
 
-list_enemy = []
- # list of all of the enemies alive on the board
  
  
 waypoints = [(-100,310),
@@ -36,7 +36,7 @@ class enemy:
     movements and his health."""
 
 
-    def __init__(self, image, size, health_init,speed):
+    def __init__(self, image, size, health_init,base_speed):
         #affichage
         self.image = image
         self.size = size
@@ -44,15 +44,28 @@ class enemy:
         #trajectoire
         self.waypoints = waypoints              #list of points of the trajectory
         self.pos = Vector2(self.waypoints[0])
-        self.target_waypoint = 1                # position of the actual point of the trajectory
+        self.target_waypoint = 1                # position of the actual point of the trajectory in the waypoint list
 
         self.variation = (randint(-20, 20),randint(-20, 20))
-        self.speed = speed + self.variation[0] // 21
+        self.base_speed = base_speed + self.variation[0] / 21
+        self.speed = base_speed
 
         #autre
         self.health = health_init
         self.health_init =health_init
-        self.status = ""   #integer et on fait baisser de tps en tps quand ça arrive à 0 ils ne sont plus concernés
+
+
+        self.chrono_slowed = 0
+
+
+
+
+    def enemy_management(self):
+        """Centralization of every function to make enemies work, however it is to be completed"""
+        self.move()
+        self.healthbar()
+
+
 
 
 
@@ -63,17 +76,25 @@ class enemy:
            length() to get the distance
            normalize() to """
 
-        self.healthbar()                        #not sur we need it here
-        #self.damaged(0.15)            #not sur we need it here
+        self.healthbar()                        #not sur we need it here if enemy_management() works
 
         target = Vector2(self.waypoints[self.target_waypoint]) + self.variation #represent the point of the trajectory that we target in teh form of a vector
         movement = target - self.pos                    #represent the distance between the target and the position (it's a vector)
         dist = movement.length()                        # represent the distance in the form of an integer not a vector
 
+
+
+        #Management of speed in function of the chrono
+        self.speed = self.base_speed
+        if time() - self.chrono_slowed < 2:
+            self.speed = self.base_speed // 2
+
+
+
+
+
         if dist >= self.speed :
             self.pos += movement.normalize() * self.speed
-
-
 
         else :
             if dist != 0 :
@@ -81,9 +102,12 @@ class enemy:
             else :
                 self.target_waypoint += 1
 
+
         if self.target_waypoint >= len(self.waypoints):                 #if the enemy attain his last target point he disappear and make the player lose a life
             self.die()
             ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr()
+
+
 
 
 
@@ -130,6 +154,14 @@ class enemy:
             return
         list_enemy.remove(self)
         ##rajouter les thunes et l'exp??
+
+
+    def slowed(self):
+        self.chrono_slowed = time()
+
+
+
+
 
 
 
@@ -180,13 +212,17 @@ def vague(nb_pelo, type):
 
 
 
+
+
+
+
+
 """ 
 Reste à faire : 
 
 - vague
-- waypoints
 - différents enemies
-- load les images
+-slow
 
 """
 
