@@ -87,7 +87,7 @@ class enemy:
         #Management of speed in function of the chrono
         self.speed = self.base_speed
         if time() - self.chrono_slowed < 2:
-            self.speed = self.base_speed // 2
+            self.speed = self.base_speed / 2
 
 
 
