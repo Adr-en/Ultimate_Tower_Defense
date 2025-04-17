@@ -102,6 +102,7 @@ class Arrow:
         vy_inst = self.vy + self.gravity_factor * self.t
         angle = math.degrees(math.atan2(vy_inst, self.vx))+180
 
+
         rotated = pygame.transform.rotate(arrow_img, -angle)
         rect = rotated.get_rect(center=(self.x, self.y))
         surface.blit(rotated, rect.topleft)
@@ -328,5 +329,3 @@ class Dot:
 
 
 
-
-projectiles = []

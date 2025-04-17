@@ -104,9 +104,9 @@ def game_map_1(dragging):
 
         # Ennemies
     tempura += 1
-    if tempura % 5 == 0:
+    if tempura % 50 == 0:
         en.spawn(1)
-        en.spawn(2)
+        #en.spawn(2)
     for element in list_enemy:
         element.move()
         screen.blit(element.image, element.pos)
@@ -122,6 +122,8 @@ def game_map_1(dragging):
     for el in projectiles:
         el.update(dt)
         el.draw(screen)
+        if not el.active:
+            projectiles.remove(el)
 
     if tower1.built:
         tower1.draw()
@@ -141,10 +143,14 @@ def game_map_1(dragging):
             active_towers.append(tower4)
     if tower5.built:
         tower5.draw()
-        active_towers.append(tower5)
+        if tower5 not in active_towers :
+            active_towers.append(tower5)
 
-    #print(list_enemy)
-    #print(active_towers)
+    print("Liste ennemy ", len(list_enemy))
+    print("Liste towers", len(active_towers))
+    print("Liste proj", len(projectiles))
+    print('tempura :',tempura)
+    print("Time :", time_counting)
     return dragging
 
 
