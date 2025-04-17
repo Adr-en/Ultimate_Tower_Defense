@@ -41,7 +41,7 @@ class Arrow:
     def __init__(self, start, enemy, unused):
         #We get the starting positions, and the ending position where the enemy is located
         self.x0, self.y0 = start[0]+50, start[1]+25
-        self.x1, self.y1 = enemy.pos + Vector2(enemy.size)//2 #(enemy.pos[0] + enemy.size[0] //2 ,enemy.pos[1]+ enemy)
+        self.x1, self.y1 = enemy.pos + Vector2(enemy.size)//2
 
 
         #We calculate the distance that our projectile will travel
