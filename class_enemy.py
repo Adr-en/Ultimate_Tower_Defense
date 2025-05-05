@@ -3,6 +3,7 @@ from pygame.math import Vector2
 from menu import screen
 from Definitions.definition_enemies import *
 from time import time
+import math
 
 pygame.init()
 
@@ -226,9 +227,64 @@ class Enemy:
         list_enemy.remove(self)
         return
 
+        self.variation = (randint(-20, 20),randint(-20, 20))
+
+        self.speed = 30
+
+    def move(self):
+
+        target = Vector2(self.waypoints[self.target_waypoint]) + self.variation #represent the point of the trajectory that we target in teh form of a vector
+        movement = target - self.pos                    #represent the distance between the target and the position (it's a vector)
+        dist = movement.length()                        # represent the distance in the form of an integer not a vector
 
 
 
+
+
+
+
+        if dist >= self.speed :
+            self.pos += movement.normalize() * self.speed
+
+        else :
+            if dist != 0 :
+                self.pos += movement.normalize() * dist
+            else :
+                self.target_waypoint += 1
+
+
+        if self.target_waypoint >= len(self.waypoints):                 #if the enemy attain his last target point he disappear and make the player lose a life
+            self.active = False
+
+
+    def update(self, dt):
+        self.move()
+        for el in list_enemy:
+            dis_enemy = math.sqrt(
+                ((el.pos[1] - el.size[1] / 2) - self.pos[1]) ** 2 +
+                ((el.pos[0] - el.size[0] / 2) - self.pos[0]) ** 2
+            )
+            if dis_enemy <= 35:
+                for target in list_enemy:
+                    dis = math.sqrt(
+                        ((target.pos[1] - target.size[1] / 2) - self.pos[1]) ** 2 +
+                        ((target.pos[0] - target.size[0] / 2) - self.pos[0]) ** 2
+                    )
+                    if dis <= 70:
+                        target.damaged(self.damage)
+                self.active = False
+                return
+
+    def draw(self, surface):
+        if not self.active :
+            return
+
+        rect = bomber_img.get_rect(center=(self.pos[0], self.pos[1]))
+        surface.blit(bomber_img, rect.topleft)
+
+
+        self.pos = Vector2(self.waypoints[0])
+        self.target_waypoint = 1                # position of the actual point of the trajectory in the waypoint list
 
 def spawn(type):
     """Make an enemy spawn and put him in the list"""
@@ -239,6 +295,15 @@ def spawn(type):
     bad_guy = Enemy(list_load[type-1], dico_type[type][1], dico_type[type][2], dico_type[type][3], dico_type[type][4], dico_type[type][5])
     list_enemy.append(bad_guy)
 
+bomber_img = pygame.image.load("Assets/Quit_button.png").convert_alpha()
+bomber_img = pygame.transform.scale(bomber_img, (50, 70))
+
+class Bombers:
+    def __init__(self):
+        self.waypoints = waypoints[::-1]
+        self.spawn_speed = 4
+        self.active = True
+        self.damage = 50
 
 
 
@@ -356,6 +421,74 @@ def wave(tempura):
                 spawn(5)
 
 
+bomber_img = pygame.image.load("Assets/Quit_button.png").convert_alpha()
+bomber_img = pygame.transform.scale(bomber_img, (50, 70))
+
+class Bombers:
+    def __init__(self, att1, att2, att3):
+        self.waypoints = waypoints[::-1]
+        self.spawn_speed = 4
+        self.active = True
+        self.damage = 50
+
+
+        self.pos = Vector2(self.waypoints[0])
+        self.target_waypoint = 1                # position of the actual point of the trajectory in the waypoint list
+
+        self.variation = (randint(-20, 20),randint(-20, 20))
+
+        self.speed = 30
+
+    def move(self):
+
+        target = Vector2(self.waypoints[self.target_waypoint]) + self.variation #represent the point of the trajectory that we target in teh form of a vector
+        movement = target - self.pos                    #represent the distance between the target and the position (it's a vector)
+        dist = movement.length()                        # represent the distance in the form of an integer not a vector
+
+
+
+
+
+
+
+        if dist >= self.speed :
+            self.pos += movement.normalize() * self.speed
+
+        else :
+            if dist != 0 :
+                self.pos += movement.normalize() * dist
+            else :
+                self.target_waypoint += 1
+
+
+        if self.target_waypoint >= len(self.waypoints):                 #if the enemy attain his last target point he disappear and make the player lose a life
+            self.active = False
+
+
+    def update(self, dt):
+        self.move()
+        for el in list_enemy:
+            dis_enemy = math.sqrt(
+                ((el.pos[1] - el.size[1] / 2) - self.pos[1]) ** 2 +
+                ((el.pos[0] - el.size[0] / 2) - self.pos[0]) ** 2
+            )
+            if dis_enemy <= 35:
+                for target in list_enemy:
+                    dis = math.sqrt(
+                        ((target.pos[1] - target.size[1] / 2) - self.pos[1]) ** 2 +
+                        ((target.pos[0] - target.size[0] / 2) - self.pos[0]) ** 2
+                    )
+                    if dis <= 70:
+                        target.damaged(self.damage)
+                self.active = False
+                return
+
+    def draw(self, surface):
+        if not self.active :
+            return
+
+        rect = bomber_img.get_rect(center=(self.pos[0], self.pos[1]))
+        surface.blit(bomber_img, rect.topleft)
 """ 
 Reste à faire : 
 

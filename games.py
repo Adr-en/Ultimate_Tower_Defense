@@ -128,6 +128,11 @@ def game_map_1(dragging):
         el.draw(screen)
         if not el.active:
             projectiles.remove(el)
+    for el in bombers:
+        el.update(dt)
+        el.draw(screen)
+        if not el.active:
+            projectiles.remove(el)
 
     if tower1.built:
         tower1.draw()
