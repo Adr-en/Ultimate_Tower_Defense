@@ -124,6 +124,11 @@ def game_map_1(dragging):
         el.draw(screen)
         if not el.active:
             projectiles.remove(el)
+    for el in bombers:
+        el.update(dt)
+        el.draw(screen)
+        if not el.active:
+            projectiles.remove(el)
 
     if tower1.built:
         tower1.draw()
@@ -146,11 +151,7 @@ def game_map_1(dragging):
         if tower5 not in active_towers :
             active_towers.append(tower5)
 
-    print("Liste ennemy ", len(list_enemy))
-    print("Liste towers", len(active_towers))
-    print("Liste proj", len(projectiles))
-    print('tempura :',tempura)
-    print("Time :", time_counting)
+
     return dragging
 
 
