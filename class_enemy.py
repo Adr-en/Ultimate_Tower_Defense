@@ -25,6 +25,50 @@ waypoints = [(-100,310),
              ]
 
 
+HP_player = 10
+
+"""
+def Display_Hp_player():
+
+    if HP_player <= 0:
+        print("Player died")
+
+    global HP_player
+    match HP_player:
+        case 10:
+            #healthbar_player = get(image)
+        case 9:
+            # healthbar_player = get(image)
+        case 8:
+
+        case 7:
+
+        case 6:
+
+        case 5:
+
+        case 4:
+
+        case 3:
+
+        case 2:
+
+        case 1:
+
+
+
+    screen.blit(healthbar_player, (10, 10) )
+
+    font = pygame.font.SysFont(None, 10)
+    score_text = font.render(str(HP_player) + " .pv", True, "black")
+    screen.blit(score_text, (10, 10))
+#-----------------------------------------------------------------------------------#
+
+"""
+
+
+
+
 class Currency:
     """Class to manage the gold gain when killing enemies and ending waves"""
     def __init__(self):
@@ -39,7 +83,6 @@ class Currency:
 currency = Currency()
 
 
-
 class Enemy:
     """Classe enemy representing the enemies trying to go trough the map, it helps with moving them, interacting with
     them manipulating each entities separatly.
@@ -48,9 +91,10 @@ class Enemy:
     movements and his health."""
 
 
-    def __init__(self, image, size, health_init,base_speed):
+    def __init__(self, image, image_frozen, image_burned, size, health_init,base_speed, money, dmg):
         #affichage
         self.image = image
+        self.base_image = image
         self.size = size
 
         #trajectoire
@@ -58,7 +102,7 @@ class Enemy:
         self.pos = Vector2(self.waypoints[0])
         self.target_waypoint = 1                # position of the actual point of the trajectory in the waypoint list
 
-        self.variation = (randint(-20, 20),randint(-20, 20))
+        self.variation = (randint(-18, 18),randint(-18, 18))
         self.base_speed = base_speed + self.variation[0] / 21
         self.speed = base_speed
 
@@ -66,14 +110,20 @@ class Enemy:
         self.health = health_init
         self.health_init = health_init
 
-
         self.chrono_slowed = 0
+        self.image_frozen = image_frozen
+
+        self.image_burned = image_burned
+
+        self.money = money
+        self.dmg = dmg
 
 
     def enemy_management(self):
         """Centralization of every function to make enemies work, however it is to be completed"""
         self.move()
-        self.healthbar()
+        self.healthbar_zombie()
+        screen.blit(self.image, self.pos)
 
 
 
@@ -84,22 +134,23 @@ class Enemy:
            length() to get the distance
            normalize() to """
 
-        self.healthbar()
-
-
         target = Vector2(self.waypoints[self.target_waypoint]) + self.variation #represent the point of the trajectory that we target in teh form of a vector
         movement = target - self.pos                    #represent the distance between the target and the position (it's a vector)
         dist = movement.length()                        # represent the distance in the form of an integer not a vector
 
-
+        """
+        if movement[y] > 0.05:
+            self.image = self.animation[1]
+        elif movement[y] < -0.05:
+            self.image = self.animation[2]
+        else :
+            self.image = self.animation[0]
+        """
 
         #Management of speed in function of the chrono
         self.speed = self.base_speed
         if time() - self.chrono_slowed < 2:
             self.speed = self.base_speed / 2
-
-
-
 
 
         if dist >= self.speed :
@@ -113,12 +164,7 @@ class Enemy:
 
 
         if self.target_waypoint >= len(self.waypoints):                 #if the enemy attain his last target point he disappear and make the player lose a life
-            self.die()
-            ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr()
-
-
-
-
+            self.ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr()
 
 
     def damaged(self, damage):
@@ -133,43 +179,40 @@ class Enemy:
             self.die()
 
 
-    def healthbar(self):
+    def healthbar_zombie(self):
         """Draw the healthbar and update it in function of HP left"""
 
         proportion = self.health / self.health_init
 
-        healthbar = pygame.Rect(self.pos[0] - 5,self.pos[1] - 20, 75 * proportion, 10)
-        color = (0,255,0)
+        healthbar = pygame.Rect(self.pos[0] - 5, self.pos[1] - 20, 75 * proportion, 10)
+        color = (0, 255, 0)
 
-        if proportion < 0.80 :
-            color = (127,255,0)
-        if proportion < 0.60 :
-            color = (255,255,0)
-        if proportion < 0.45 :
-            color = (255,120,9)
-        if proportion < 0.2 :
-            color = (255,0,0)
+        if proportion < 0.80:
+            color = (127, 255, 0)
+            if proportion < 0.60:
+              color = (255, 255, 0)
+        if proportion < 0.45:
+            color = (255, 120, 9)
+        if proportion < 0.2:
+            color = (255, 0, 0)
 
-        pygame.draw.rect(screen,color, healthbar)
-
+        pygame.draw.rect(screen, color, healthbar)
 
         color_border = (0, 0, 0)
         border = pygame.Rect(self.pos[0] - 5, self.pos[1] - 20, 76, 11)
         pygame.draw.rect(screen, color_border, border, 1)
 
+        # Player
+
 
     def die(self):
         """Remove an object enemy from the list and give the player the associated exp and money """
 
-        currency.add(3)
+        currency.add(self.money)
 
         if not self in list_enemy :
             return currency
         list_enemy.remove(self)
-
-
-
-        ##rajouter les thunes et l'exp??
 
         return currency
 
@@ -177,6 +220,11 @@ class Enemy:
         self.chrono_slowed = time()
 
 
+    def ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr(self):
+        global HP_player
+        HP_player -= self.dmg
+        list_enemy.remove(self)
+        return
 
 
 
@@ -188,14 +236,10 @@ def spawn(type):
     ### load in another file to get the same image
 
 
-    bad_guy = Enemy(list_load[type-1], dico_type[type][1], dico_type[type][2], dico_type[type][3])
+    bad_guy = Enemy(list_load[type-1], dico_type[type][1], dico_type[type][2], dico_type[type][3], dico_type[type][4], dico_type[type][5])
     list_enemy.append(bad_guy)
 
 
-
-def ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr():
-    #fonction de perte de HP quand un zombie passe
-    return
 
 
 def is_in_range(tower):
@@ -218,27 +262,106 @@ def is_in_range(tower):
         return furthest_ele
 
 
-def vague(nb_pelo, type):
-    # pas oublier if list_enemy = [] lancer vague suivante (ds 30 sec)
-    skibidi = 4
-    return skibidi
+def wave(tempura):
+    print("tempura: ", tempura)
 
 
 
+    wave = 0
+
+    if 3000 > tempura >= 0 : wave = 1
+    elif 5000 > tempura > 3500 : wave = 2
+    elif 8000 > tempura > 5500 : wave = 3
+    elif 10000 > tempura > 7500 : wave = 4
+    elif 12000 > tempura > 9500 : wave = 5
+    elif 14000 > tempura > 11500 : wave = 6
+    elif 16000 > tempura > 13500 : wave = 7
+    elif 1800 > tempura > 15500 : wave = 8
+    elif 20000 > tempura > 17500 : wave = 9
+    elif 22000 > tempura > 19500 : wave = 10
 
 
+    match wave :
+        #case 0:
+
+        case 1:
+            # 8 perso
+            if tempura % 300 == 0:
+               spawn(1)
+
+        case 2:
+            #12
+            if tempura % 200 == 0:
+               spawn(1)
+
+        case 3:
+            #24
+            if tempura % 100 == 0:
+                spawn(1)
+
+        case 4:
+            if tempura % 300 == 0:
+                spawn(1)
+            if tempura % 300 == 0:
+                spawn(2)
+
+        case 5:
+            if tempura % 300 == 0:
+                spawn(1)
+            if tempura % 150 == 0:
+                spawn(2)
 
 
+        case 6:
+            if tempura % 300 == 0:
+                spawn(2)
+            if tempura % 100 == 0:
+                spawn(3)
 
 
+        case 7:
+            if tempura % 300 == 0:
+                spawn(1)
+            if tempura % 500 == 0:
+                spawn(3)
+            if tempura % 100 == 0:
+                spawn(4)
 
+
+        case 8:
+            if tempura % 300 == 0:
+                spawn(2)
+            if tempura % 500 == 0:
+                spawn(3)
+            if tempura % 100 == 0:
+                spawn(4)
+
+
+        case 9:
+            if tempura % 400 == 0:
+                spawn(3)
+            if tempura % 400 == 0:
+                spawn(4)
+            if tempura % 300 == 0:
+                spawn(5)
+
+        case 10:
+            if tempura % 80 == 0:
+                spawn(1)
+            if tempura % 150 == 0:
+                spawn(2)
+            if tempura % 200 == 0:
+                spawn(4)
+            if tempura % 100 == 0:
+                spawn(5)
 
 
 """ 
 Reste à faire : 
-- vague
-- différents enemies
-- or et exp (change main for global variable and then add with die function and then make )
+
+- fenetre de mort du joueur
+- 
+
 """
 
 
