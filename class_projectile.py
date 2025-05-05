@@ -4,6 +4,7 @@ import math
 from class_enemy import*
 
 projectiles = []
+bombers = []
 
 # Initialization
 pygame.init()
@@ -305,7 +306,6 @@ class Dot:
 
             self.ticks += 1
             self.next_tick_time += 0.5
-            print(f"Tick {self.ticks}: Dot inflige {self.damage} dégâts à {self.coord}")
             if self.current_dot == dot2_img :
                 self.current_dot = dot1_img
             else :
@@ -320,12 +320,6 @@ class Dot:
             self.active = False
 
 
-
-
-
     def draw(self, surface):
         if self.active:
             surface.blit(self.current_dot, self.coord)
-
-
-
