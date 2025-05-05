@@ -27,7 +27,7 @@ waypoints = [(-100,310),
 
 HP_player = 10
 
-"""
+
 def Display_Hp_player():
 
     if HP_player <= 0:
@@ -36,24 +36,32 @@ def Display_Hp_player():
     global HP_player
     match HP_player:
         case 10:
-            #healthbar_player = get(image)
+            #healthbar_player = get_image("zombie1.png), (0,0))
         case 9:
-            # healthbar_player = get(image)
+            # healthbar_player = get_image("zombie1.png), (0,0))
         case 8:
+            # healthbar_player = get_image("zombie1.png), (0,0))
 
         case 7:
+            # healthbar_player = get_image("healthbar.png"), (0,0))
 
         case 6:
+            # healthbar_player = get_image("healthbar.png"), (0,0))
 
         case 5:
+            # healthbar_player = get_image("healthbar.png"), (0,0))
 
         case 4:
+            # healthbar_player = get_image("healthbar.png"), (0,0))
 
         case 3:
+            # healthbar_player = get_image("healthbar.png"), (0,0))
 
         case 2:
+            # healthbar_player = get_image("healthbar.png"), (0,0))
 
         case 1:
+            # healthbar_player = get_image("healthbar.png"), (0,0))
 
 
 
@@ -64,7 +72,7 @@ def Display_Hp_player():
     screen.blit(score_text, (10, 10))
 #-----------------------------------------------------------------------------------#
 
-"""
+
 
 
 
