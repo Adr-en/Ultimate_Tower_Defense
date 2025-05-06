@@ -1,6 +1,7 @@
 from Definitions.definitions_game_map import*
 from tower_class import*
 
+
 dragging_card = None
 
 tempura = 0 ## temporaire
@@ -102,14 +103,17 @@ def game_map_1(dragging):
 
     screen.blit(background_map_1, (0, 0))
 
-        # Ennemies
-    tempura += 1
-    if tempura % 50 == 0:
-        en.spawn(1)
-        #en.spawn(2)
+    #Player
+    #Display_HP_player()
+
+
+     # Ennemies
     for element in list_enemy:
-        element.move()
-        screen.blit(element.image, element.pos)
+        element.enemy_management()
+    tempura += 0.5
+    en.wave(tempura)
+
+
 
     for el in active_towers :
         el.trigger()
@@ -120,6 +124,11 @@ def game_map_1(dragging):
     screen.blit(card_rockshooter, card_rockshooter_rect)
 
     for el in projectiles:
+        el.update(dt)
+        el.draw(screen)
+        if not el.active:
+            projectiles.remove(el)
+    for el in bombers:
         el.update(dt)
         el.draw(screen)
         if not el.active:
@@ -146,11 +155,6 @@ def game_map_1(dragging):
         if tower5 not in active_towers :
             active_towers.append(tower5)
 
-    print("Liste ennemy ", len(list_enemy))
-    print("Liste towers", len(active_towers))
-    print("Liste proj", len(projectiles))
-    print('tempura :',tempura)
-    print("Time :", time_counting)
     return dragging
 
 
