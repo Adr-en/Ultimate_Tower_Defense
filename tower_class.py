@@ -95,7 +95,7 @@ class Tower:
 
     def supr(self): # method that delete the tower
         self.level = 0
-        en.currency.add(self.value * 0.8)
+        en.currency.add(self.value * 0.5)
         self.value = 100
         self.surf = p.image.load("Assets/available_tower.png")
         self.built = False

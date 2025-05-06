@@ -1,7 +1,7 @@
 import pygame
 
 
-
+"""
 
 
 
@@ -149,7 +149,7 @@ animation8 = [enemy_py_8_1, enemy_py_8_2, enemy_py_8_3]
 
 
 
-"""
+
 list_load = [enemy_py_1, enemy_py_2, enemy_py_3, enemy_py_4, enemy_py_5]
 
 healthbar100 =

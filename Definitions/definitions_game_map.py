@@ -11,6 +11,8 @@ dt = (clock.tick(60) / 1000)
 background_map_1 = pygame.image.load("Assets/background_level_1.jpg")
 background_map_1 = pygame.transform.smoothscale(background_map_1, size)
 
+coins = pygame.image.load("Assets/coins.png").convert_alpha()
+
 tower_test = pygame.image.load("Assets/default_tower.png").convert_alpha()
 tower_test = pygame.transform.smoothscale(tower_test, (75, 125))
 tower_test_rect = tower_test.get_rect(topleft=(1400, 600))
@@ -34,3 +36,29 @@ initial_rockshooter_card_pos = (1190,600)
 card_rockshooter = pygame.image.load("Assets/cards_rockshooter.png").convert_alpha()
 card_rockshooter = pygame.transform.smoothscale(card_rockshooter,(125,175))
 card_rockshooter_rect = card_rockshooter.get_rect(topleft=(initial_rockshooter_card_pos[0],initial_rockshooter_card_pos[1]))
+
+tower_emp1_rect = pygame.draw.rect(screen, (255, 0, 0),(105, 360,75,125), 2)
+tower_emp1_upgrade_rect = pygame.draw.rect(screen, "black", (190,365,40,50),2)
+tower_emp1_delete_rect = pygame.draw.rect(screen, "black", (190,425,50,40),2)
+
+tower_emp2_rect = pygame.draw.rect(screen, (255, 0, 0),(490, 225,75,125), 2)
+tower_emp2_upgrade_rect = pygame.draw.rect(screen, "black", (575,230,40,50),2)
+tower_emp2_delete_rect = pygame.draw.rect(screen, "black", (575,290,50,40),2)
+
+tower_emp3_rect = pygame.draw.rect(screen, (255, 0, 0),(840, 270,75,125), 2)
+tower_emp3_upgrade_rect = pygame.draw.rect(screen, "black", (925,275,40,50),2)
+tower_emp3_delete_rect = pygame.draw.rect(screen, "black", (925,335,50,40),2)
+
+tower_emp4_rect = pygame.draw.rect(screen, (255, 0, 0),(1205, 450,75,125), 2)
+tower_emp4_upgrade_rect = pygame.draw.rect(screen, "black", (1290,455,40,50),2)
+tower_emp4_delete_rect = pygame.draw.rect(screen, "black", (1290,515,50,40),2)
+
+tower_emp5_rect = pygame.draw.rect(screen, (255, 0, 0),(1330, 215,75,125), 2)
+tower_emp5_upgrade_rect = pygame.draw.rect(screen, "black", (1415,220,40,50),2)
+tower_emp5_delete_rect = pygame.draw.rect(screen, "black", (1415,280,50,40),2)
+
+upgrade_panel_gray = pygame.image.load("Assets/upgrade_gray.png").convert_alpha()
+upgrade_panel_gary = pygame.transform.smoothscale(upgrade_panel_gray, (100, 150))
+
+upgrade_panel = pygame.image.load("Assets/upgrade_button.png").convert_alpha()
+upgrade_panel = pygame.transform.smoothscale(upgrade_panel, (100, 150))
