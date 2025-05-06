@@ -36,7 +36,7 @@ def Display_Hp_player():
     global HP_player
     match HP_player:
         case 10:
-            #healthbar_player = get_image("zombie1.png), (0,0))
+            healthbar_player = get_image("healthbar.png"), (0,0))
         case 9:
             # healthbar_player = get_image("zombie1.png), (0,0))
         case 8:
@@ -146,14 +146,14 @@ class Enemy:
         movement = target - self.pos                    #represent the distance between the target and the position (it's a vector)
         dist = movement.length()                        # represent the distance in the form of an integer not a vector
 
-        """
-        if movement[y] > 0.05:
+
+        if movement[1] > 0.05:
             self.image = self.animation[1]
-        elif movement[y] < -0.05:
+        elif movement[1] < -0.05:
             self.image = self.animation[2]
         else :
             self.image = self.animation[0]
-        """
+
 
         #Management of speed in function of the chrono
         self.speed = self.base_speed
@@ -250,119 +250,67 @@ def spawn(type):
 
 
 
-def is_in_range(tower):
-    """Return the furthest enemy in range of the tower
-        Tower is an object of type tower
-        element and ele are object of type enemy"""
-
-    tower_pos = Vector2(tower.dest)
-    list_range = []
-    for element in list_enemy:
-        dist = tower_pos - element.pos
-        dist = dist.length()
-        if dist <= tower.range :
-            list_range.append(element)
-
-        furthest_ele = list_range[0]
-        for elem in list_range:
-            if furthest_ele.pos[0] < elem.pos[0]:
-                furthest_ele = elem
-        return furthest_ele
-
-
 def wave(tempura):
-    print("tempura: ", tempura)
 
 
-
-    wave = 0
-
-    if 3000 > tempura >= 0 : wave = 1
-    elif 5000 > tempura > 3500 : wave = 2
-    elif 8000 > tempura > 5500 : wave = 3
-    elif 10000 > tempura > 7500 : wave = 4
-    elif 12000 > tempura > 9500 : wave = 5
-    elif 14000 > tempura > 11500 : wave = 6
-    elif 16000 > tempura > 13500 : wave = 7
-    elif 1800 > tempura > 15500 : wave = 8
-    elif 20000 > tempura > 17500 : wave = 9
-    elif 22000 > tempura > 19500 : wave = 10
+    if 2000> tempura > 500 :
+        if not (tempura%300):
+            spawn(randint(1,7))
 
 
-    match wave :
-        #case 0:
-
-        case 1:
-            # 8 perso
-            if tempura % 300 == 0:
-               spawn(1)
-
-        case 2:
-            #12
-            if tempura % 200 == 0:
-               spawn(1)
-
-        case 3:
-            #24
-            if tempura % 100 == 0:
-                spawn(1)
-
-        case 4:
-            if tempura % 300 == 0:
-                spawn(1)
-            if tempura % 300 == 0:
-                spawn(2)
-
-        case 5:
-            if tempura % 300 == 0:
-                spawn(1)
-            if tempura % 150 == 0:
-                spawn(2)
+    if 4000> tempura > 2500 :
+        if not (tempura%250):
+            spawn(randint(1,7))
 
 
-        case 6:
-            if tempura % 300 == 0:
-                spawn(2)
-            if tempura % 100 == 0:
-                spawn(3)
+    if 6000> tempura > 4500 :
+        if not (tempura%200):
+            spawn(randint(1,7))
 
 
-        case 7:
-            if tempura % 300 == 0:
-                spawn(1)
-            if tempura % 500 == 0:
-                spawn(3)
-            if tempura % 100 == 0:
-                spawn(4)
+    if 8000> tempura > 6500 :
+        if not (tempura%150):
+            spawn(randint(1,7))
 
 
-        case 8:
-            if tempura % 300 == 0:
-                spawn(2)
-            if tempura % 500 == 0:
-                spawn(3)
-            if tempura % 100 == 0:
-                spawn(4)
+    if 10000> tempura > 8500 :
+        if not (tempura%100):
+            spawn(randint(1,7))
 
 
-        case 9:
-            if tempura % 400 == 0:
-                spawn(3)
-            if tempura % 400 == 0:
-                spawn(4)
-            if tempura % 300 == 0:
-                spawn(5)
+    if 12000> tempura > 10500 :
+        if not (tempura%250):
+            spawn(randint(1,7))
+        if not (tempura%250):
+            spawn(randint(7,9))
 
-        case 10:
-            if tempura % 80 == 0:
-                spawn(1)
-            if tempura % 150 == 0:
-                spawn(2)
-            if tempura % 200 == 0:
-                spawn(4)
-            if tempura % 100 == 0:
-                spawn(5)
 
+    if 14000> tempura > 12500 :
+        if not (tempura%250):
+            spawn(randint(1,7))
+        if not (tempura%200):
+            spawn(randint(7,9))
+
+    if 14000> tempura > 12500 :
+        if not (tempura%200):
+            spawn(randint(1,7))
+        if not (tempura%150):
+            spawn(randint(7,9))
+
+    if 14000> tempura > 12500 :
+        if not (tempura%200):
+            spawn(randint(1,7))
+        if not (tempura%100):
+            spawn(randint(7,9))
+
+    if 14000> tempura > 12500 :
+        if not (tempura%150):
+            spawn(randint(1,7))
+        if not (tempura%250):
+            spawn(randint(7,9))
+
+        if not (tempura%1500):
+            spawn(9)
 
 """ 
 Reste à faire : 
@@ -377,6 +325,69 @@ Reste à faire :
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    import pygame
+
+    class AnimateSprite(pygame.sprite.Sprite):
+        def __init__(self):
+            super().__init__()
+            self.sprite_sheet = pygame.image.load('Assets/player.png')
+            self.animation_idx = 0
+            self.images = {
+                'down': self.get_images(0),  # separates each image by pixels (x-axis)
+                'left': self.get_images(120),
+                'right': self.get_images(240),
+                'up': self.get_images(360)
+            }
+            self.current_frame = 0
+            self.clock = 0  # to regulate the loop of the movement
+            self.speed = 1
+            self.image = self.images['down'][self.current_frame]
+            self.rect = self.image.get_rect()
+
+        def change_animation(self, name):
+            if name in self.images:
+                self.image = self.images[name][self.animation_idx]
+                self.image.set_colorkey((60, 55, 49))  # color of the background
+                self.clock += self.speed * 8
+
+                if self.clock > 110:
+                    self.animation_idx += 1
+                    if self.animation_idx >= len(self.images[name]):
+                        self.animation_idx = 0
+                    self.clock = 0
+
+        def get_images(self, y):
+            images = []
+            for i in range(0, 3):
+                x = i * 90
+                images.append(self.get_image(x, y))
+            return images
+
+        def get_image(self, x, y, dimension):
+            image = pygame.Surface(dimension, pygame.SRCALPHA)
+            image.blit(self.sprite_sheet, (0, 0), (x, y, dimension[0], dimension[1+]))
+            image.set_colorkey((60, 55, 49))
+            return image
 
 
 
