@@ -1,8 +1,10 @@
 from Definitions.definitions_game_map import*
+from Definitions.definitions_main_menu import start_button_rect
 from tower_class import*
 
 font_level = pygame.font.SysFont(None,48)
 dragging_card = None
+game_active = False
 
 upgrade_panel_tower_1 = False
 upgrade_panel_tower_2 = False
@@ -27,6 +29,7 @@ def game_map_1(dragging):
     global upgrade_panel_tower_3
     global upgrade_panel_tower_4
     global upgrade_panel_tower_5
+    global game_active
 
 
     for event in pygame.event.get():
@@ -111,6 +114,9 @@ def game_map_1(dragging):
                     tower5.supr()
                     upgrade_panel_tower_5 = False
 
+                if start_button_rect.collidepoint(event.pos) not game_active :
+                    game_active = True
+
         if event.type == pygame.QUIT:
             pygame.quit()
 
@@ -182,16 +188,8 @@ def game_map_1(dragging):
 
     screen.blit(background_map_1, (0, 0))
     screen.blit(coins, (0, 0))
-
-    en.Display_Hp_player()
-
-
-    """  # Ennemies
-    for element in list_enemy:
-        element.enemy_management()
-    tempura += 0.5
-    en.wave(tempura)
-    """
+    screen.blit(play_button, (0,0))
+    screen.blit(pause_button, (0,0))
 
     for el in active_towers :
         el.trigger()
@@ -201,7 +199,6 @@ def game_map_1(dragging):
         if currency.value >= el.value:
             if upgrade_panel_tower_1:
                 screen.blit(upgrade_panel, (105 + 55, 360 - 20))
-
             if upgrade_panel_tower_2:
                 screen.blit(upgrade_panel, (490 + 55, 225 - 20))
             if upgrade_panel_tower_3:
@@ -223,22 +220,13 @@ def game_map_1(dragging):
             if upgrade_panel_tower_5:
                 screen.blit(upgrade_panel_gray, (1330 + 55, 215 - 20))
 
+
+
     screen.blit(card_archer, card_archer_rect)
     screen.blit(card_firemage, card_firemage_rect)
     screen.blit(card_icemage, card_icemage_rect)
     screen.blit(card_rockshooter, card_rockshooter_rect)
 
-    for el in projectiles:
-        el.update(dt)
-        el.draw(screen)
-        if not el.active:
-            projectiles.remove(el)
-    """
-    for el in bombers:
-        el.update(dt)
-        el.draw(screen)
-        if not el.active:
-            projectiles.remove(el)"""
 
     if tower1.built :
         tower1.draw()
@@ -260,6 +248,29 @@ def game_map_1(dragging):
         tower5.draw()
         if tower5 not in active_towers :
             active_towers.append(tower5)
+
+
+    if game_active :
+        # Player
+        # Display_HP_player()
+
+        """  # Ennemies
+        for element in list_enemy:
+            element.enemy_management()
+        tempura += 0.5
+        en.wave(tempura)
+        """
+
+        for el in projectiles:
+            el.update(dt)
+            el.draw(screen)
+            if not el.active:
+                projectiles.remove(el)
+        for el in bombers:
+            el.update(dt)
+            el.draw(screen)
+            if not el.active:
+                projectiles.remove(el)
 
 
     return dragging
