@@ -103,8 +103,7 @@ def game_map_1(dragging):
 
     screen.blit(background_map_1, (0, 0))
 
-    #Player
-    #Display_HP_player()
+    en.Display_Hp_player()
 
 
      # Ennemies
@@ -128,11 +127,12 @@ def game_map_1(dragging):
         el.draw(screen)
         if not el.active:
             projectiles.remove(el)
+    """
     for el in bombers:
         el.update(dt)
         el.draw(screen)
         if not el.active:
-            projectiles.remove(el)
+            projectiles.remove(el)"""
 
     if tower1.built:
         tower1.draw()
