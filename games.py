@@ -114,7 +114,7 @@ def game_map_1(dragging):
                     tower5.supr()
                     upgrade_panel_tower_5 = False
 
-                if start_button_rect.collidepoint(event.pos) not game_active :
+                if start_button_rect.collidepoint(event.pos) and not game_active :
                     game_active = True
 
         if event.type == pygame.QUIT:
