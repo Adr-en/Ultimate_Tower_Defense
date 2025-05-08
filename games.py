@@ -1,8 +1,14 @@
 from Definitions.definitions_game_map import*
 from tower_class import*
 
-
+font_level = pygame.font.SysFont(None,48)
 dragging_card = None
+
+upgrade_panel_tower_1 = False
+upgrade_panel_tower_2 = False
+upgrade_panel_tower_3 = False
+upgrade_panel_tower_4 = False
+upgrade_panel_tower_5 = False
 
 tempura = 0 ## temporaire
 
@@ -16,6 +22,12 @@ def game_map_1(dragging):
     global tempura
     global active_towers
     global projectiles
+    global upgrade_panel_tower_1
+    global upgrade_panel_tower_2
+    global upgrade_panel_tower_3
+    global upgrade_panel_tower_4
+    global upgrade_panel_tower_5
+
 
     for event in pygame.event.get():
 
@@ -34,6 +46,74 @@ def game_map_1(dragging):
                     dragging = True
                     dragging_card = "rockshooter"
 
+                if tower_emp1_rect.collidepoint(event.pos) and tower1.built :
+                    if not upgrade_panel_tower_1:
+                        upgrade_panel_tower_1 = True
+                    else :
+                        upgrade_panel_tower_1 = False
+
+                if tower_emp2_rect.collidepoint(event.pos) and tower2.built :
+                    if not upgrade_panel_tower_2:
+                        upgrade_panel_tower_2 = True
+                    else :
+                        upgrade_panel_tower_2 = False
+
+                if tower_emp3_rect.collidepoint(event.pos) and tower3.built:
+                    if not upgrade_panel_tower_3:
+                        upgrade_panel_tower_3 = True
+                    else :
+                        upgrade_panel_tower_3 = False
+
+                if tower_emp4_rect.collidepoint(event.pos) and tower4.built:
+                    if not upgrade_panel_tower_4:
+                        upgrade_panel_tower_4 = True
+                    else :
+                        upgrade_panel_tower_4 = False
+
+                if tower_emp5_rect.collidepoint(event.pos) and tower5.built:
+                    if not upgrade_panel_tower_5:
+                        upgrade_panel_tower_5 = True
+                    else :
+                        upgrade_panel_tower_5 = False
+
+                if tower_emp1_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_1:
+                    tower1.upgrade()
+
+                if tower_emp2_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_2:
+                    tower2.upgrade()
+
+                if tower_emp3_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_3:
+                    tower3.upgrade()
+
+                if tower_emp4_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_4:
+                    tower4.upgrade()
+
+                if tower_emp5_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_5:
+                    tower5.upgrade()
+
+                if tower_emp1_delete_rect.collidepoint(event.pos) and upgrade_panel_tower_1:
+                    tower1.supr()
+                    upgrade_panel_tower_1 = False
+
+                if tower_emp2_delete_rect.collidepoint(event.pos) and upgrade_panel_tower_2:
+                    tower2.supr()
+                    upgrade_panel_tower_2 = False
+
+                if tower_emp3_delete_rect.collidepoint(event.pos) and upgrade_panel_tower_3:
+                    tower3.supr()
+                    upgrade_panel_tower_3 = False
+
+                if tower_emp4_delete_rect.collidepoint(event.pos) and upgrade_panel_tower_4:
+                    tower4.supr()
+                    upgrade_panel_tower_4 = False
+
+                if tower_emp5_delete_rect.collidepoint(event.pos) and upgrade_panel_tower_5:
+                    tower5.supr()
+                    upgrade_panel_tower_5 = False
+
+        if event.type == pygame.QUIT:
+            pygame.quit()
+
         elif event.type == pygame.MOUSEMOTION and dragging:
             if dragging_card == "archer":
                 card_archer_rect.center = event.pos
@@ -46,76 +126,102 @@ def game_map_1(dragging):
 
         elif event.type == pygame.MOUSEBUTTONUP and dragging:
             if dragging_card == "archer" and card_archer_rect.collidepoint(event.pos):
-                if tower1.tower.collidepoint(event.pos) and not tower1.built:
+                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency.value >= tower1.value:
                     tower1.archer()
-                elif tower2.tower.collidepoint(event.pos) and not tower2.built:
+                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency.value >= tower2.value:
                     tower2.archer()
-                elif tower3.tower.collidepoint(event.pos) and not tower3.built:
+                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency.value >= tower3.value:
                     tower3.archer()
-                elif tower4.tower.collidepoint(event.pos) and not tower4.built:
+                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency.value >= tower4.value:
                     tower4.archer()
-                elif tower5.tower.collidepoint(event.pos) and not tower5.built:
+                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency.value >= tower5.value:
                     tower5.archer()
                 card_archer_rect = card_archer.get_rect(topleft=initial_archer_card_pos)
 
             elif dragging_card == "firemage" and card_firemage_rect.collidepoint(event.pos):
-                if tower1.tower.collidepoint(event.pos) and not tower1.built:
+                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency.value >= tower1.value:
                     tower1.fire()
-                elif tower2.tower.collidepoint(event.pos) and not tower2.built:
+                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency.value >= tower2.value:
                     tower2.fire()
-                elif tower3.tower.collidepoint(event.pos) and not tower3.built:
+                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency.value >= tower3.value:
                     tower3.fire()
-                elif tower4.tower.collidepoint(event.pos) and not tower4.built:
+                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency.value >= tower4.value:
                     tower4.fire()
-                elif tower5.tower.collidepoint(event.pos) and not tower5.built:
+                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency.value >= tower5.value:
                     tower5.fire()
                 card_firemage_rect = card_firemage.get_rect(topleft=initial_firemage_card_pos)
 
-            elif dragging_card == "icemage" and card_icemage_rect.collidepoint(event.pos):
-                if tower1.tower.collidepoint(event.pos) and not tower1.built:
+            elif dragging_card == "icemage" and card_icemage_rect.collidepoint(event.pos) :
+                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency.value >= tower1.value:
                     tower1.slow()
-                elif tower2.tower.collidepoint(event.pos) and not tower2.built:
+                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency.value >= tower2.value:
                     tower2.slow()
-                elif tower3.tower.collidepoint(event.pos) and not tower3.built:
+                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency.value >= tower3.value:
                     tower3.slow()
-                elif tower4.tower.collidepoint(event.pos) and not tower4.built:
+                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency.value >= tower4.value:
                     tower4.slow()
-                elif tower5.tower.collidepoint(event.pos) and not tower5.built:
+                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency.value >= tower5.value:
                     tower5.slow()
                 card_icemage_rect = card_icemage.get_rect(topleft=initial_icemage_card_pos)
 
             elif dragging_card == "rockshooter" and card_rockshooter_rect.collidepoint(event.pos) :
-                if tower1.tower.collidepoint(event.pos) and not tower1.built:
+                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency.value >= tower1.value:
                     tower1.bomber()
-                elif tower2.tower.collidepoint(event.pos) and not tower2.built:
+                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency.value >= tower2.value:
                     tower2.bomber()
-                elif tower3.tower.collidepoint(event.pos) and not tower3.built:
+                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency.value >= tower3.value:
                     tower3.bomber()
-                elif tower4.tower.collidepoint(event.pos) and not tower4.built:
+                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency.value >= tower4.value:
                     tower4.bomber()
-                elif tower5.tower.collidepoint(event.pos) and not tower5.built:
+                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency.value >= tower5.value:
                     tower5.bomber()
                 card_rockshooter_rect = card_rockshooter.get_rect(topleft=initial_rockshooter_card_pos)
 
             dragging = False
             dragging_card = None
 
-
     screen.blit(background_map_1, (0, 0))
+    screen.blit(coins, (0, 0))
 
     en.Display_Hp_player()
 
 
-     # Ennemies
+    """  # Ennemies
     for element in list_enemy:
         element.enemy_management()
     tempura += 0.5
     en.wave(tempura)
-
-
+    """
 
     for el in active_towers :
         el.trigger()
+        level_text = font_level.render(str(el.level), True, "brown")
+        screen.blit(level_text, (el.dest[0] + 25, el.dest[1] + 110))
+
+        if currency.value >= el.value:
+            if upgrade_panel_tower_1:
+                screen.blit(upgrade_panel, (105 + 55, 360 - 20))
+
+            if upgrade_panel_tower_2:
+                screen.blit(upgrade_panel, (490 + 55, 225 - 20))
+            if upgrade_panel_tower_3:
+                screen.blit(upgrade_panel, (840 + 55, 270 - 20))
+            if upgrade_panel_tower_4:
+                screen.blit(upgrade_panel, (1205 + 55, 450 - 20))
+            if upgrade_panel_tower_5:
+                screen.blit(upgrade_panel, (1330 + 55, 215 - 20))
+
+        else:
+            if upgrade_panel_tower_1:
+                screen.blit(upgrade_panel_gray, (105 + 55, 360 - 20))
+            if upgrade_panel_tower_2:
+                screen.blit(upgrade_panel_gray, (490 + 55, 225 - 20))
+            if upgrade_panel_tower_3:
+                screen.blit(upgrade_panel_gray, (840 + 55, 270 - 20))
+            if upgrade_panel_tower_4:
+                screen.blit(upgrade_panel_gray, (1205 + 55, 450 - 20))
+            if upgrade_panel_tower_5:
+                screen.blit(upgrade_panel_gray, (1330 + 55, 215 - 20))
 
     screen.blit(card_archer, card_archer_rect)
     screen.blit(card_firemage, card_firemage_rect)
@@ -134,7 +240,7 @@ def game_map_1(dragging):
         if not el.active:
             projectiles.remove(el)"""
 
-    if tower1.built:
+    if tower1.built :
         tower1.draw()
         if tower1 not in active_towers:
             active_towers.append(tower1)
@@ -155,81 +261,5 @@ def game_map_1(dragging):
         if tower5 not in active_towers :
             active_towers.append(tower5)
 
+
     return dragging
-
-
-"""     
-    if keys[p.K_a]:
-        if tower1.tower.collidepoint(event_pos) and not tower1.built:
-            tower1.archer()
-        elif tower2.tower.collidepoint(event_pos) and not tower2.built:
-            tower2.archer()
-        elif tower3.tower.collidepoint(event_pos) and not tower3.built:
-            tower3.archer()
-        elif tower4.tower.collidepoint(event_pos) and not tower4.built:
-            tower4.archer()
-        elif tower5.tower.collidepoint(event_pos) and not tower5.built:
-            tower5.archer()
-    if keys[p.K_z]:
-        if tower1.tower.collidepoint(mouse_pos) and not tower1.built:
-            tower1.bomber()
-        elif tower2.tower.collidepoint(mouse_pos) and not tower2.built:
-            tower2.bomber()
-        elif tower3.tower.collidepoint(mouse_pos) and not tower3.built:
-            tower3.bomber()
-        elif tower4.tower.collidepoint(mouse_pos) and not tower4.built:
-            tower4.bomber()
-        elif tower5.tower.collidepoint(mouse_pos) and not tower5.built:
-            tower5.bomber()
-    if keys[p.K_e]:
-        if tower1.tower.collidepoint(mouse_pos) and not tower1.built:
-            tower1.slow()
-        elif tower2.tower.collidepoint(mouse_pos) and not tower2.built:
-            tower2.slow()
-        elif tower3.tower.collidepoint(mouse_pos) and not tower3.built:
-            tower3.slow()
-        elif tower4.tower.collidepoint(mouse_pos) and not tower4.built:
-            tower4.slow()
-        elif tower5.tower.collidepoint(mouse_pos) and not tower5.built:
-            tower5.slow()
-
-    if keys[p.K_r]:
-        if tower1.tower.collidepoint(mouse_pos) and not tower1.built:
-            tower1.fire()
-        elif tower2.tower.collidepoint(mouse_pos) and not tower2.built:
-            tower2.fire()
-        elif tower3.tower.collidepoint(mouse_pos) and not tower3.built:
-            tower3.fire()
-        elif tower4.tower.collidepoint(mouse_pos) and not tower4.built:
-            tower4.fire()
-        elif tower5.tower.collidepoint(mouse_pos) and not tower5.built:
-            tower5.fire()
-
-    if keys[p.K_t]:
-        if tower1.tower.collidepoint(mouse_pos) and not tower1.built:
-            tower1.adrien()
-        elif tower2.tower.collidepoint(mouse_pos) and not tower2.built:
-            tower2.adrien()
-        elif tower3.tower.collidepoint(mouse_pos) and not tower3.built:
-            tower3.adrien()
-        elif tower4.tower.collidepoint(mouse_pos) and not tower4.built:
-            tower4.adrien()
-        elif tower5.tower.collidepoint(mouse_pos) and not tower5.built:
-            tower5.adrien()
-
-    if keys[p.K_d]:
-        if tower1.tower.collidepoint(mouse_pos) and tower1.built:
-            tower1.supr()
-        elif tower2.tower.collidepoint(mouse_pos) and tower2.built:
-            tower2.supr()
-        elif tower3.tower.collidepoint(mouse_pos) and tower3.built:
-            tower3.supr()
-        elif tower4.tower.collidepoint(mouse_pos) and tower4.built:
-            tower4.supr()
-        elif tower5.tower.collidepoint(mouse_pos) and tower5.built:
-            tower5.supr()
-    for event in p.event.get():
-        if event.type == p.QUIT:
-            run = False
-
-"""

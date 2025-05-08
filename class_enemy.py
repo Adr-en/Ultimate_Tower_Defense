@@ -64,7 +64,7 @@ def Coins():
 class Currency:
     \"""Class to manage the gold gain when killing enemies and ending waves\"""
     def __init__(self):
-        self.value = 0  # Start with 0 currency
+        self.value = 300  # Start with 0 currency
 
     def add(self, amount):
         self.value += amount
@@ -76,7 +76,7 @@ currency = Currency()
 """
 
 class Enemy:
-    """Classe enemy representing the enemies trying to go trough the map, it helps with moving them, interacting with
+    """Class enemy representing the enemies trying to go trough the map, it helps with moving them, interacting with
     them manipulating each entities separatly.
     It allows to make an enemy with some personal attributes, his representation on the map, some points by which he has to pass
     , his position, the number of the points by which he is passing, the size of the image that will be used to draw him, the speed
