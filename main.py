@@ -7,7 +7,6 @@ pygame.init()
 running = True
 
 dragging = False
-font_score = pygame.font.SysFont(None, 72)
 
 while running:
 
@@ -21,8 +20,7 @@ while running:
 
     if choosen_map == 1 :
         dragging = game_map_1(dragging)
-        score_text = font_score.render(str(class_enemy.currency.get()), True, "gold")
-        screen.blit(score_text, (70, 20)) #Add a gold image and put it in the middle maybe
+
 
 
 

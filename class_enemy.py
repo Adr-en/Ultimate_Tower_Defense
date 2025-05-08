@@ -52,11 +52,11 @@ def Display_Hp_player():
 #-----------------------------------------------------------------------------------#
 
 def Coins():
-    font = pygame.font.SysFont(None, 48)
-    score_text = font.render(str(currency), True, "gold")  # .get()
-    screen.blit(score_text, (40, 40))  # Add a gold image and put it in the middle maybe
+    font_score = pygame.font.SysFont(None, 72)
+    score_text = font_score.render(str(currency), True, "gold")
+    screen.blit(score_text, (60, 45))
     coin = pygame.image.load("Assets/coins.png")
-    coin = pygame.transform.smoothscale(coin, (1000, 560))
+    coin = pygame.transform.smoothscale(coin, (1500, 840))
     screen.blit(coin, (-8, 25))
 
 """
