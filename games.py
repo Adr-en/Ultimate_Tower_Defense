@@ -5,6 +5,7 @@ from tower_class import*
 font_level = pygame.font.SysFont(None,48)
 dragging_card = None
 game_active = False
+button = "Start"
 
 upgrade_panel_tower_1 = False
 upgrade_panel_tower_2 = False
@@ -31,6 +32,7 @@ def game_map_1(dragging):
     global upgrade_panel_tower_5
     global game_active
 
+    mouse_x, mouse_y = pygame.mouse.get_pos()
 
     for event in pygame.event.get():
 
@@ -114,8 +116,8 @@ def game_map_1(dragging):
                     tower5.supr()
                     upgrade_panel_tower_5 = False
 
-                if start_button_rect.collidepoint(event.pos) and not game_active :
-                    game_active = True
+            if play_pause_continue_button_rect.collidepoint(event.pos) and not game_active and button == "Start":
+                game_active = True
 
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -187,8 +189,14 @@ def game_map_1(dragging):
             dragging_card = None
 
     screen.blit(background_map_1, (0, 0))
-    screen.blit(play_button, (0,0))
-    screen.blit(pause_button, (0,0))
+    #pygame.draw.rect(screen,"black",(1380,15,60,55))
+    if not game_active :
+        if 1380 <= mouse_x <= 1440 and 15 <= mouse_y <= 70:
+           screen.blit(play_button_selected,(0,0))
+        else :
+            screen.blit(play_button, (0,0))
+    else :
+        screen.blit(pause_button, (0,0))
 
     for el in active_towers :
         el.trigger()
@@ -248,6 +256,7 @@ def game_map_1(dragging):
         if tower5 not in active_towers :
             active_towers.append(tower5)
 
+    if game_active :print(game_active)
 
     if game_active :
 
