@@ -20,14 +20,16 @@ def game_map_1(dragging):
     global upgrade_panel_tower_4
     global upgrade_panel_tower_5
     global game_active
-    global last_currency
-    global font_score
-    global last_HP_player
-    global font_hp
-    global Hp_text
-    global score_text
+    global pause_button_bool
+    global continue_button_bool
+    global button
+    global game_paused
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
+
+    screen.blit(background_map_1, (0, 0))
+    en.Display_Hp_player()
+    en.Coins()
 
     for event in pygame.event.get():
 
@@ -113,6 +115,16 @@ def game_map_1(dragging):
 
             if play_pause_continue_button_rect.collidepoint(event.pos) and not game_active and button == "Start":
                 game_active = True
+                button = "Pause"
+
+            if play_pause_continue_button_rect.collidepoint(event.pos) and button == "Pause" :
+                game_paused = True
+                button = "Continue"
+                print(game_paused)
+
+            if play_pause_continue_button_rect.collidepoint(event.pos) and button == "Continue" :
+                game_paused = False
+                button = "Pause"
 
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -183,45 +195,44 @@ def game_map_1(dragging):
             dragging = False
             dragging_card = None
 
-    screen.blit(background_map_1, (0, 0))
-    #pygame.draw.rect(screen,"black",(1380,15,60,55))
-
-    if not game_active :
-        if 1380 <= mouse_x <= 1440 and 15 <= mouse_y <= 70:
-           screen.blit(play_button_selected,(0,0))
+    if not game_paused :
+        if not game_active :
+            if 1380 <= mouse_x <= 1440 and 15 <= mouse_y <= 70:
+               screen.blit(play_button_selected,(0,0))
+            else :
+                screen.blit(play_button, (0,0))
         else :
-            screen.blit(play_button, (0,0))
-    else :
-        screen.blit(pause_button, (0,0))
+            button = "Pause"
+            screen.blit(pause_button, (0,0))
 
-    for el in active_towers :
-        el.trigger()
-        level_text = font_level.render(str(el.level), True, "brown")
-        screen.blit(level_text, (el.dest[0] + 25, el.dest[1] + 110))
+        for el in active_towers :
+            el.trigger()
+            level_text = font_level.render(str(el.level), True, "brown")
+            screen.blit(level_text, (el.dest[0] + 25, el.dest[1] + 110))
 
-        if currency >= el.value:
-            if upgrade_panel_tower_1:
-                screen.blit(upgrade_panel, (105 + 55, 360 - 20))
-            if upgrade_panel_tower_2:
-                screen.blit(upgrade_panel, (490 + 55, 225 - 20))
-            if upgrade_panel_tower_3:
-                screen.blit(upgrade_panel, (840 + 55, 270 - 20))
-            if upgrade_panel_tower_4:
-                screen.blit(upgrade_panel, (1205 + 55, 450 - 20))
-            if upgrade_panel_tower_5:
-                screen.blit(upgrade_panel, (1330 + 55, 215 - 20))
+            if currency >= el.value:
+                if upgrade_panel_tower_1:
+                    screen.blit(upgrade_panel, (105 + 55, 360 - 20))
+                if upgrade_panel_tower_2:
+                    screen.blit(upgrade_panel, (490 + 55, 225 - 20))
+                if upgrade_panel_tower_3:
+                    screen.blit(upgrade_panel, (840 + 55, 270 - 20))
+                if upgrade_panel_tower_4:
+                    screen.blit(upgrade_panel, (1205 + 55, 450 - 20))
+                if upgrade_panel_tower_5:
+                    screen.blit(upgrade_panel, (1330 + 55, 215 - 20))
 
-        else:
-            if upgrade_panel_tower_1:
-                screen.blit(upgrade_panel_gray, (105 + 55, 360 - 20))
-            if upgrade_panel_tower_2:
-                screen.blit(upgrade_panel_gray, (490 + 55, 225 - 20))
-            if upgrade_panel_tower_3:
-                screen.blit(upgrade_panel_gray, (840 + 55, 270 - 20))
-            if upgrade_panel_tower_4:
-                screen.blit(upgrade_panel_gray, (1205 + 55, 450 - 20))
-            if upgrade_panel_tower_5:
-                screen.blit(upgrade_panel_gray, (1330 + 55, 215 - 20))
+            else:
+                if upgrade_panel_tower_1:
+                    screen.blit(upgrade_panel_gray, (105 + 55, 360 - 20))
+                if upgrade_panel_tower_2:
+                    screen.blit(upgrade_panel_gray, (490 + 55, 225 - 20))
+                if upgrade_panel_tower_3:
+                    screen.blit(upgrade_panel_gray, (840 + 55, 270 - 20))
+                if upgrade_panel_tower_4:
+                    screen.blit(upgrade_panel_gray, (1205 + 55, 450 - 20))
+                if upgrade_panel_tower_5:
+                    screen.blit(upgrade_panel_gray, (1330 + 55, 215 - 20))
 
 
     if tower1.built :
@@ -245,24 +256,12 @@ def game_map_1(dragging):
         if tower5 not in active_towers :
             active_towers.append(tower5)
 
-    if last_currency != currency:
-        last_currency = currency
-        score_text = font_score.render(str(currency), True, "gold")
-
-    if last_HP_player != HP_player:
-        last_HP_player = HP_player
-        Hp_text = font_hp.render(str(HP_player) + " .hp", True, color)
-
-    en.Display_Hp_player(Hp_text)
-    en.Coins(score_text)
-
     if game_active :
 
         for element in list_enemy:
             element.enemy_management()
         tempura += 0.5
         en.wave(tempura)
-
 
         for el in projectiles:
             el.update(dt)

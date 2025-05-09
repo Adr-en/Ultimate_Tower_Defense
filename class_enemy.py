@@ -9,18 +9,26 @@ from menu import screen
 
 pygame.init()
 
-def Display_Hp_player(Hp_text):
+def Display_Hp_player():
     global HP_player
-    if HP_player <= 0:
+    global Hp_text
+
+    if HP_player <= 0 :
         print("Player died")
+
+    if HP_player < last_HP_player:
+        Hp_text = font_hp.render(str(HP_player) + " .hp", True, color)
 
     screen.blit(healthbar_player,(5, 0))
     screen.blit(Hp_text, (230, 17))
 
 #-----------------------------------------------------------------------------------#
 
-def Coins(score_text):
+def Coins():
+    global score_text
 
+    if currency > last_currency :
+        score_text = font_score.render(str(currency), True, "gold")
     screen.blit(score_text, (60, 45))
     screen.blit(coin, (-8, 25))
 

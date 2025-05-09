@@ -76,6 +76,7 @@ pause_button = pygame.transform.smoothscale(pause_button, size)
 font_level = pygame.font.SysFont(None,48)
 dragging_card = None
 game_active = False
+game_paused = False
 button = "Start"
 
 upgrade_panel_tower_1 = False
@@ -83,3 +84,4 @@ upgrade_panel_tower_2 = False
 upgrade_panel_tower_3 = False
 upgrade_panel_tower_4 = False
 upgrade_panel_tower_5 = False
+
