@@ -1,18 +1,7 @@
 from Definitions.definitions_game_map import*
-from Definitions.definitions_main_menu import start_button_rect
 from tower_class import*
 
-font_level = pygame.font.SysFont(None,48)
-dragging_card = None
-game_active = False
-button = "Start"
-
-upgrade_panel_tower_1 = False
-upgrade_panel_tower_2 = False
-upgrade_panel_tower_3 = False
-upgrade_panel_tower_4 = False
-upgrade_panel_tower_5 = False
-
+bombers = []
 tempura = 0 ## temporaire
 
 def game_map_1(dragging):
@@ -31,6 +20,12 @@ def game_map_1(dragging):
     global upgrade_panel_tower_4
     global upgrade_panel_tower_5
     global game_active
+    global last_currency
+    global font_score
+    global last_HP_player
+    global font_hp
+    global Hp_text
+    global score_text
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -190,6 +185,7 @@ def game_map_1(dragging):
 
     screen.blit(background_map_1, (0, 0))
     #pygame.draw.rect(screen,"black",(1380,15,60,55))
+
     if not game_active :
         if 1380 <= mouse_x <= 1440 and 15 <= mouse_y <= 70:
            screen.blit(play_button_selected,(0,0))
@@ -228,13 +224,6 @@ def game_map_1(dragging):
                 screen.blit(upgrade_panel_gray, (1330 + 55, 215 - 20))
 
 
-
-    screen.blit(card_archer, card_archer_rect)
-    screen.blit(card_firemage, card_firemage_rect)
-    screen.blit(card_icemage, card_icemage_rect)
-    screen.blit(card_rockshooter, card_rockshooter_rect)
-
-
     if tower1.built :
         tower1.draw()
         if tower1 not in active_towers:
@@ -256,13 +245,18 @@ def game_map_1(dragging):
         if tower5 not in active_towers :
             active_towers.append(tower5)
 
-    if game_active :print(game_active)
+    if last_currency != currency:
+        last_currency = currency
+        score_text = font_score.render(str(currency), True, "gold")
+
+    if last_HP_player != HP_player:
+        last_HP_player = HP_player
+        Hp_text = font_hp.render(str(HP_player) + " .hp", True, color)
+
+    en.Display_Hp_player(Hp_text)
+    en.Coins(score_text)
 
     if game_active :
-
-        en.Display_Hp_player()
-        en.Coins()
-
 
         for element in list_enemy:
             element.enemy_management()
@@ -281,5 +275,9 @@ def game_map_1(dragging):
             if not el.active:
                 projectiles.remove(el)
 
+    screen.blit(card_archer, card_archer_rect)
+    screen.blit(card_firemage, card_firemage_rect)
+    screen.blit(card_icemage, card_icemage_rect)
+    screen.blit(card_rockshooter, card_rockshooter_rect)
 
     return dragging

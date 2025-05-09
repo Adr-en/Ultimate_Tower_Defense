@@ -8,55 +8,20 @@ from Definitions.definition_enemies import *
 from menu import screen
 
 pygame.init()
-currency = 0
 
-list_enemy = []         # list of all of the enemies alive on the board
-
-waypoints = [(-100, 260),
-             (-50 , 260),
-             (250, 280),
-             (400, 395),
-             (500, 445),
-             (620, 440),
-             (670, 355),
-             (710, 220),
-             (800, 140),
-             (930, 180),
-             (980, 270),
-             (1050, 340),
-             (1150, 360),
-             (1540, 360)]
-
-
-
-
-
-HP_player = 10
-
-
-def Display_Hp_player():
+def Display_Hp_player(Hp_text):
     global HP_player
     if HP_player <= 0:
         print("Player died")
 
-    healthbar_player = get_sprite_from_sheet(Healthbar_image, 10 - HP_player, 0, 90, 20)
-    healthbar_player = pygame.transform.smoothscale(healthbar_player, (250, 45))
     screen.blit(healthbar_player,(5, 0))
-
-    color = "black"
-    if HP_player < 9: color = "black"
-    font = pygame.font.SysFont(None, 20)
-    score_text = font.render(str(HP_player) + " .hp", True, color)
-    screen.blit(score_text, (230, 17))
+    screen.blit(Hp_text, (230, 17))
 
 #-----------------------------------------------------------------------------------#
 
-def Coins():
-    font_score = pygame.font.SysFont(None, 72)
-    score_text = font_score.render(str(currency), True, "gold")
+def Coins(score_text):
+
     screen.blit(score_text, (60, 45))
-    coin = pygame.image.load("Assets/coins.png")
-    coin = pygame.transform.smoothscale(coin, (1500, 840))
     screen.blit(coin, (-8, 25))
 
 """

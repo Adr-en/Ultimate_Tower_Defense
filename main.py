@@ -1,7 +1,6 @@
 import pygame
 from menu import*
 from games import*
-import class_enemy
 
 pygame.init()
 running = True
@@ -20,10 +19,6 @@ while running:
 
     if choosen_map == 1 :
         dragging = game_map_1(dragging)
-
-
-
-
 
     for event in pygame.event.get():
 

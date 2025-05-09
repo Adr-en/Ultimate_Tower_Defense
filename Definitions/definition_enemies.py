@@ -1,11 +1,33 @@
 import pygame
+pygame.font.init()
 
 #missing the convert alpha
 #resize the healthbar
 #adjust the zombies
 
+currency = 0
+last_currency = currency
+
+HP_player = 10
+last_HP_player = HP_player
 
 
+list_enemy = []         # list of all of the enemies alive on the board
+
+waypoints = [(-100, 260),
+             (-50 , 260),
+             (250, 280),
+             (400, 395),
+             (500, 445),
+             (620, 440),
+             (670, 355),
+             (710, 220),
+             (800, 140),
+             (930, 180),
+             (980, 270),
+             (1050, 340),
+             (1150, 360),
+             (1540, 360)]
 
 
 dico_type = {
@@ -19,9 +41,6 @@ dico_type = {
     8: [pygame.image.load("Assets/soldier2.png"), pygame.image.load("Assets/soldier2_frozen.png"), pygame.image.load("Assets/soldier2_burned.png"), (50, 50), 100, 1, 3, 1],
     9: [pygame.image.load("Assets/boss.png"), pygame.image.load("Assets/boss_frozen.png"), pygame.image.load("Assets/boss_burned.png"), (50, 50), 100, 1, 3, 2],
 }
-
-
-
 
 def remove_white_background(surface, threshold=183):
     surface = surface.convert_alpha()
@@ -59,3 +78,14 @@ def get_sprite_from_sheet(sheet, row, column, sprite_width, sprite_height):
     # Blit the corresponding part of the sheet onto the new surface
     sprite.blit(sheet, (0, 0), rect)
     return sprite
+
+color = "black"
+healthbar_player = get_sprite_from_sheet(Healthbar_image, 10 - HP_player, 0, 90, 20)
+healthbar_player = pygame.transform.smoothscale(healthbar_player, (250, 45))
+font_hp = pygame.font.SysFont(None, 20)
+Hp_text = font_hp.render(str(HP_player) + " .hp", True, color)
+
+font_score = pygame.font.SysFont(None, 72)
+coin = pygame.image.load("Assets/coins.png")
+coin = pygame.transform.smoothscale(coin, (1500, 840))
+score_text = font_score.render(str(currency), True, "gold")

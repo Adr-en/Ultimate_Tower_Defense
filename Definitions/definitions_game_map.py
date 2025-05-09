@@ -1,6 +1,5 @@
 import pygame
-
-from class_projectile import clock
+pygame.font.init()
 
 #Initializing window settings
 screen = pygame.display.set_mode((1520, 775))
@@ -74,5 +73,13 @@ continue_button = pygame.transform.smoothscale(continue_button, size)
 pause_button = pygame.image.load("Assets/pause.png").convert_alpha()
 pause_button = pygame.transform.smoothscale(pause_button, size)
 
+font_level = pygame.font.SysFont(None,48)
+dragging_card = None
+game_active = False
+button = "Start"
 
-
+upgrade_panel_tower_1 = False
+upgrade_panel_tower_2 = False
+upgrade_panel_tower_3 = False
+upgrade_panel_tower_4 = False
+upgrade_panel_tower_5 = False
