@@ -3,6 +3,7 @@ import class_enemy as en
 import class_projectile as pro
 from class_projectile import*
 
+
 active_towers = []
 time_counting = 0
 
@@ -22,6 +23,12 @@ class Tower:
         self.attspd = []
         self.last_enemy = None
 
+    def spawn_bombers(self):
+        global time_counting
+        if time_counting//self.attspd[self.level] == 0:
+            bombers.append(Bombers(self.level))
+
+
 
     def trigger(self): # method that makes the tower shoot
         tower_pos = p.math.Vector2(self.dest)
@@ -40,6 +47,7 @@ class Tower:
                 furthest_ele = elem
 
         global time_counting
+        #if furthest_ele.pos[0] > self.range and furthest_ele.pos[1] > self.range:
 
         if time_counting % self.attspd[self.level] == 0 :
             if self.last_enemy == furthest_ele:
@@ -158,7 +166,4 @@ def lastEnemy(tower): # function that determines the last enemy
         if elem.pos[0] > furthest_ele.pos[0]:
             furthest_ele = elem
     return furthest_ele
-
-
-
 
