@@ -195,47 +195,48 @@ def game_map_1(dragging):
             dragging = False
             dragging_card = None
 
-    if not game_paused :
-        if not game_active :
-            if 1380 <= mouse_x <= 1440 and 15 <= mouse_y <= 70:
-               screen.blit(play_button_selected,(0,0))
-            else :
-                screen.blit(play_button, (0,0))
-        else :
-            button = "Pause"
-            screen.blit(pause_button, (0,0))
+    if not game_active:
+        if 1380 <= mouse_x <= 1440 and 15 <= mouse_y <= 70:
+            screen.blit(play_button_selected, (0, 0))
+        else:
+            screen.blit(play_button, (0, 0))
+    elif button == "Pause":
+        screen.blit(pause_button, (0, 0))
+    elif button == "Continue":
+        screen.blit(continue_button, (0, 0))
 
-        for el in active_towers :
+    if not game_paused:
+        for el in active_towers:
             el.trigger()
-            level_text = font_level.render(str(el.level), True, "brown")
-            screen.blit(level_text, (el.dest[0] + 25, el.dest[1] + 110))
 
-            if currency >= el.value:
-                if upgrade_panel_tower_1:
-                    screen.blit(upgrade_panel, (105 + 55, 360 - 20))
-                if upgrade_panel_tower_2:
-                    screen.blit(upgrade_panel, (490 + 55, 225 - 20))
-                if upgrade_panel_tower_3:
-                    screen.blit(upgrade_panel, (840 + 55, 270 - 20))
-                if upgrade_panel_tower_4:
-                    screen.blit(upgrade_panel, (1205 + 55, 450 - 20))
-                if upgrade_panel_tower_5:
-                    screen.blit(upgrade_panel, (1330 + 55, 215 - 20))
+    for el in active_towers:
+        level_text = font_level.render(str(el.level), True, "brown")
+        screen.blit(level_text, (el.dest[0] + 25, el.dest[1] + 110))
 
-            else:
-                if upgrade_panel_tower_1:
-                    screen.blit(upgrade_panel_gray, (105 + 55, 360 - 20))
-                if upgrade_panel_tower_2:
-                    screen.blit(upgrade_panel_gray, (490 + 55, 225 - 20))
-                if upgrade_panel_tower_3:
-                    screen.blit(upgrade_panel_gray, (840 + 55, 270 - 20))
-                if upgrade_panel_tower_4:
-                    screen.blit(upgrade_panel_gray, (1205 + 55, 450 - 20))
-                if upgrade_panel_tower_5:
-                    screen.blit(upgrade_panel_gray, (1330 + 55, 215 - 20))
+        if currency >= el.value:
+            if upgrade_panel_tower_1:
+                screen.blit(upgrade_panel, (105 + 55, 360 - 20))
+            if upgrade_panel_tower_2:
+                screen.blit(upgrade_panel, (490 + 55, 225 - 20))
+            if upgrade_panel_tower_3:
+                screen.blit(upgrade_panel, (840 + 55, 270 - 20))
+            if upgrade_panel_tower_4:
+                screen.blit(upgrade_panel, (1205 + 55, 450 - 20))
+            if upgrade_panel_tower_5:
+                screen.blit(upgrade_panel, (1330 + 55, 215 - 20))
+        else:
+            if upgrade_panel_tower_1:
+                screen.blit(upgrade_panel_gray, (105 + 55, 360 - 20))
+            if upgrade_panel_tower_2:
+                screen.blit(upgrade_panel_gray, (490 + 55, 225 - 20))
+            if upgrade_panel_tower_3:
+                screen.blit(upgrade_panel_gray, (840 + 55, 270 - 20))
+            if upgrade_panel_tower_4:
+                screen.blit(upgrade_panel_gray, (1205 + 55, 450 - 20))
+            if upgrade_panel_tower_5:
+                screen.blit(upgrade_panel_gray, (1330 + 55, 215 - 20))
 
-
-    if tower1.built :
+    if tower1.built:
         tower1.draw()
         if tower1 not in active_towers:
             active_towers.append(tower1)
@@ -249,28 +250,36 @@ def game_map_1(dragging):
             active_towers.append(tower3)
     if tower4.built:
         tower4.draw()
-        if tower4 not in active_towers :
+        if tower4 not in active_towers:
             active_towers.append(tower4)
     if tower5.built:
         tower5.draw()
-        if tower5 not in active_towers :
+        if tower5 not in active_towers:
             active_towers.append(tower5)
 
-    if game_active :
+    if game_active:
 
 
         for element in list_enemy:
-            element.enemy_management()
-        tempura += 0.5
-        en.wave(tempura)
+            if not game_paused:
+                element.enemy_management()
+
+            element.draw()
+
+        if not game_paused:
+            tempura += 0.5
+            en.wave(tempura)
 
         for el in projectiles:
-            el.update(dt)
+            if not game_paused:
+                el.update(dt)
             el.draw(screen)
             if not el.active:
                 projectiles.remove(el)
+
         for el in bombers:
-            el.update(dt)
+            if not game_paused:
+                el.update(dt)
             el.draw(screen)
             if not el.active:
                 projectiles.remove(el)
@@ -280,4 +289,10 @@ def game_map_1(dragging):
     screen.blit(card_icemage, card_icemage_rect)
     screen.blit(card_rockshooter, card_rockshooter_rect)
 
+    if game_paused:
+        pause_font = pygame.font.Font(None, 100)
+        pause_text = pause_font.render("PAUSE", True, (255, 255, 255))
+        screen.blit(pause_text, (screen.get_width() // 2 - 150, screen.get_height() // 2 - 50))
+
     return dragging
+
