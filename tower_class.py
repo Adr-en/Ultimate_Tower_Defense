@@ -20,6 +20,7 @@ class Tower:
         self.ammo = None # the ammo selected
         self.range = 0 # range of the tower
         self.attspd = []
+        self.last_enemy = None
 
 
     def trigger(self): # method that makes the tower shoot
@@ -39,9 +40,15 @@ class Tower:
                 furthest_ele = elem
 
         global time_counting
-        if time_counting % self.attspd[self.level] == 0 :
-            projectiles.append(self.ammo(self.dest,furthest_ele, lastEnemy,self.level-1))
 
+        if time_counting % self.attspd[self.level] == 0 :
+            if self.last_enemy == furthest_ele:
+                self.compteur += 5
+            else:
+                self.compteur = 0
+            projectiles.append(self.ammo(self.dest,furthest_ele, (self.last_enemy, self.compteur), self.level))
+
+            self.last_enemy = furthest_ele
         time_counting += 1
 
     def draw(self): # method that draws the tower
@@ -70,7 +77,7 @@ class Tower:
         self.ammo = self.list_ammo[1]
         self.screen.blit(self.surf, self.dest)
         self.range = 250
-        self.attspd = [1, 1, 1]
+        self.attspd = [20, 30, 40]
 
     def slow(self): # type slow
         self.level = 1

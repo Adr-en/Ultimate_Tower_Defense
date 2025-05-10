@@ -243,7 +243,6 @@ class Rock:
             #The damages increase at each hit, but if a new enemy is targeted, self.compteur will return to 0
             #And the damages will return to their value defined in self.damage
             self.enemy.damaged(self.damage[self.level] + self.compteur)
-            print(self.damage+self.compteur)
             self.active = False
 
 
