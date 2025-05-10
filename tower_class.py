@@ -7,6 +7,7 @@ import time
 
 active_towers = []
 
+
 class Tower:
     def __init__(self, x, y):
         self.screen = p.display.set_mode((1540, 775)) # screen
@@ -47,17 +48,20 @@ class Tower:
         self.surf = p.image.load("Assets/archer_tower.png").convert_alpha()
         self.surf = p.transform.smoothscale(self.surf, (70, 110))
         self.built = True
-        en.currency.add(-(self.value))
+        global currency
+        currency -= self.value
         self.ammo = self.list_ammo[0]
         self.screen.blit(self.surf, self.dest)
         self.range = 120
 
     def bomber(self): # type bomber
+
         self.level = 1
         self.surf = p.image.load("Assets/rock_tower.png")
         self.surf = p.transform.smoothscale(self.surf, (70, 110))
         self.built = True
-        en.currency.add(-(self.value))
+        global currency
+        currency -= self.value
         self.ammo = self.list_ammo[1]
         self.screen.blit(self.surf, self.dest)
         self.range = 250
@@ -67,7 +71,8 @@ class Tower:
         self.surf = p.image.load("Assets/ice_tower.png")
         self.surf = p.transform.smoothscale(self.surf, (70, 110))
         self.built = True
-        en.currency.add(-(self.value))
+        global currency
+        currency -= self.value
         self.ammo = self.list_ammo[2]
         self.screen.blit(self.surf, self.dest)
         self.range = 120
@@ -77,7 +82,8 @@ class Tower:
         self.surf = p.image.load("Assets/fire_tower.png")
         self.surf = p.transform.smoothscale(self.surf, (70, 110))
         self.built = True
-        en.currency.add(-(self.value))
+        global currency
+        currency -= self.value
         self.ammo = self.list_ammo[3]
         self.screen.blit(self.surf, self.dest)
         self.range = 250
@@ -87,7 +93,8 @@ class Tower:
         self.surf = p.image.load("Assets/adrien_tower.png")
         self.surf = p.transform.smoothscale(self.surf, (70, 110))
         self.built = True
-        en.currency.add(-(self.value))
+        global currency
+        currency -= self.value
         # À gérer selon ton architecture :
         # towers_list.append(self)
         self.ammo = self.list_ammo[4]
@@ -95,7 +102,8 @@ class Tower:
 
     def supr(self): # method that delete the tower
         self.level = 0
-        en.currency.add(self.value * 0.5)
+        global currency
+        currency += self.value * 0.5
         self.value = 100
         self.surf = p.image.load("Assets/available_tower.png")
         self.built = False
@@ -106,7 +114,8 @@ class Tower:
         if self.level < 3:
             self.level += 1
             self.value *= 1.2
-            en.currency.add(-(self.value))
+            global currency
+            currency -= self.value
             self.range += 20
 
 
