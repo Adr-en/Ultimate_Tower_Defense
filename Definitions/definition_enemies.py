@@ -51,8 +51,7 @@ def remove_white_background(surface, threshold=183):
     return surface
 
 
-Healthbar_image = pygame.image.load("Assets/health_ennemies.png").convert_alpha()
-Healthbar_image = remove_white_background(Healthbar_image)
+
 
 
 
@@ -79,6 +78,8 @@ def get_sprite_from_sheet(sheet, row, column, sprite_width, sprite_height):
     return sprite
 
 color = "black"
+Healthbar_image = pygame.image.load("Assets/health_ennemies.png").convert_alpha()
+Healthbar_image = remove_white_background(Healthbar_image)
 healthbar_player = get_sprite_from_sheet(Healthbar_image, 10 - HP_player, 0, 90, 20)
 healthbar_player = pygame.transform.smoothscale(healthbar_player, (250, 45))
 font_hp = pygame.font.SysFont(None, 20)
