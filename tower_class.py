@@ -37,7 +37,7 @@ class Tower:
             if elem.pos[0] > furthest_ele.pos[0]:
                 furthest_ele = elem
 
-        projectiles.append(self.ammo(self.dest,furthest_ele, lastEnemy))
+        projectiles.append(self.ammo(self.dest,furthest_ele, lastEnemy,self.level-1))
 
     def draw(self): # method that draws the tower
         self.screen.blit(self.surf, self.dest)
@@ -103,10 +103,11 @@ class Tower:
         self.screen.blit(self.surf, self.dest)
 
     def upgrade(self): # method that upgrades the tower
-        self.level += 1
-        self.value *= 1.2
-        en.currency.add(-(self.value))
-        self.range += 20
+        if self.level < 3:
+            self.level += 1
+            self.value *= 1.2
+            en.currency.add(-(self.value))
+            self.range += 20
 
 
 # Création de tours

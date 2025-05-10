@@ -32,21 +32,7 @@ def Coins():
     screen.blit(score_text, (60, 45))
     screen.blit(coin, (-8, 25))
 
-"""
 
-class Currency:
-    \"""Class to manage the gold gain when killing enemies and ending waves\"""
-    def __init__(self):
-        self.value = 300  # Start with 0 currency
-
-    def add(self, amount):
-        self.value += amount
-
-    def get(self):
-        return self.value
-
-currency = Currency()
-"""
 
 class Enemy:
     """Class enemy representing the enemies trying to go trough the map, it helps with moving them, interacting with
@@ -77,6 +63,8 @@ class Enemy:
 
         self.chrono_slowed = 0
         self.image_frozen = image_frozen
+
+        self.burned = False
         self.image_burned = image_burned
 
         self.money = money
@@ -121,20 +109,18 @@ class Enemy:
 
 
         self.speed = self.base_speed
+
         if time() - self.chrono_slowed < 2:
             self.speed = self.base_speed / 2
             self.image = self.image_frozen
         else :
             self.image = self.base_image
 
+        if self.burned :
+            self.image_burned = self.image_burned
+
+
         self.animation()
-        image = get_sprite_from_sheet(self.image , self.animation_row, self.animation_col, 90, 120)
-
-        screen.blit(image, self.pos)
-
-        #Management of speed in function of the chrono
-
-
 
 
         if dist >= self.speed :
@@ -150,6 +136,11 @@ class Enemy:
         if self.target_waypoint >= len(self.waypoints):                 #if the enemy attain his last target point he disappear and make the player lose a life
             self.ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr()
 
+
+
+    def draw(self) :
+        image = get_sprite_from_sheet(self.image, self.animation_row, self.animation_col, 90, 120)
+        screen.blit(image, self.pos)
 
     def damaged(self, damage):
         """Allow to make an enemy take damage and make him die if necessary
@@ -204,6 +195,8 @@ class Enemy:
     def slowed(self):
         self.chrono_slowed = time()
 
+    def burned(self):
+        self.burned = True
 
     def ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr(self):
         global HP_player
@@ -231,14 +224,14 @@ def spawn(type):
 
     data = dico_type[type]
     bad_guy = Enemy(
-        data[0],        # normal sprite (AnimateSprite)
-        data[1],        # frozen sprite (AnimateSprite)
-        data[2],        # burned sprite (AnimateSprite)
+        data[0],        # normal sprite
+        data[1],        # frozen sprite
+        data[2],        # burned sprite
         data[3],        # size (tuple)
         data[4],        # health (int)
         data[5],        # speed  (int)
-        data[6],        # money reward
-        data[7],        # additional value (e.g. damage or level)
+        data[6],        # money reward (int)
+        data[7],        # damage to player (int)
     )
     list_enemy.append(bad_guy)
 
@@ -247,8 +240,8 @@ def spawn(type):
 def wave(tempura):
 
 
-    if 2000> tempura > 10 :
-        if not (tempura%300):
+    if 2000> tempura :
+        if tempura%300 == 0:
             spawn(randint(1,7))
 
 
