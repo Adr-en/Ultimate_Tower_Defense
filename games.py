@@ -259,6 +259,7 @@ def game_map_1(dragging):
 
     if game_active:
 
+
         for element in list_enemy:
             if not game_paused:
                 element.enemy_management()
