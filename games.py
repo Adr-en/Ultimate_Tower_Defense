@@ -1,5 +1,6 @@
 from Definitions.definitions_game_map import*
 from tower_class import*
+import time
 
 bombers = []
 tempura = -5 ## temporaire
@@ -117,14 +118,14 @@ def game_map_1(dragging):
                 game_active = True
                 button = "Pause"
 
-            if play_pause_continue_button_rect.collidepoint(event.pos) and button == "Pause" :
+            if play_pause_continue_button_rect.collidepoint(event.pos) and button == "Pause" and time.time() % 0.0001 == 0 :
                 game_paused = True
                 button = "Continue"
-                print(game_paused)
 
-            if play_pause_continue_button_rect.collidepoint(event.pos) and button == "Continue" :
+            if play_pause_continue_button_rect.collidepoint(event.pos) and button == "Continue" and time.time() % 0.0001 == 0 :
                 game_paused = False
                 button = "Pause"
+                print(game_paused)
 
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -207,7 +208,11 @@ def game_map_1(dragging):
 
     if not game_paused:
         for el in active_towers:
-            el.trigger()
+            if el.attackspeed // el.attspd[el.level] == 0:
+                if el.ammo == el.list_ammo[4]:
+                    bombers.append(Bombers(el.level))
+                else:
+                    el.trigger()
 
     for el in active_towers:
         level_text = font_level.render(str(el.level), True, "brown")
