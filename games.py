@@ -208,11 +208,10 @@ def game_map_1(dragging):
 
     if not game_paused:
         for el in active_towers:
-            if el.attackspeed // el.attspd[el.level] == 0:
-                if el.ammo == el.list_ammo[4]:
-                    bombers.append(Bombers(el.level))
-                else:
-                    el.trigger()
+            if el.ammo == el.list_ammo[4]:
+                bombers.append(Bombers(el.level))
+            else:
+                el.trigger()
 
     for el in active_towers:
         level_text = font_level.render(str(el.level), True, "brown")

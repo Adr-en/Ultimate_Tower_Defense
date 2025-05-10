@@ -1,11 +1,10 @@
 import pygame as p
-import math
 import class_enemy as en
 import class_projectile as pro
 from class_projectile import*
-import time
 
 active_towers = []
+time_counting = 0
 
 
 class Tower:
@@ -20,7 +19,6 @@ class Tower:
         self.list_ammo = [pro.Arrow, pro.Rock, pro.Iceball, pro.FireBall, None] # list of type of tower
         self.ammo = None # the ammo selected
         self.range = 0 # range of the tower
-        self.attackspeed = time.time() # attackspeed of the tower
         self.attspd = []
 
 
@@ -40,7 +38,11 @@ class Tower:
             if elem.pos[0] > furthest_ele.pos[0]:
                 furthest_ele = elem
 
-        projectiles.append(self.ammo(self.dest,furthest_ele, lastEnemy,self.level-1))
+        global time_counting
+        if time_counting % self.attspd[self.level] == 0 :
+            projectiles.append(self.ammo(self.dest,furthest_ele, lastEnemy,self.level-1))
+
+        time_counting += 1
 
     def draw(self): # method that draws the tower
         self.screen.blit(self.surf, self.dest)
@@ -55,7 +57,7 @@ class Tower:
         self.ammo = self.list_ammo[0]
         self.screen.blit(self.surf, self.dest)
         self.range = 120
-        self.attspd = [3, 2.5, 2]
+        self.attspd = [30, 25, 20]
 
     def bomber(self): # type bomber
 
@@ -80,7 +82,7 @@ class Tower:
         self.ammo = self.list_ammo[2]
         self.screen.blit(self.surf, self.dest)
         self.range = 120
-        self.attspd = [0.75, 0.725, 0.70]
+        self.attspd = [7.5, 7.25, 7]
 
     def fire(self): # type fire
         self.level = 1
@@ -92,7 +94,7 @@ class Tower:
         self.ammo = self.list_ammo[3]
         self.screen.blit(self.surf, self.dest)
         self.range = 250
-        self.attspd [2.5, 2, 1.5]
+        self.attspd = [25, 20, 15]
 
     def adrien(self):  # type adrien
         self.level = 1
