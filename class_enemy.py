@@ -19,8 +19,10 @@ def Display_Hp_player():
     if HP_player < last_HP_player:
         Hp_text = font_hp.render(str(HP_player) + " .hp", True, color)
 
-    screen.blit(healthbar_player,(5, 0))
-    screen.blit(Hp_text, (230, 17))
+    healthbar_player = get_sprite_from_sheet(Healthbar_image, 10 - HP_player, 0, 90, 20)
+    healthbar_player = pygame.transform.smoothscale(healthbar_player, (300, 54))
+    screen.blit(healthbar_player,(-20, -5))
+    screen.blit(Hp_text, (250, 10))
 
 #-----------------------------------------------------------------------------------#
 
@@ -142,6 +144,7 @@ class Enemy:
     def draw(self) :
 
         image = get_sprite_from_sheet(self.image, self.animation_row, self.animation_col, 90, 120)
+        image = pygame.transform.scale(image, self.size)
         screen.blit(image, self.pos)
         self.healthbar_zombie()
 
