@@ -20,6 +20,8 @@ class Tower:
         self.ammo = None # the ammo selected
         self.range = 0 # range of the tower
         self.attackspeed = time.time() # attackspeed of the tower
+        self.attspd = []
+
 
     def trigger(self): # method that makes the tower shoot
         tower_pos = p.math.Vector2(self.dest)
@@ -51,6 +53,7 @@ class Tower:
         self.ammo = self.list_ammo[0]
         self.screen.blit(self.surf, self.dest)
         self.range = 120
+        self.attspd = [3, 2.5, 2]
 
     def bomber(self): # type bomber
         self.level = 1
@@ -61,6 +64,7 @@ class Tower:
         self.ammo = self.list_ammo[1]
         self.screen.blit(self.surf, self.dest)
         self.range = 250
+        self.attspd = [1, 1, 1]
 
     def slow(self): # type slow
         self.level = 1
@@ -71,6 +75,7 @@ class Tower:
         self.ammo = self.list_ammo[2]
         self.screen.blit(self.surf, self.dest)
         self.range = 120
+        self.attspd = [0.75, 0.725, 0.70]
 
     def fire(self): # type fire
         self.level = 1
@@ -81,6 +86,7 @@ class Tower:
         self.ammo = self.list_ammo[3]
         self.screen.blit(self.surf, self.dest)
         self.range = 250
+        self.attspd [2.5, 2, 1.5]
 
     def adrien(self):  # type adrien
         self.level = 1
@@ -92,6 +98,7 @@ class Tower:
         # towers_list.append(self)
         self.ammo = self.list_ammo[4]
         self.screen.blit(self.surf, self.dest)
+        self.attspd = [4, 4, 3]
 
     def supr(self): # method that delete the tower
         self.level = 0
