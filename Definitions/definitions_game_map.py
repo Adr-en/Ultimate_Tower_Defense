@@ -1,6 +1,5 @@
 import pygame
-
-from class_projectile import clock
+pygame.font.init()
 
 #Initializing window settings
 screen = pygame.display.set_mode((1520, 775))
@@ -12,10 +11,6 @@ background_map_1 = pygame.image.load("Assets/background_level_1.jpg")
 background_map_1 = pygame.transform.smoothscale(background_map_1, size)
 
 coins = pygame.image.load("Assets/coins.png").convert_alpha()
-
-tower_test = pygame.image.load("Assets/default_tower.png").convert_alpha()
-tower_test = pygame.transform.smoothscale(tower_test, (75, 125))
-tower_test_rect = tower_test.get_rect(topleft=(1400, 600))
 
 initial_archer_card_pos = (800, 600)
 card_archer = pygame.image.load("Assets/cards_archer.png").convert_alpha()
@@ -62,3 +57,31 @@ upgrade_panel_gary = pygame.transform.smoothscale(upgrade_panel_gray, (100, 150)
 
 upgrade_panel = pygame.image.load("Assets/upgrade_button.png").convert_alpha()
 upgrade_panel = pygame.transform.smoothscale(upgrade_panel, (100, 150))
+
+play_button = pygame.image.load("Assets/start.png").convert_alpha()
+play_button = pygame.transform.smoothscale(play_button, size)
+
+buttons_surface = pygame.Surface((60,55))
+play_pause_continue_button_rect = buttons_surface.get_rect(topleft=(1380,15))
+
+play_button_selected = pygame.image.load("Assets/start_selected.png").convert_alpha()
+play_button_selected = pygame.transform.smoothscale(play_button_selected, size)
+
+continue_button = pygame.image.load("Assets/continue.png").convert_alpha()
+continue_button = pygame.transform.smoothscale(continue_button, size)
+
+pause_button = pygame.image.load("Assets/pause.png").convert_alpha()
+pause_button = pygame.transform.smoothscale(pause_button, size)
+
+font_level = pygame.font.SysFont(None,48)
+dragging_card = None
+game_active = False
+game_paused = False
+button = "Start"
+
+upgrade_panel_tower_1 = False
+upgrade_panel_tower_2 = False
+upgrade_panel_tower_3 = False
+upgrade_panel_tower_4 = False
+upgrade_panel_tower_5 = False
+

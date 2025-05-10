@@ -1,165 +1,91 @@
 import pygame
+pygame.font.init()
+
+#missing the convert alpha
+#resize the healthbar
+#adjust the zombies
+
+currency = 0
+last_currency = currency
+
+HP_player = 10
+last_HP_player = HP_player
 
 
-"""
+list_enemy = []         # list of all of the enemies alive on the board
+
+waypoints = [(-100, 260),
+             (-50 , 260),
+             (250, 280),
+             (400, 395),
+             (500, 445),
+             (620, 440),
+             (670, 355),
+             (710, 220),
+             (800, 140),
+             (930, 180),
+             (980, 270),
+             (1050, 340),
+             (1150, 360),
+             (1540, 360)]
 
 
+dico_type = {
+    1: [pygame.image.load("Assets/zombie1.png"), pygame.image.load("Assets/zombie1_frozen.png"), pygame.image.load("Assets/zombie1_burned.png"), (50, 50), 100, 1, 3, 1],
+    2: [pygame.image.load("Assets/zombie2.png"), pygame.image.load("Assets/zombie2_frozen.png"), pygame.image.load("Assets/zombie2_burned.png"), (50, 50), 100, 1, 3, 1],
+    3: [pygame.image.load("Assets/zombie3.png"), pygame.image.load("Assets/zombie3_frozen.png"), pygame.image.load("Assets/zombie3_burned.png"), (50, 50), 100, 1, 3, 1],
+    4: [pygame.image.load("Assets/zombie4.png"), pygame.image.load("Assets/zombie4_frozen.png"), pygame.image.load("Assets/zombie4_burned.png"), (50, 50), 100, 1, 3, 1],
+    5: [pygame.image.load("Assets/zombie5.png"), pygame.image.load("Assets/zombie5_frozen.png"), pygame.image.load("Assets/zombie5_burned.png"), (100, 100), 100, 1, 3, 1],
+    6: [pygame.image.load("Assets/zombie6.png"), pygame.image.load("Assets/zombie6_frozen.png"), pygame.image.load("Assets/zombie6_burned.png"), (50, 50), 100, 1, 3, 1],
+    7: [pygame.image.load("Assets/soldier1.png"), pygame.image.load("Assets/soldier1.png"), pygame.image.load("Assets/soldier1_burned.png"), (50, 50), 100, 1, 3, 1],
+    8: [pygame.image.load("Assets/soldier2.png"), pygame.image.load("Assets/soldier2_frozen.png"), pygame.image.load("Assets/soldier2_burned.png"), (50, 50), 100, 1, 3, 1],
+    9: [pygame.image.load("Assets/boss.png"), pygame.image.load("Assets/boss_frozen.png"), pygame.image.load("Assets/boss_burned.png"), (50, 50), 100, 1, 3, 2],
+}
+
+def remove_white_background(surface, threshold=183):
+    surface = surface.convert_alpha()
+    for x in range(surface.get_width()):
+        for y in range(surface.get_height()):
+            r, g, b, a = surface.get_at((x, y))
+            if r > threshold and g > threshold and b > threshold:
+                surface.set_at((x, y), (0, 0, 0, 0))  # rend le pixel totalement transparent
+    return surface
 
 
-
-
-
-
-dico_type ={                                        # dictionnary containing all different types of enemies and their associated attributes
-            1 : ["zombie1.png", "zombie1_frozen.png","zombie1_burned.png",(50,50), 100,1,3, 10],         # number of the type : image, size, health, speed, money
-            2 : ["zombie2.png", "zombie2_frozen.png","zombie2_burned.png",(70,70), 400, 1,100, 5, 30],
-            3 : ["zombie3.png", "zombie3_frozen.png","zombie3_burned.png",(10,10), 400, 1,100, 7, 30],
-            4 : ["zombie4.png", "zombie4_frozen.png","zombie4_burned.png",(60,60), 400, 1,100, 9, 50],
-            5 : ["zombie5.png", "zombie5_frozen.png","zombie5_burned.png",(80,80), 400, 1,100, 15, 100],
-            6 : ["zombie6.png", "zombie6_frozen.png","zombie6_burned.png",(100,100), 400, 1,100, 15, 100],
-            7 : ["soldier1.png", "soldier1_frozen.png", "soldier1_burned.png", (100, 100), 400, 1, 100, 15, 100],
-            8 : ["soldier2.png", "soldier2_frozen.png", "soldier2_burned.png", (100, 100), 400, 1, 100, 15, 100],
-            9 : ["boss.png", "boss_frozen.png", "boss_burned.png", (100, 100), 400, 1, 100, 15, 100],
-           }
-
-
-
-
-
-enemy_py_1_1 = pygame.image.load(dico_type[1][0][0]).convert_alpha()
-enemy_py_1_1 = pygame.transform.smoothscale(enemy_py_1_1, dico_type[1][1])  # Resize image
-enemy_py_1_1.set_colorkey((0, 0, 0))
-
-enemy_py_1_2= pygame.image.load(dico_type[1][0][1]).convert_alpha()
-enemy_py_1_2= pygame.transform.smoothscale(enemy_py_1_2, dico_type[1][1])  # Resize image
-enemy_py_1_2.set_colorkey((0, 0, 0))
-
-enemy_py_1_3= pygame.image.load(dico_type[1][0][2]).convert_alpha()
-enemy_py_1_3= pygame.transform.smoothscale(enemy_py_1_3, dico_type[1][1])  # Resize image
-enemy_py_1_3.set_colorkey((0, 0, 0))
-
-
-
-
-
-enemy_py_2_1 = pygame.image.load(dico_type[2][0][0]).convert_alpha()
-enemy_py_2_1 = pygame.transform.smoothscale(enemy_py_2_1, dico_type[2][1])  # Resize image
-enemy_py_2_1.set_colorkey((0, 0, 0))
-
-enemy_py_2_2 = pygame.image.load(dico_type[2][0][1]).convert_alpha()
-enemy_py_2_2 = pygame.transform.smoothscale(enemy_py_2_2, dico_type[2][1])  # Resize image
-enemy_py_2_2.set_colorkey((0, 0, 0))
-
-enemy_py_2_3 = pygame.image.load(dico_type[2][0][2]).convert_alpha()
-enemy_py_2_3 = pygame.transform.smoothscale(enemy_py_2_3, dico_type[2][1])  # Resize image
-enemy_py_2_3.set_colorkey((0, 0, 0))
-
-animation2 = [enemy_py_2_1, enemy_py_2_2, enemy_py_2_3]
-
-
-
-enemy_py_3_1 = pygame.image.load(dico_type[3][0][0]).convert_alpha()
-enemy_py_3_1 = pygame.transform.smoothscale(enemy_py_3_1, dico_type[2][1])  # Resize image
-enemy_py_3_1.set_colorkey((0, 0, 0))
-
-enemy_py_3_2 = pygame.image.load(dico_type[3][0][1]).convert_alpha()
-enemy_py_3_2 = pygame.transform.smoothscale(enemy_py_3_2, dico_type[2][1])  # Resize image
-enemy_py_3_2.set_colorkey((0, 0, 0))
-
-enemy_py_3_3 = pygame.image.load(dico_type[3][0][2]).convert_alpha()
-enemy_py_3_3 = pygame.transform.smoothscale(enemy_py_3_3, dico_type[2][1])  # Resize image
-enemy_py_3_3.set_colorkey((0, 0, 0))
-
-animation3 = [enemy_py_3_1, enemy_py_3_2, enemy_py_3_3]
-
-
-enemy_py_4_1 = pygame.image.load(dico_type[4][0][0]).convert_alpha()
-enemy_py_4_1 = pygame.transform.smoothscale(enemy_py_4_1, dico_type[2][1])  # Resize image
-enemy_py_4_1.set_colorkey((0, 0, 0))
-
-enemy_py_4_2 = pygame.image.load(dico_type[4][0][1]).convert_alpha()
-enemy_py_4_2 = pygame.transform.smoothscale(enemy_py_4_2, dico_type[2][1])  # Resize image
-enemy_py_4_2.set_colorkey((0, 0, 0))
-
-enemy_py_4_3 = pygame.image.load(dico_type[4][0][2]).convert_alpha()
-enemy_py_4_3 = pygame.transform.smoothscale(enemy_py_4_3, dico_type[2][1])  # Resize image
-enemy_py_4_3.set_colorkey((0, 0, 0))
-
-animation4 = [enemy_py_4_1, enemy_py_4_2, enemy_py_4_3]
-
-
-enemy_py_5_1 = pygame.image.load(dico_type[5][0][0]).convert_alpha()
-enemy_py_5_1 = pygame.transform.smoothscale(enemy_py_5_1, dico_type[5][1])  # Resize image
-enemy_py_5_1.set_colorkey((0, 0, 0))
-
-enemy_py_5_2 = pygame.image.load(dico_type[5][0][1]).convert_alpha()
-enemy_py_5_2 = pygame.transform.smoothscale(enemy_py_5_2, dico_type[5][1])  # Resize image
-enemy_py_5_2.set_colorkey((0, 0, 0))
-
-enemy_py_5_3 = pygame.image.load(dico_type[5][0][2]).convert_alpha()
-enemy_py_5_3 = pygame.transform.smoothscale(enemy_py_5_3, dico_type[5][1])  # Resize image
-enemy_py_5_3.set_colorkey((0, 0, 0))
-
-animation5 = [enemy_py_5_1, enemy_py_5_2, enemy_py_5_3]
-
-
-enemy_py_6_1 = pygame.image.load(dico_type[5][0][0]).convert_alpha()
-enemy_py_6_1 = pygame.transform.smoothscale(enemy_py_6_1, dico_type[5][1])  # Resize image
-enemy_py_6_1.set_colorkey((0, 0, 0))
-
-enemy_py_6_2 = pygame.image.load(dico_type[5][0]).convert_alpha()
-enemy_py_6_2 = pygame.transform.smoothscale(enemy_py_6_2, dico_type[5][1])  # Resize image
-enemy_py_6_2.set_colorkey((0, 0, 0))
-
-enemy_py_6_3 = pygame.image.load(dico_type[5][0]).convert_alpha()
-enemy_py_6_3 = pygame.transform.smoothscale(enemy_py_6_3, dico_type[5][1])  # Resize image
-enemy_py_6_3.set_colorkey((0, 0, 0))
-
-animation6 = [enemy_py_6_1, enemy_py_6_2, enemy_py_6_3]
-
-
-enemy_py_7_1 = pygame.image.load(dico_type[5][0][0]).convert_alpha()
-enemy_py_7_1 = pygame.transform.smoothscale(enemy_py_7_1, dico_type[5][1])  # Resize image
-enemy_py_7_1.set_colorkey((0, 0, 0))
-
-enemy_py_7_2 = pygame.image.load(dico_type[5][0]).convert_alpha()
-enemy_py_7_2 = pygame.transform.smoothscale(enemy_py_7_2, dico_type[5][1])  # Resize image
-enemy_py_7_2.set_colorkey((0, 0, 0))
-
-enemy_py_7_3 = pygame.image.load(dico_type[5][0]).convert_alpha()
-enemy_py_7_3 = pygame.transform.smoothscale(enemy_py_7_3, dico_type[5][1])  # Resize image
-enemy_py_7_3.set_colorkey((0, 0, 0))
-
-animation7 = [enemy_py_7_1, enemy_py_7_2, enemy_py_7_3]
-
-
-enemy_py_8_1 = pygame.image.load(dico_type[5][0]).convert_alpha()
-enemy_py_8_1 = pygame.transform.smoothscale(enemy_py_8_1, dico_type[5][1])  # Resize image
-enemy_py_8_1.set_colorkey((0, 0, 0))
-
-enemy_py_8_2 = pygame.image.load(dico_type[5][0]).convert_alpha()
-enemy_py_8_2 = pygame.transform.smoothscale(enemy_py_8_2, dico_type[5][1])  # Resize image
-enemy_py_8_2.set_colorkey((0, 0, 0))
-
-enemy_py_8_3 = pygame.image.load(dico_type[5][0]).convert_alpha()
-enemy_py_8_3 = pygame.transform.smoothscale(enemy_py_8_3, dico_type[5][1])  # Resize image
-enemy_py_8_3.set_colorkey((0, 0, 0))
-
-animation8 = [enemy_py_8_1, enemy_py_8_2, enemy_py_8_3]
+Healthbar_image = pygame.image.load("Assets/health_ennemies.png").convert_alpha()
+Healthbar_image = remove_white_background(Healthbar_image)
 
 
 
+def get_sprite_from_sheet(sheet, row, column, sprite_width, sprite_height):
+    """
+    Extracts a single sprite from a sprite sheet.
 
-list_load = [enemy_py_1, enemy_py_2, enemy_py_3, enemy_py_4, enemy_py_5]
+    Parameters:
+    - sheet (pygame.Surface): The sprite sheet.
+    - row (int): The row number (starting from 0).
+    - column (int): The column number (starting from 0).
+    - sprite_width (int): Width of a single sprite.
+    - sprite_height (int): Height of a single sprite.
 
-healthbar100 =
-healthbar90 =
-healthbar75 =
-healthbar60 =
-healthbar50 =
-healthbar40 =
-healthbar30 =
-healthbar20 =
-healthbar10 =
+    Returns:
+    - pygame.Surface: The extracted sprite.
+    """
+    # Create a new surface with alpha for the extracted sprite
+    sprite = pygame.Surface((sprite_width, sprite_height), pygame.SRCALPHA)
+    # Define the rectangle to copy
+    rect = pygame.Rect(column * sprite_width, row * sprite_height, sprite_width, sprite_height)
+    # Blit the corresponding part of the sheet onto the new surface
+    sprite.blit(sheet, (0, 0), rect)
+    return sprite
 
-"""
+color = "black"
+healthbar_player = get_sprite_from_sheet(Healthbar_image, 10 - HP_player, 0, 90, 20)
+healthbar_player = pygame.transform.smoothscale(healthbar_player, (250, 45))
+font_hp = pygame.font.SysFont(None, 20)
+Hp_text = font_hp.render(str(HP_player) + " .hp", True, color)
+
+font_score = pygame.font.SysFont(None, 72)
+coin = pygame.image.load("Assets/coins.png")
+coin = pygame.transform.smoothscale(coin, (1500, 840))
+score_text = font_score.render(str(currency), True, "gold")

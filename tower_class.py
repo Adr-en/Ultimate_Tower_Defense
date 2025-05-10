@@ -134,3 +134,6 @@ def lastEnemy(tower): # function that determines the last enemy
             furthest_ele = elem
     return furthest_ele
 
+
+
+
