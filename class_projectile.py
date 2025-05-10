@@ -4,6 +4,7 @@ import math
 
 from class_enemy import*
 
+bombers = []
 projectiles = []
 
 # Initialization

@@ -113,7 +113,7 @@ class Tower:
 
     def adrien(self):  # type adrien
         self.level = 1
-        self.surf = p.image.load("Assets/adrien_tower.png")
+        #self.surf = p.image.load("Assets/adrien_tower.png")
         self.surf = p.transform.smoothscale(self.surf, (70, 110))
         self.built = True
         global currency
@@ -122,7 +122,7 @@ class Tower:
         # towers_list.append(self)
         self.ammo = self.list_ammo[4]
         self.screen.blit(self.surf, self.dest)
-        self.attspd = [4, 4, 3]
+        self.attspd = [40, 40, 30]
 
     def supr(self): # method that delete the tower
         self.level = 0
@@ -142,6 +142,10 @@ class Tower:
             currency -= self.value
             self.range += 20
 
+    def spawn_bombers(self):
+        global time_counting
+        if time_counting % self.attspd[0] == 0:
+            bombers.append(Bombers(self.level))
 
 # Création de tours
 tower1 = Tower(105, 360)
@@ -149,6 +153,7 @@ tower2 = Tower(490, 225)
 tower3 = Tower(840, 270)
 tower4 = Tower(1205, 450)
 tower5 = Tower(1330, 215)
+hut = Tower(280,500)
 
 def lastEnemy(tower): # function that determines the last enemy
     tower_pos = p.math.Vector2(tower.dest)

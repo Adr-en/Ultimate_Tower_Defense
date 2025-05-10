@@ -2,7 +2,6 @@ from Definitions.definitions_game_map import*
 from tower_class import*
 import time
 
-bombers = []
 tempura = -5 ## temporaire
 
 def game_map_1(dragging):
@@ -25,6 +24,7 @@ def game_map_1(dragging):
     global continue_button_bool
     global button
     global game_paused
+    global hut_built_boolean
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -35,6 +35,12 @@ def game_map_1(dragging):
     for event in pygame.event.get():
 
         if event.type == pygame.MOUSEBUTTONDOWN:
+
+            if hut_available_rect.collidepoint(event.pos):
+                hut_built_boolean = True
+                hut.adrien()
+
+
             if not dragging:
                 if card_archer_rect.collidepoint(event.pos):
                     dragging = True
@@ -209,11 +215,12 @@ def game_map_1(dragging):
     if not game_paused:
         for el in active_towers:
             if el.ammo == el.list_ammo[4]:
-                bombers.append(Bombers(el.level))
+                el.spawn_bombers()
             else:
                 el.trigger()
 
     for el in active_towers:
+
         level_text = font_level.render(str(el.level), True, "brown")
         screen.blit(level_text, (el.dest[0] + 25, el.dest[1] + 110))
 
@@ -261,6 +268,12 @@ def game_map_1(dragging):
         if tower5 not in active_towers:
             active_towers.append(tower5)
 
+    if not hut_built_boolean :
+        screen.blit(hut_available, hut_available_rect)
+        if hut not in active_towers :
+            active_towers.append(hut)
+
+
     if game_active:
 
 
@@ -284,7 +297,7 @@ def game_map_1(dragging):
         for el in bombers:
             if not game_paused:
                 el.update(dt)
-            el.draw(screen)
+
             if not el.active:
                 projectiles.remove(el)
 
@@ -292,7 +305,9 @@ def game_map_1(dragging):
     screen.blit(card_firemage, card_firemage_rect)
     screen.blit(card_icemage, card_icemage_rect)
     screen.blit(card_rockshooter, card_rockshooter_rect)
-
+    screen.blit(card_adriboom,card_adriboom_rect)
+    if hut_built_boolean:
+        screen.blit(hut_built, hut_built_rect)
     if game_paused:
         pause_font = pygame.font.Font(None, 100)
         pause_text = pause_font.render("PAUSE", True, (255, 255, 255))

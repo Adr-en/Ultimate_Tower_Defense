@@ -77,6 +77,7 @@ font_level = pygame.font.SysFont(None,48)
 dragging_card = None
 game_active = False
 game_paused = False
+hut_built_boolean = False
 button = "Start"
 
 upgrade_panel_tower_1 = False
@@ -85,3 +86,15 @@ upgrade_panel_tower_3 = False
 upgrade_panel_tower_4 = False
 upgrade_panel_tower_5 = False
 
+hut_available = pygame.image.load("Assets/hut1.png").convert_alpha()
+hut_available = pygame.transform.smoothscale(hut_available, (200,200))
+hut_available_rect = hut_available.get_rect(topleft=(280,500))
+
+hut_built = pygame.image.load("Assets/hut2.png").convert_alpha()
+hut_built = pygame.transform.smoothscale(hut_built, (200, 200))
+hut_built_rect = hut_built.get_rect(topleft=(280,500))
+
+initial_adriboom_card_pos = (1320, 600)
+card_adriboom = pygame.image.load("Assets/cards_adriboom.png").convert_alpha()
+card_adriboom = pygame.transform.smoothscale(card_adriboom, (125,175))
+card_adriboom_rect = card_adriboom.get_rect(topleft=(initial_adriboom_card_pos[0],initial_adriboom_card_pos[1]))
