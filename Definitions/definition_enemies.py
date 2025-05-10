@@ -5,7 +5,7 @@ pygame.font.init()
 #resize the healthbar
 #adjust the zombies
 
-currency = 0
+currency = 300
 last_currency = currency
 
 HP_player = 10
@@ -14,8 +14,7 @@ last_HP_player = HP_player
 
 list_enemy = []         # list of all of the enemies alive on the board
 
-waypoints = [(-100, 260),
-             (-50 , 260),
+waypoints = [(0 , 260),
              (250, 280),
              (400, 395),
              (500, 445),

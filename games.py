@@ -2,7 +2,7 @@ from Definitions.definitions_game_map import*
 from tower_class import*
 
 bombers = []
-tempura = 0 ## temporaire
+tempura = -5 ## temporaire
 
 def game_map_1(dragging):
 
@@ -257,6 +257,7 @@ def game_map_1(dragging):
             active_towers.append(tower5)
 
     if game_active :
+
 
         for element in list_enemy:
             element.enemy_management()
