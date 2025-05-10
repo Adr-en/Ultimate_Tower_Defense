@@ -82,7 +82,6 @@ class Enemy:
     def enemy_management(self):
         """Centralization of every function to make enemies work, however it is to be completed"""
         self.move()
-        self.healthbar_zombie()
         #screen.blit(self.image, self.pos)
 
 
@@ -106,6 +105,8 @@ class Enemy:
         else :
             self.animation_row = 1
 
+        self.animation()
+
 
 
         self.speed = self.base_speed
@@ -120,7 +121,7 @@ class Enemy:
             self.image_burned = self.image_burned
 
 
-        self.animation()
+
 
 
         if dist >= self.speed :
@@ -139,8 +140,11 @@ class Enemy:
 
 
     def draw(self) :
+
         image = get_sprite_from_sheet(self.image, self.animation_row, self.animation_col, 90, 120)
         screen.blit(image, self.pos)
+        self.healthbar_zombie()
+
 
     def damaged(self, damage):
         """Allow to make an enemy take damage and make him die if necessary
