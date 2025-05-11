@@ -2,10 +2,12 @@ import pygame as p
 import class_enemy as en
 import class_projectile as pro
 from class_projectile import*
+from Definitions.definitions_tower import*
 
 
 active_towers = []
 time_counting = 0
+
 
 
 class Tower:
@@ -50,7 +52,8 @@ class Tower:
         global time_counting
         #if furthest_ele.pos[0] > self.range and furthest_ele.pos[1] > self.range:
 
-        if time_counting % self.attspd[self.level] == 0 :
+
+        if time_counting % self.attspd[self.level - 1] == 0 :
             if self.last_enemy == furthest_ele:
                 self.compteur += 5
             else:
@@ -65,14 +68,13 @@ class Tower:
 
     def archer(self): # type archer
         self.level = 1
-        self.surf = p.image.load("Assets/archer_tower.png").convert_alpha()
-        self.surf = p.transform.smoothscale(self.surf, (70, 110))
+        self.surf = get_sprite_from_sheet(elandor[self.level - 1],0, 0,90,180)
         self.built = True
         global currency
         currency -= self.value
         self.ammo = self.list_ammo[0]
         self.screen.blit(self.surf, self.dest)
-        self.range = 120
+        self.range = 160
         self.attspd = [30, 25, 20]
 
     def bomber(self): # type bomber
@@ -85,7 +87,7 @@ class Tower:
         currency -= self.value
         self.ammo = self.list_ammo[1]
         self.screen.blit(self.surf, self.dest)
-        self.range = 250
+        self.range = 290
         self.attspd = [20, 30, 40]
 
     def slow(self): # type slow
@@ -97,7 +99,7 @@ class Tower:
         currency -= self.value
         self.ammo = self.list_ammo[2]
         self.screen.blit(self.surf, self.dest)
-        self.range = 120
+        self.range = 160
         self.attspd = [7.5, 7.25, 7]
 
     def fire(self): # type fire
@@ -109,7 +111,7 @@ class Tower:
         currency -= self.value
         self.ammo = self.list_ammo[3]
         self.screen.blit(self.surf, self.dest)
-        self.range = 250
+        self.range = 290
         self.attspd = [25, 20, 15]
 
     def adrien(self):  # type adrien
@@ -150,7 +152,7 @@ class Tower:
         #print(time_counting,self.attspd[self.level-1], time_counting % self.attspd[self.level-1])
         #if time_counting % self.attspd[self.level-1] == 0:
          #   bombers.append(Bombers(self.level))
-        if tempura%self.attspd[self.level-1] == 0 :
+        if tempura % self.attspd[self.level-1] == 0 :
             bombers.append(Bombers(self.level))
 
         return

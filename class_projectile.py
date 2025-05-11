@@ -92,7 +92,7 @@ class Arrow:
         #from the list if self.active = False, so it allows us to have a smaller list (= less iterations every time).
         #Without it, there would have hundreds of elements in the projectiles list making the game eventually lag
         self.active = True
-        self.damage = [30, 40, 50]
+        self.damage = [2, 5, 10]
         self.level = level
 
     def update(self, dt):
@@ -108,7 +108,7 @@ class Arrow:
 
         #If the projectile has reached its final position, we can damage the enemy and set self.active to False, waiting for the projectile to be removed from the list
         if self.t >= self.time:
-            self.enemy.damaged(self.damage[self.level])
+            self.enemy.damaged(self.damage[self.level - 1])
             self.active = False
 
 
