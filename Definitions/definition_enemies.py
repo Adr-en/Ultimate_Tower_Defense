@@ -2,16 +2,33 @@ import pygame
 pygame.font.init()
 
 
-currency = 300
-last_currency = currency
+
+#______________________________Currency_____________________________________________________________#
+
+class Currency():
+    def __init__(self, value):
+        self.value = value
+
+    def get_value(self):
+        return self.value
+
+currency = Currency(3000)
+last_currency = Currency(currency.value)
+
+
+font_score = pygame.font.SysFont(None, 72)
+coin = pygame.image.load("Assets/coins.png")
+coin = pygame.transform.smoothscale(coin, (1500, 840))
+score_text = font_score.render(str(currency.value), True, "gold")
+
+#___________________________________________________________________________________________________#
 
 HP_player = 10
 last_HP_player = HP_player
 
-
 list_enemy = []         # list of all of the enemies alive on the board
 
-waypoints = [(-50 , 260),
+waypoints = [(-50 , 260),           #path point for the enemies trajectory
              (250, 280),
              (400, 395),
              (500, 445),
@@ -25,7 +42,7 @@ waypoints = [(-50 , 260),
              (1150, 360),
              (1540, 360)]
 
-dico_type = {
+dico_type = {               #dico to define the differents enemies and their capacities
     1: [pygame.image.load("Assets/zombie1.png"), pygame.image.load("Assets/zombie1_frozen.png"), pygame.image.load("Assets/zombie1_burned.png"), (80, 106), 100, 1, 3, 1],
     2: [pygame.image.load("Assets/zombie2.png"), pygame.image.load("Assets/zombie2_frozen.png"), pygame.image.load("Assets/zombie2_burned.png"), (80, 106), 100, 1, 3, 1],
     3: [pygame.image.load("Assets/zombie3.png"), pygame.image.load("Assets/zombie3_frozen.png"), pygame.image.load("Assets/zombie3_burned.png"), (80, 106), 100, 1, 3, 1],
@@ -39,8 +56,8 @@ dico_type = {
 
 
 
-
 def remove_white_background(surface, threshold_min=183):
+    """get an image and return it without all the pixels of color (x,x,x) with x the threshold"""
     surface = surface.convert_alpha()
     for x in range(surface.get_width()):
         for y in range(surface.get_height()):
@@ -54,16 +71,6 @@ def remove_white_background(surface, threshold_min=183):
 def get_sprite_from_sheet(sheet, row, column, sprite_width, sprite_height):
     """
     Extracts a single sprite from a sprite sheet.
-
-    Parameters:
-    - sheet (pygame.Surface): The sprite sheet.
-    - row (int): The row number (starting from 0).
-    - column (int): The column number (starting from 0).
-    - sprite_width (int): Width of a single sprite.
-    - sprite_height (int): Height of a single sprite.
-
-    Returns:
-    - pygame.Surface: The extracted sprite.
     """
     # Create a new surface with alpha for the extracted sprite
     sprite = pygame.Surface((sprite_width, sprite_height), pygame.SRCALPHA)
@@ -73,13 +80,9 @@ def get_sprite_from_sheet(sheet, row, column, sprite_width, sprite_height):
     sprite.blit(sheet, (0, 0), rect)
     return sprite
 
+#____________________________________________Definition_of_the_Player's_Healthbar___________________________________________________#
 color = "black"
 Healthbar_image = pygame.image.load("Assets/health_ennemies.png").convert_alpha()
 Healthbar_image = remove_white_background(Healthbar_image)
 font_hp = pygame.font.SysFont(None, 35)
 Hp_text = font_hp.render(str(HP_player) + " .hp", True, color)
-
-font_score = pygame.font.SysFont(None, 72)
-coin = pygame.image.load("Assets/coins.png")
-coin = pygame.transform.smoothscale(coin, (1500, 840))
-score_text = font_score.render(str(currency), True, "gold")

@@ -2,14 +2,14 @@ from random import *
 from time import time
 
 from pygame.math import Vector2
-from pygame.transform import scale
-
 from Definitions.definition_enemies import *
 from menu import screen
+
 
 pygame.init()
 
 def Display_Hp_player():
+    """Display the healtbar and health points of the player"""
     global HP_player
     global Hp_text
 
@@ -24,27 +24,29 @@ def Display_Hp_player():
     screen.blit(healthbar_player,(-20, -5))
     screen.blit(Hp_text, (250, 10))
 
-#-----------------------------------------------------------------------------------#
+#---------------------------------------------------------------------------------------------#
 
 def Coins():
+    """Display the coins of the player"""
     global score_text
-    global last_currency
-    global currency
 
-    if last_currency > currency or currency > last_currency :
-        score_text = font_score.render(str(currency), True, "gold")
+    if last_currency.get_value() > currency.get_value() or currency.get_value() > last_currency.get_value() :
+        score_text = font_score.render(str(currency.value), True, "gold")
+
     screen.blit(score_text, (60, 45))
     screen.blit(coin, (-8, 25))
-    print(currency )
+
+#---------------------------------------------------------------------------------------------#
+
 
 
 
 class Enemy:
-    """Class enemy representing the enemies trying to go trough the map, it helps with moving them, interacting with
-    them manipulating each entities separatly.
-    It allows to make an enemy with some personal attributes, his representation on the map, some points by which he has to pass
-    , his position, the number of the points by which he is passing, the size of the image that will be used to draw him, the speed
-    movements and his health."""
+    """Class enemy representing the enemies trying to go through the map, it helps with moving them, interacting with
+    them manipulating each entity separately.
+    It allows to make an enemy with some personal attributes, his representation on the map, the references for
+    his image in function of his state (normal, frozen or burned), his size, some points by which he has to pass
+    , his position, the number of the points he already passed, the speedand some variable to manage it, his health etc..."""
 
 
     def __init__(self, base_image, image_frozen, image_burned, size, health_init,base_speed, money, dmg):
@@ -85,11 +87,6 @@ class Enemy:
         self.image_frozen.set_colorkey((113, 107, 104))
         self.image_burned.set_colorkey((113, 107, 104))
 
-    def enemy_management(self):
-        """Centralization of every function to make enemies work, however it is to be completed"""
-        self.move()
-        #screen.blit(self.image, self.pos)
-
 
 
     def move(self):
@@ -128,11 +125,6 @@ class Enemy:
 
 
 
-
-
-
-
-
         if dist >= self.speed :
             self.pos += movement.normalize() * self.speed
 
@@ -144,11 +136,12 @@ class Enemy:
 
 
         if self.target_waypoint >= len(self.waypoints):                 #if the enemy attain his last target point he disappear and make the player lose a life
-            self.ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr()
+            self.player_damage()
 
 
 
     def draw(self) :
+        """Display the zombie at his position"""
 
         image = get_sprite_from_sheet(self.image, self.animation_row, self.animation_col, 90, 120)
         image = pygame.transform.scale(image, self.size)
@@ -193,37 +186,40 @@ class Enemy:
         border = pygame.Rect(self.pos[0] - 5, self.pos[1] - 20, 76, 11)
         pygame.draw.rect(screen, color_border, border, 1)
 
-        # Player
+
 
 
     def die(self):
         """Remove an object enemy from the list and give the player the associated exp and money """
 
-        #currency.add(self.money)
+
         global currency
-        currency += self.money
+        currency.value = currency.get_value()+ self.money
         if self in list_enemy :
             list_enemy.remove(self)
 
         return
 
     def slowed(self):
+        """Put the chrono for slowed enemies at 0"""
         self.chrono_slowed = time()
 
     def burned(self):
+        """Used to display the image of a burned zombie"""
         self.burned = True
 
-    def ahtasperdueunpointdeviegroslosersameretupulamerdemdrrrrrrrr(self):
+    def player_damage(self):
+        """Change the player's health point if a zombie goes through the whole map"""
+
         global HP_player
         HP_player -= self.dmg
         list_enemy.remove(self)
         return
 
-        #self.variation = (randint(-20, 20),randint(-20, 20))
-        #self.speed = 30
 
 
     def animation(self):
+        """Change images of zombies to make the walking animation"""
 
         if time() - self.chrono_animation > 0.7:
 
@@ -253,6 +249,7 @@ def spawn(type):
 
 
 def wave(tempura):
+    """Make zombies spawn in function of a patern"""
 
 
     if 2000> tempura :
@@ -313,150 +310,5 @@ def wave(tempura):
 
         if not (tempura%1500):
             spawn(9)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-
-
-
-bomber_img = pygame.image.load("Assets/Quit_button.png").convert_alpha()
-bomber_img = pygame.transform.scale(bomber_img, (50, 70))
-
-bomber_img = pygame.image.load("Assets/Quit_button.png").convert_alpha()
-bomber_img = pygame.transform.scale(bomber_img, (50, 70))
-
-class Bombers:
-    def __init__(self, att1, att2, att3):
-        self.waypoints = waypoints[::-1]
-        self.spawn_speed = 4
-        self.active = True
-        self.damage = 50
-
-
-        self.pos = Vector2(self.waypoints[0])
-        self.target_waypoint = 1                # position of the actual point of the trajectory in the waypoint list
-
-        self.variation = (randint(-20, 20),randint(-20, 20))
-
-        self.speed = 30
-
-    def move(self):
-
-        target = Vector2(self.waypoints[self.target_waypoint]) + self.variation #represent the point of the trajectory that we target in teh form of a vector
-        movement = target - self.pos                    #represent the distance between the target and the position (it's a vector)
-        dist = movement.length()                        # represent the distance in the form of an integer not a vector
-
-
-
-        if dist >= self.speed :
-            self.pos += movement.normalize() * self.speed
-
-        else :
-            if dist != 0 :
-                self.pos += movement.normalize() * dist
-            else :
-                self.target_waypoint += 1
-
-
-        if self.target_waypoint >= len(self.waypoints):                 #if the enemy attain his last target point he disappear and make the player lose a life
-            self.active = False
-
-        def move(self):
-
-            target = Vector2(self.waypoints[
-                                 self.target_waypoint]) + self.variation  # represent the point of the trajectory that we target in teh form of a vector
-            movement = target - self.pos  # represent the distance between the target and the position (it's a vector)
-            dist = movement.length()  # represent the distance in the form of an integer not a vector
-
-            if dist >= self.speed:
-                self.pos += movement.normalize() * self.speed
-
-            else:
-                if dist != 0:
-                    self.pos += movement.normalize() * dist
-                else:
-                    self.target_waypoint += 1
-
-            if self.target_waypoint >= len(
-                    self.waypoints):  # if the enemy attain his last target point he disappear and make the player lose a life
-                self.active = False
-
-        def update(self, dt):
-            self.move()
-            for el in list_enemy:
-                dis_enemy = math.sqrt(
-                    ((el.pos[1] - el.size[1] / 2) - self.pos[1]) ** 2 +
-                    ((el.pos[0] - el.size[0] / 2) - self.pos[0]) ** 2
-                )
-                if dis_enemy <= 35:
-                    for target in list_enemy:
-                        dis = math.sqrt(
-                            ((target.pos[1] - target.size[1] / 2) - self.pos[1]) ** 2 +
-                            ((target.pos[0] - target.size[0] / 2) - self.pos[0]) ** 2
-                        )
-                        if dis <= 70:
-                            target.damaged(self.damage)
-                    self.active = False
-                    return
-
-        def draw(self, surface):
-            if not self.active:
-                return
-
-            rect = bomber_img.get_rect(center=(self.pos[0], self.pos[1]))
-            surface.blit(bomber_img, rect.topleft)
-
-            self.pos = Vector2(self.waypoints[0])
-            self.target_waypoint = 1  # position of the actual point of the trajectory in the waypoint list
-
-
-    def update(self, dt):
-        self.move()
-        for el in list_enemy:
-            dis_enemy = math.sqrt(
-                ((el.pos[1] - el.size[1] / 2) - self.pos[1]) ** 2 +
-                ((el.pos[0] - el.size[0] / 2) - self.pos[0]) ** 2
-            )
-            if dis_enemy <= 35:
-                for target in list_enemy:
-                    dis = math.sqrt(
-                        ((target.pos[1] - target.size[1] / 2) - self.pos[1]) ** 2 +
-                        ((target.pos[0] - target.size[0] / 2) - self.pos[0]) ** 2
-                    )
-                    if dis <= 70:
-                        target.damaged(self.damage)
-                self.active = False
-                return
-
-    def draw(self, surface):
-        if not self.active :
-            return
-
-        rect = bomber_img.get_rect(center=(self.pos[0], self.pos[1]))
-        surface.blit(bomber_img, rect.topleft)
-
-
-
-
-
-
-
-"""
-
-
-
-
 
 

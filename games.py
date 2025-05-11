@@ -150,59 +150,59 @@ def game_map_1(dragging):
 
         elif event.type == pygame.MOUSEBUTTONUP and dragging:
             if dragging_card == "archer" and card_archer_rect.collidepoint(event.pos):
-                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency >= tower1.value:
+                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency.value >= tower1.value:
                     tower1.archer()
-                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency >= tower2.value:
+                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency.value >= tower2.value:
                     tower2.archer()
-                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency >= tower3.value:
+                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency.value >= tower3.value:
                     tower3.archer()
-                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency >= tower4.value:
+                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency.value >= tower4.value:
                     tower4.archer()
-                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency >= tower5.value:
+                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency.value >= tower5.value:
                     tower5.archer()
                 card_archer_rect = card_archer.get_rect(topleft=initial_archer_card_pos)
 
             elif dragging_card == "firemage" and card_firemage_rect.collidepoint(event.pos):
-                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency >= tower1.value:
+                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency.value >= tower1.value:
                     tower1.fire()
-                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency >= tower2.value:
+                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency.value >= tower2.value:
                     tower2.fire()
-                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency >= tower3.value:
+                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency.value >= tower3.value:
                     tower3.fire()
-                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency >= tower4.value:
+                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency.value >= tower4.value:
                     tower4.fire()
-                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency >= tower5.value:
+                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency.value >= tower5.value:
                     tower5.fire()
                 card_firemage_rect = card_firemage.get_rect(topleft=initial_firemage_card_pos)
 
             elif dragging_card == "icemage" and card_icemage_rect.collidepoint(event.pos) :
-                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency >= tower1.value:
+                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency.value >= tower1.value:
                     tower1.slow()
-                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency >= tower2.value:
+                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency.value >= tower2.value:
                     tower2.slow()
-                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency >= tower3.value:
+                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency.value >= tower3.value:
                     tower3.slow()
-                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency >= tower4.value:
+                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency.value >= tower4.value:
                     tower4.slow()
-                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency >= tower5.value:
+                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency.value >= tower5.value:
                     tower5.slow()
                 card_icemage_rect = card_icemage.get_rect(topleft=initial_icemage_card_pos)
 
             elif dragging_card == "rockshooter" and card_rockshooter_rect.collidepoint(event.pos) :
-                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency >= tower1.value:
+                if tower1.tower.collidepoint(event.pos) and not tower1.built and currency.value >= tower1.value:
                     tower1.bomber()
-                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency >= tower2.value:
+                elif tower2.tower.collidepoint(event.pos) and not tower2.built and currency.value >= tower2.value:
                     tower2.bomber()
-                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency >= tower3.value:
+                elif tower3.tower.collidepoint(event.pos) and not tower3.built and currency.value >= tower3.value:
                     tower3.bomber()
-                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency >= tower4.value:
+                elif tower4.tower.collidepoint(event.pos) and not tower4.built and currency.value >= tower4.value:
                     tower4.bomber()
-                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency >= tower5.value:
+                elif tower5.tower.collidepoint(event.pos) and not tower5.built and currency.value >= tower5.value:
                     tower5.bomber()
                 card_rockshooter_rect = card_rockshooter.get_rect(topleft=initial_rockshooter_card_pos)
 
             elif dragging_card == "adriboom" and card_adriboom_rect.collidepoint(event.pos) :
-                if not hut_built_boolean and hut_available_rect.collidepoint(event.pos) and currency >= hut.value:
+                if not hut_built_boolean and hut_available_rect.collidepoint(event.pos) and currency.value >= hut.value:
                     active_towers.append(hut)
                     hut.adrien()
                     hut_built_boolean = True
@@ -231,12 +231,13 @@ def game_map_1(dragging):
             #else:  pas oublier de rajouter l'indentation lorsqu'on enleve le commentaire
             el.trigger()
 
+
     if game_active:
         time_counting += 0.5
 
         for element in list_enemy:
             if not game_paused:
-                element.enemy_management()
+                element.move()
 
             element.draw()
 
@@ -262,7 +263,11 @@ def game_map_1(dragging):
 
     for el in active_towers:
 
-        if currency >= el.value and el.level <= 2:
+        level_text = font_level.render(str(el.level), True, "brown")
+        screen.blit(level_text, (el.dest[0] + 25, el.dest[1] + 110))
+
+        #if currency.value >= el.value:
+        if currency.value >= el.value and el.level <= 2:
             if upgrade_panel_tower_1:
 
                 circle_surf = pygame.Surface((tower1.range * 2, tower1.range * 2), pygame.SRCALPHA)
@@ -349,6 +354,8 @@ def game_map_1(dragging):
 
     if not hut_built_boolean :                      #afficher la hut en construction si elle est en construction
         screen.blit(hut_available, hut_available_rect)
+
+
 
 
     screen.blit(card_archer, card_archer_rect)

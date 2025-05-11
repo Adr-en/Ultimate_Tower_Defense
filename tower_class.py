@@ -9,7 +9,6 @@ active_towers = []
 time_counting = 0
 
 
-
 class Tower:
     def __init__(self, x, y):
         self.screen = p.display.set_mode((1540, 775)) # screen
@@ -25,12 +24,6 @@ class Tower:
         self.attspd = []
         self.last_enemy = None
 
-    """
-    def spawn_bombers(self):
-        global time_counting
-        if time_counting//self.attspd[self.level] == 0:
-            bombers.append(Bombers(self.level))
-    """
 
 
     def trigger(self): # method that makes the tower shoot
@@ -50,7 +43,6 @@ class Tower:
                 furthest_ele = elem
 
         global time_counting
-        #if furthest_ele.pos[0] > self.range and furthest_ele.pos[1] > self.range:
 
 
         if time_counting % self.attspd[self.level - 1] == 0 :
@@ -72,12 +64,15 @@ class Tower:
         self.surf = p.transform.smoothscale(self.surf, (80, 130))
 
         self.built = True
-        global currency
-        currency -= self.value
+
         self.ammo = self.list_ammo[0]
         self.screen.blit(self.surf, self.dest)
         self.range = 160
         self.attspd = [30, 25, 20]
+
+        global currency
+        currency.value = currency.get_value() - 100
+
 
     def bomber(self): # type bomber
 
@@ -86,7 +81,7 @@ class Tower:
         self.surf = p.transform.smoothscale(self.surf, (80, 130))
         self.built = True
         global currency
-        currency -= self.value
+        currency.value = currency.get_value() - 100
         self.ammo = self.list_ammo[1]
         self.screen.blit(self.surf, self.dest)
         self.range = 290
@@ -98,7 +93,7 @@ class Tower:
         self.surf = p.transform.smoothscale(self.surf, (80, 130))
         self.built = True
         global currency
-        currency -= self.value
+        currency.value = currency.get_value() - 100
         self.ammo = self.list_ammo[2]
         self.screen.blit(self.surf, self.dest)
         self.range = 160
@@ -110,7 +105,7 @@ class Tower:
         self.surf = p.transform.smoothscale(self.surf, (80, 130))
         self.built = True
         global currency
-        currency -= self.value
+        currency.value = currency.get_value() - 100
         self.ammo = self.list_ammo[3]
         self.screen.blit(self.surf, self.dest)
         self.range = 290
@@ -122,7 +117,7 @@ class Tower:
         self.surf = p.transform.smoothscale(self.surf, (70, 110))
         self.built = True
         global currency
-        currency -= self.value
+        currency.value = currency.get_value() - 100
         # À gérer selon ton architecture :
         # towers_list.append(self)
         self.ammo = self.list_ammo[4]
@@ -132,7 +127,7 @@ class Tower:
     def supr(self): # method that delete the tower
         self.level = 0
         global currency
-        currency += self.value * 0.5
+        currency.value = currency.get_value() + self.value * 0.5
         self.value = 100
         if self.ammo == self.list_ammo[4]:
             self.surf = p.image.load("Assets/hut1.png.png").convert_alpha()
@@ -146,7 +141,7 @@ class Tower:
             self.level += 1
             self.value *= 1.2
             global currency
-            currency -= self.value
+            currency.value = currency.get_value() - 100
             self.range += 20
 
             # Détecter le type de la tour selon l'ammo
@@ -161,17 +156,12 @@ class Tower:
             else:
                 return  # hut ou type inconnu : pas de sprite à changer
 
-            self.surf = get_sprite_from_sheet(sprite_list[self.level - 1], 0, 0, 90, 180)
+            self.surf = get_sprite_from_sheet(sprite_list[self.level - 2], 0, 0, 90, 180)
             self.surf = p.transform.smoothscale(self.surf, (80, 130))
 
     def spawn_bomber(self, tempura):
-        #global time_counting
-        #print(time_counting,self.attspd[self.level-1], time_counting % self.attspd[self.level-1])
-        #if time_counting % self.attspd[self.level-1] == 0:
-         #   bombers.append(Bombers(self.level))
-        if tempura % self.attspd[self.level-1] == 0 :
+        if tempura%self.attspd[self.level-1] == 0 :
             bombers.append(Bombers(self.level))
-
         return
 
 # Création de tours

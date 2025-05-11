@@ -180,7 +180,7 @@ class FireBall:
             self.active = False
         #Contrairy to the other projectiles, the fireball doesn't deal damage itself but will instead burn the ground
         #(Dot class) to deal damage over time : it will create a Dot at its ending position
-            projectiles.append(Dot((self.x-75, self.y-75), self.damage[self.level]))
+            projectiles.append(Dot((self.x-75, self.y-75), self.damage[self.level-1]))
 
     def draw(self, surface):
         if not self.active:
@@ -248,7 +248,7 @@ class Rock:
         if self.t >= self.time:
             #The damages increase at each hit, but if a new enemy is targeted, self.compteur will return to 0
             #And the damages will return to their value defined in self.damage
-            self.enemy.damaged(self.damage[self.level] + self.compteur)
+            self.enemy.damaged(self.damage[self.level-1] + self.compteur)
             self.active = False
 
 
@@ -303,7 +303,7 @@ class Iceball:
         self.y = self.y0 + self.vy * self.t + 0.5 * self.gravity_factor * self.t ** 2
 
         if self.t >= self.time:
-            self.enemy.damaged(self.damage[self.level])
+            self.enemy.damaged(self.damage[self.level-1])
             #We will call the slow function defined in the Enemy class to slow the enemy for two seconds
             self.enemy.slowed()
             self.active = False
@@ -453,14 +453,14 @@ class Bombers:
                         ((target.pos[0] - target.size[0] / 2) - self.pos[0]) ** 2
                     )
                     if dis <= 150:
-                        target.damaged(self.damage[self.level])
+                        target.damaged(self.damage[self.level-1])
                 screen.blit(explosion_img, el.pos )
                 self.active = False
                 return
 
     def animation(self):
 
-        if time() - self.chrono_animation > 0.7:
+        if time() - self.chrono_animation > 0.2:
 
             self.chrono_animation = time()
             self.animation_col += 1
