@@ -12,7 +12,7 @@ class Currency():
     def get_value(self):
         return self.value
 
-currency = Currency(3000)
+currency = Currency(100)
 last_currency = Currency(currency.value)
 
 
@@ -43,15 +43,15 @@ waypoints = [(-50 , 260),           #path point for the enemies trajectory
              (1540, 360)]
 
 dico_type = {               #dico to define the differents enemies and their capacities
-    1: [pygame.image.load("Assets/zombie1.png"), pygame.image.load("Assets/zombie1_frozen.png"), pygame.image.load("Assets/zombie1_burned.png"), (80, 106), 100, 1, 3, 1],
-    2: [pygame.image.load("Assets/zombie2.png"), pygame.image.load("Assets/zombie2_frozen.png"), pygame.image.load("Assets/zombie2_burned.png"), (80, 106), 100, 1, 3, 1],
-    3: [pygame.image.load("Assets/zombie3.png"), pygame.image.load("Assets/zombie3_frozen.png"), pygame.image.load("Assets/zombie3_burned.png"), (80, 106), 100, 1, 3, 1],
-    4: [pygame.image.load("Assets/zombie4.png"), pygame.image.load("Assets/zombie4_frozen.png"), pygame.image.load("Assets/zombie4_burned.png"), (80, 106), 100, 1, 3, 1],
-    5: [pygame.image.load("Assets/zombie5.png"), pygame.image.load("Assets/zombie5_frozen.png"), pygame.image.load("Assets/zombie5_burned.png"), (80, 106), 100, 1, 3, 1],
-    6: [pygame.image.load("Assets/zombie6.png"), pygame.image.load("Assets/zombie6_frozen.png"), pygame.image.load("Assets/zombie6_burned.png"), (80, 106), 100, 1, 3, 1],
-    7: [pygame.image.load("Assets/soldier1.png"), pygame.image.load("Assets/soldier1_frozen.png"), pygame.image.load("Assets/soldier1_burned.png"), (80, 106), 100, 1, 3, 1],
-    8: [pygame.image.load("Assets/soldier2.png"), pygame.image.load("Assets/soldier2_frozen.png"), pygame.image.load("Assets/soldier2_burned.png"), (80, 106), 100, 1, 3, 1],
-    9: [pygame.image.load("Assets/boss.png"), pygame.image.load("Assets/boss_frozen.png"), pygame.image.load("Assets/boss_burned.png"), (80, 106), 100, 1, 3, 2],
+    1: [pygame.image.load("Assets/zombie1.png"), pygame.image.load("Assets/zombie1_frozen.png"), pygame.image.load("Assets/zombie1_burned.png"), (80, 106), 100, 1, 20, 1],
+    2: [pygame.image.load("Assets/zombie2.png"), pygame.image.load("Assets/zombie2_frozen.png"), pygame.image.load("Assets/zombie2_burned.png"), (80, 106), 100, 1, 20, 1],
+    3: [pygame.image.load("Assets/zombie3.png"), pygame.image.load("Assets/zombie3_frozen.png"), pygame.image.load("Assets/zombie3_burned.png"), (80, 106), 100, 1, 20, 1],
+    4: [pygame.image.load("Assets/zombie4.png"), pygame.image.load("Assets/zombie4_frozen.png"), pygame.image.load("Assets/zombie4_burned.png"), (80, 106), 100, 1, 20, 1],
+    5: [pygame.image.load("Assets/zombie5.png"), pygame.image.load("Assets/zombie5_frozen.png"), pygame.image.load("Assets/zombie5_burned.png"), (80, 106), 100, 1, 20, 1],
+    6: [pygame.image.load("Assets/zombie6.png"), pygame.image.load("Assets/zombie6_frozen.png"), pygame.image.load("Assets/zombie6_burned.png"), (80, 106), 100, 1, 20, 1],
+    7: [pygame.image.load("Assets/soldier1.png"), pygame.image.load("Assets/soldier1_frozen.png"), pygame.image.load("Assets/soldier1_burned.png"), (80, 106), 150, 1, 30, 1],
+    8: [pygame.image.load("Assets/soldier2.png"), pygame.image.load("Assets/soldier2_frozen.png"), pygame.image.load("Assets/soldier2_burned.png"), (80, 106), 150, 1, 30, 1],
+    9: [pygame.image.load("Assets/boss.png"), pygame.image.load("Assets/boss_frozen.png"), pygame.image.load("Assets/boss_burned.png"), (80, 106), 1000, 1, 100, 2],
 }
 
 
