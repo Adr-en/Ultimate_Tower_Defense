@@ -262,9 +262,6 @@ def game_map_1(dragging):
 
     for el in active_towers:
 
-        level_text = font_level.render(str(el.level), True, "brown")
-        screen.blit(level_text, (el.dest[0] + 25, el.dest[1] + 110))
-
         if currency >= el.value and el.level <= 2:
             if upgrade_panel_tower_1:
 

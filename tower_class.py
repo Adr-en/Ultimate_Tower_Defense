@@ -13,7 +13,7 @@ time_counting = 0
 class Tower:
     def __init__(self, x, y):
         self.screen = p.display.set_mode((1540, 775)) # screen
-        self.dest = (x, y) # position of the top left corner of the tower
+        self.dest = (x - 5, y - 15) # position of the top left corner of the tower
         self.surf = p.image.load("Assets/available_tower.png") # image of the tower when available
         self.tower = p.Rect(x, y, 75, 125) # surface itself
         self.built = False # checks if the tower is built
@@ -69,6 +69,8 @@ class Tower:
     def archer(self): # type archer
         self.level = 1
         self.surf = get_sprite_from_sheet(elandor[self.level - 1],0, 0,90,180)
+        self.surf = p.transform.smoothscale(self.surf, (80, 130))
+
         self.built = True
         global currency
         currency -= self.value
@@ -80,8 +82,8 @@ class Tower:
     def bomber(self): # type bomber
 
         self.level = 1
-        self.surf = p.image.load("Assets/rock_tower.png")
-        self.surf = p.transform.smoothscale(self.surf, (70, 110))
+        self.surf = get_sprite_from_sheet(rokhan[self.level - 1], 0, 0, 90, 180)
+        self.surf = p.transform.smoothscale(self.surf, (80, 130))
         self.built = True
         global currency
         currency -= self.value
@@ -92,8 +94,8 @@ class Tower:
 
     def slow(self): # type slow
         self.level = 1
-        self.surf = p.image.load("Assets/ice_tower.png")
-        self.surf = p.transform.smoothscale(self.surf, (70, 110))
+        self.surf = get_sprite_from_sheet(syra[self.level - 1], 0, 0, 90, 180)
+        self.surf = p.transform.smoothscale(self.surf, (80, 130))
         self.built = True
         global currency
         currency -= self.value
@@ -104,8 +106,8 @@ class Tower:
 
     def fire(self): # type fire
         self.level = 1
-        self.surf = p.image.load("Assets/fire_tower.png")
-        self.surf = p.transform.smoothscale(self.surf, (70, 110))
+        self.surf = get_sprite_from_sheet(maelor[self.level - 1], 0, 0, 90, 180)
+        self.surf = p.transform.smoothscale(self.surf, (80, 130))
         self.built = True
         global currency
         currency -= self.value
@@ -139,13 +141,28 @@ class Tower:
         self.ammo = None
         self.screen.blit(self.surf, self.dest)
 
-    def upgrade(self): # method that upgrades the tower
+    def upgrade(self):
         if self.level < 3:
             self.level += 1
             self.value *= 1.2
             global currency
             currency -= self.value
             self.range += 20
+
+            # Détecter le type de la tour selon l'ammo
+            if self.ammo == self.list_ammo[0]:  # Archer
+                sprite_list = elandor
+            elif self.ammo == self.list_ammo[1]:  # Bomber
+                sprite_list = rokhan
+            elif self.ammo == self.list_ammo[2]:  # Slow
+                sprite_list = syra
+            elif self.ammo == self.list_ammo[3]:  # Fire
+                sprite_list = maelor
+            else:
+                return  # hut ou type inconnu : pas de sprite à changer
+
+            self.surf = get_sprite_from_sheet(sprite_list[self.level - 1], 0, 0, 90, 180)
+            self.surf = p.transform.smoothscale(self.surf, (80, 130))
 
     def spawn_bomber(self, tempura):
         #global time_counting
