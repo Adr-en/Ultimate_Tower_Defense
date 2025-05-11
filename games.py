@@ -263,100 +263,27 @@ def game_map_1(dragging):
 
     for el in active_towers:
 
-        level_text = font_level.render(str(el.level), True, "brown")
-        screen.blit(level_text, (el.dest[0] + 25, el.dest[1] + 110))
+        tower_info = [
+            (tower1, upgrade_panel_tower_1, (160, 340)),
+            (tower2, upgrade_panel_tower_2, (545, 205)),
+            (tower3, upgrade_panel_tower_3, (895, 250)),
+            (tower4, upgrade_panel_tower_4, (1260, 430)),
+            (tower5, upgrade_panel_tower_5, (1385, 195)),
+        ]
 
-        #if currency.value >= el.value:
-        if currency.value >= el.value and el.level <= 2:
-            if upgrade_panel_tower_1:
+        for tower, show_panel, panel_pos in tower_info:
+            if show_panel:
+                can_afford = currency.value >= el.value
+                draw_upgrade_panel(screen, tower, panel_pos, can_afford, upgrade_panel, upgrade_panel_gray)
 
-                circle_surf = pygame.Surface((tower1.range * 2, tower1.range * 2), pygame.SRCALPHA)
-                pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower1.range, tower1.range), tower1.range)
-                screen.blit(circle_surf, (tower1.dest[0] - tower1.range + 35, tower1.dest[1] - tower1.range + 50))
-
-                screen.blit(upgrade_panel, (105 + 55, 360 - 20))
-            if upgrade_panel_tower_2:
-
-                circle_surf = pygame.Surface((tower2.range * 2, tower2.range * 2), pygame.SRCALPHA)
-                pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower2.range, tower2.range), tower2.range)
-                screen.blit(circle_surf, (tower2.dest[0] - tower2.range + 35, tower2.dest[1] - tower2.range + 50))
-
-                screen.blit(upgrade_panel, (490 + 55, 225 - 20))
-            if upgrade_panel_tower_3:
-
-                circle_surf = pygame.Surface((tower3.range * 2, tower3.range * 2), pygame.SRCALPHA)
-                pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower3.range, tower3.range), tower3.range)
-                screen.blit(circle_surf, (tower3.dest[0] - tower3.range + 35, tower3.dest[1] - tower3.range + 50))
-
-                screen.blit(upgrade_panel, (840 + 55, 270 - 20))
-            if upgrade_panel_tower_4:
-
-                circle_surf = pygame.Surface((tower4.range * 2, tower4.range * 2), pygame.SRCALPHA)
-                pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower4.range, tower4.range), tower4.range)
-                screen.blit(circle_surf, (tower4.dest[0] - tower4.range + 35, tower4.dest[1] - tower4.range + 50))
-
-                screen.blit(upgrade_panel, (1205 + 55, 450 - 20))
-            if upgrade_panel_tower_5:
-
-                circle_surf = pygame.Surface((tower5.range * 2, tower5.range * 2), pygame.SRCALPHA)
-                pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower5.range, tower5.range), tower5.range)
-                screen.blit(circle_surf, (tower5.dest[0] - tower5.range + 35, tower5.dest[1] - tower5.range + 50))
-
-                screen.blit(upgrade_panel, (1330 + 55, 215 - 20))
-        else:
-            if upgrade_panel_tower_1:
-                circle_surf = pygame.Surface((tower1.range * 2, tower1.range * 2), pygame.SRCALPHA)
-                pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower1.range, tower1.range), tower1.range)
-                screen.blit(circle_surf, (tower1.dest[0] - tower1.range + 35, tower1.dest[1] - tower1.range + 50))
-                screen.blit(upgrade_panel_gray, (105 + 55, 360 - 20))
-            if upgrade_panel_tower_2:
-                circle_surf = pygame.Surface((tower2.range * 2, tower2.range * 2), pygame.SRCALPHA)
-                pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower2.range, tower2.range), tower2.range)
-                screen.blit(circle_surf, (tower2.dest[0] - tower2.range + 35, tower2.dest[1] - tower2.range + 50))
-                screen.blit(upgrade_panel_gray, (490 + 55, 225 - 20))
-            if upgrade_panel_tower_3:
-                if upgrade_panel_tower_3:
-                    circle_surf = pygame.Surface((tower3.range * 2, tower3.range * 2), pygame.SRCALPHA)
-                    pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower3.range, tower3.range), tower3.range)
-                    screen.blit(circle_surf, (tower3.dest[0] - tower3.range + 35, tower3.dest[1] - tower3.range + 50))
-                screen.blit(upgrade_panel_gray, (840 + 55, 270 - 20))
-            if upgrade_panel_tower_4:
-                circle_surf = pygame.Surface((tower4.range * 2, tower4.range * 2), pygame.SRCALPHA)
-                pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower4.range, tower4.range), tower4.range)
-                screen.blit(circle_surf, (tower4.dest[0] - tower4.range + 35, tower4.dest[1] - tower4.range + 50))
-                screen.blit(upgrade_panel_gray, (1205 + 55, 450 - 20))
-            if upgrade_panel_tower_5:
-                circle_surf = pygame.Surface((tower5.range * 2, tower5.range * 2), pygame.SRCALPHA)
-                pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower5.range, tower5.range), tower5.range)
-                screen.blit(circle_surf, (tower5.dest[0] - tower5.range + 35, tower5.dest[1] - tower5.range + 50))
-                screen.blit(upgrade_panel_gray, (1330 + 55, 215 - 20))
-
-    if tower1.built:
-        tower1.draw()
-        if tower1 not in active_towers:
-            active_towers.append(tower1)
-    if tower2.built:
-        tower2.draw()
-        if tower2 not in active_towers:
-            active_towers.append(tower2)
-    if tower3.built:
-        tower3.draw()
-        if tower3 not in active_towers:
-            active_towers.append(tower3)
-    if tower4.built:
-        tower4.draw()
-        if tower4 not in active_towers:
-            active_towers.append(tower4)
-    if tower5.built:
-        tower5.draw()
-        if tower5 not in active_towers:
-            active_towers.append(tower5)
+    for tower in [tower1, tower2, tower3, tower4, tower5]:
+        if tower.built:
+            tower.draw()
+            if tower not in active_towers:
+                active_towers.append(tower)
 
     if not hut_built_boolean :                      #afficher la hut en construction si elle est en construction
         screen.blit(hut_available, hut_available_rect)
-
-
-
 
     screen.blit(card_archer, card_archer_rect)
     screen.blit(card_firemage, card_firemage_rect)
@@ -374,3 +301,15 @@ def game_map_1(dragging):
 
     return dragging
 
+def draw_upgrade_panel(screen, tower, panel_pos, can_afford, upgrade_panel, upgrade_panel_gray):
+    # Draw tower range circle
+    circle_surf = pygame.Surface((tower.range * 2, tower.range * 2), pygame.SRCALPHA)
+    pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower.range, tower.range), tower.range)
+    screen.blit(circle_surf, (tower.dest[0] - tower.range + 35, tower.dest[1] - tower.range + 50))
+
+    # Draw appropriate panel
+    if tower.level > 2 or not can_afford :
+        panel = upgrade_panel_gray
+    if can_afford:
+        panel = upgrade_panel
+    screen.blit(panel, panel_pos)

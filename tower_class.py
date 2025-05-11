@@ -156,7 +156,7 @@ class Tower:
             else:
                 return  # hut ou type inconnu : pas de sprite à changer
 
-            self.surf = get_sprite_from_sheet(sprite_list[self.level - 2], 0, 0, 90, 180)
+            self.surf = get_sprite_from_sheet(sprite_list[self.level - 1], 0, 0, 90, 180)
             self.surf = p.transform.smoothscale(self.surf, (80, 130))
 
     def spawn_bomber(self, tempura):

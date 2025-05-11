@@ -13,10 +13,10 @@ rokhan1 = pygame.image.load("Assets/rokhan1.png").convert_alpha()
 rokhan1.set_colorkey((113,107,104))
 rokhan2 = pygame.image.load("Assets/rokhan2.png").convert_alpha()
 rokhan2.set_colorkey((113, 107, 104))
-#rokhan3 = pygame.image.load("Assets/rokhan3.png").convert_alpha()
-#rokhan3.set_colorkey((113,107,104))
+rokhan3 = pygame.image.load("Assets/rokhan3.png").convert_alpha()
+rokhan3.set_colorkey((113,107,104))
 
-rokhan = [rokhan1, rokhan2] #Rjouter rokhan 3
+rokhan = [rokhan1, rokhan2, rokhan3]
 
 syra1 = pygame.image.load("Assets/syra1.png").convert_alpha()
 syra1.set_colorkey((113,107,104))
