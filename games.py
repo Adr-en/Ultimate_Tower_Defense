@@ -151,8 +151,13 @@ def game_map_1(dragging,main_menu_boolean, choosen_map):
                 tutorials_open = True
                 current_tutorial = 1
 
-            #if tutorials_open and
+            if tutorials_open and tutorials_exit_rect.collidepoint(event.pos) :
+                tutorials_open = False
+                game_active = False
 
+            if tutorials_open and tutorials_changing_rect.collidepoint(event.pos) :
+                if current_tutorial == 1 : current_tutorial = 2
+                else : current_tutorial = 1
 
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -310,7 +315,8 @@ def game_map_1(dragging,main_menu_boolean, choosen_map):
         game_paused = True
         if current_tutorial == 1 :
             screen.blit(tutorial_1, (0, 0))
-
+        if current_tutorial == 2 :
+            screen.blit(tutorial_2, (0, 0))
     else :
         screen.blit(tree, (0, 0))
         screen.blit(card_archer, card_archer_rect)

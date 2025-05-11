@@ -131,6 +131,14 @@ tutorial_button_selected = pygame.transform.smoothscale(tutorial_button_selected
 tutorials_open = False
 current_tutorial = 1
 
+tutorials_exit = pygame.image.load("Assets/tutorials_exit.png").convert_alpha()
+tutorials_exit = pygame.transform.smoothscale(tutorials_exit, size)
+tutorials_exit_surface = pygame.Surface((60,60)).convert_alpha()
+tutorials_exit_rect = tutorials_exit_surface.get_rect(topleft=(1310,110))
+
+tutorials_changing = pygame.Surface((330,50)).convert_alpha()
+tutorials_changing_rect = tutorials_changing.get_rect(topleft=(600,650))
+
 tutorial_1 = pygame.image.load("Assets/tutorials1.png").convert_alpha()
 tutorial_1 = pygame.transform.smoothscale(tutorial_1, size)
 
