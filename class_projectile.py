@@ -92,7 +92,7 @@ class Arrow:
         #from the list if self.active = False, so it allows us to have a smaller list (= less iterations every time).
         #Without it, there would have hundreds of elements in the projectiles list making the game eventually lag
         self.active = True
-        self.damage = [2, 5, 10]
+        self.damage = [15, 20, 25]
         self.level = level
 
     def update(self, dt):
@@ -394,7 +394,7 @@ class Bombers:
         self.animation_col = 0
         self.animation_row = 1
         self.active = True
-        self.damage = [30, 40, 50]
+        self.damage = [10, 20, 30]
         self.level = level
         self.attspd = [40, 40, 30]
 

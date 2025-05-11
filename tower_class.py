@@ -44,15 +44,17 @@ class Tower:
 
         global time_counting
 
-
+        # division clock by the attack speed. if the reminder is = 0, the tower lunch an attack
         if time_counting % self.attspd[self.level - 1] == 0 :
             if self.last_enemy == furthest_ele:
                 self.compteur += 5
             else:
                 self.compteur = 0
+            # append a projectile to the list of projectiles to be lunched
             projectiles.append(self.ammo(self.dest,furthest_ele, (self.last_enemy, self.compteur), self.level))
-
+            # saves the last ennemy to be hit by the tower
             self.last_enemy = furthest_ele
+            # update the time counter
         time_counting += 1
 
     def draw(self): # method that draws the tower
@@ -64,11 +66,11 @@ class Tower:
         self.surf = p.transform.smoothscale(self.surf, (80, 130))
 
         self.built = True
-
+        # ammo is of type arrow (<- only comment to adapt according to different ammo)
         self.ammo = self.list_ammo[0]
         self.screen.blit(self.surf, self.dest)
         self.range = 160
-        self.attspd = [30, 25, 20]
+        self.attspd = [80, 70, 60]
 
         global currency
         currency.value = currency.get_value() - 100
@@ -85,7 +87,7 @@ class Tower:
         self.ammo = self.list_ammo[1]
         self.screen.blit(self.surf, self.dest)
         self.range = 290
-        self.attspd = [20, 30, 40]
+        self.attspd = [80, 70, 60]
 
     def slow(self): # type slow
         self.level = 1
@@ -97,7 +99,7 @@ class Tower:
         self.ammo = self.list_ammo[2]
         self.screen.blit(self.surf, self.dest)
         self.range = 160
-        self.attspd = [7.5, 7.25, 7]
+        self.attspd = [20, 18, 16]
 
     def fire(self): # type fire
         self.level = 1
@@ -109,7 +111,7 @@ class Tower:
         self.ammo = self.list_ammo[3]
         self.screen.blit(self.surf, self.dest)
         self.range = 290
-        self.attspd = [25, 20, 15]
+        self.attspd = [100, 90, 80]
 
     def adrien(self):  # type adrien
         self.level = 1
@@ -130,19 +132,26 @@ class Tower:
         currency.value = currency.get_value() + self.value * 0.5
         self.value = 100
         if self.ammo == self.list_ammo[4]:
+            # put the basic skin of the hut when not built
             self.surf = p.image.load("Assets/hut1.png.png").convert_alpha()
         else:
             self.surf = p.image.load("Assets/available_tower.png")
         self.built = False
         self.ammo = None
+        # blit the new image
         self.screen.blit(self.surf, self.dest)
 
     def upgrade(self):
+        # checks if we can update the tower
         if self.level < 3:
+            # increase the level by one
             self.level += 1
+            # increase the value by 20%
             self.value *= 1.2
             global currency
+            # deduce the value from currency
             currency.value = currency.get_value() - 100
+            # increase the range by 20
             self.range += 20
 
             # Détecter le type de la tour selon l'ammo
@@ -161,7 +170,9 @@ class Tower:
             self.surf = p.transform.smoothscale(self.surf, (80, 130))
 
     def spawn_bomber(self, tempura):
+        # sets the attackspeed with the clock
         if tempura%self.attspd[self.level-1] == 0 :
+            # append a bomber after the list of bombers
             bombers.append(Bombers(self.level))
         return
 
