@@ -51,3 +51,9 @@ credits = pygame.transform.smoothscale(credits, size)
 
 credits_exit = pygame.Surface((100,100))
 credits_exit_rect = credits_exit.get_rect(topleft=(0, 0))
+
+options = pygame.image.load('Assets/options_screen.png')
+options = pygame.transform.smoothscale(options, size)
+
+options_exit = pygame.Surface((50,50))
+options_exit_rect = options_exit.get_rect(topleft=(925, 150))

@@ -346,6 +346,7 @@ def game_map_1(dragging,main_menu_boolean, choosen_map):
 
     return dragging, main_menu_boolean, choosen_map
 
+
 def draw_upgrade_panel(screen, tower, panel_pos, can_afford, upgrade_panel, upgrade_panel_gray):
     # Draw tower range circle
     circle_surf = pygame.Surface((tower.range * 2, tower.range * 2), pygame.SRCALPHA)
