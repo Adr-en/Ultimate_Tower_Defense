@@ -4,6 +4,7 @@ import time
 
 tempura = -5 ## temporaire
 
+
 def game_map_1(dragging):
 
     global dragging_card
@@ -26,7 +27,8 @@ def game_map_1(dragging):
     global button
     global game_paused
     global hut_built_boolean
-
+    global time_counting
+    global currency
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
     screen.blit(background_map_1, (0, 0))
@@ -194,6 +196,8 @@ def game_map_1(dragging):
 
             elif dragging_card == "adriboom" and card_adriboom_rect.collidepoint(event.pos) :
                 if not hut_built_boolean and hut_available_rect.collidepoint(event.pos) and currency >= hut.value:
+                    active_towers.append(hut)
+                    hut.adrien()
                     hut_built_boolean = True
                 card_adriboom_rect = card_adriboom.get_rect(topleft=initial_adriboom_card_pos)
 
@@ -211,11 +215,14 @@ def game_map_1(dragging):
             screen.blit(play_button, (0, 0))
 
     if not game_paused:
+
         for el in active_towers:
+            """
             if el.ammo == el.list_ammo[4]:
-                el.spawn_bombers()
-            else:
-                el.trigger()
+                el.spawn_bomber()
+                """
+            #else:  pas oublier de rajouter l'indentation lorsqu'on enleve le commentaire
+            el.trigger()
 
     for el in active_towers:
 
@@ -266,13 +273,17 @@ def game_map_1(dragging):
         if tower5 not in active_towers:
             active_towers.append(tower5)
 
-    if not hut_built_boolean :
+    if not hut_built_boolean :                      #afficher la hut en construction si elle est en construction
         screen.blit(hut_available, hut_available_rect)
-        if hut not in active_towers :
-            active_towers.append(hut)
+
+
+
+
+
 
 
     if game_active:
+        time_counting += 0.5
 
         for element in list_enemy:
             if not game_paused:
@@ -283,6 +294,8 @@ def game_map_1(dragging):
         if not game_paused:
             tempura += 0.5
             en.wave(tempura)
+            if hut_built_boolean:
+                hut.spawn_bomber(tempura)
 
         for el in projectiles:
             if not game_paused:
@@ -296,7 +309,7 @@ def game_map_1(dragging):
                 el.update(dt)
 
             if not el.active:
-                projectiles.remove(el)
+                bombers.remove(el)
 
     screen.blit(card_archer, card_archer_rect)
     screen.blit(card_firemage, card_firemage_rect)

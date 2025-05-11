@@ -37,6 +37,11 @@ dot2_img = pygame.image.load("Assets/placement_spell_effects.png").convert_alpha
 dot2_img = pygame.transform.scale(dot2_img, (150, 150))
 dot2_img.set_alpha(128)
 
+explosion_img = pygame.image.load("Assets/explosion.png").convert_alpha()
+explosion_img = pygame.transform.scale(explosion_img, (150, 150))
+
+
+
 
 class Arrow:
     def __init__(self, start, enemy, unused, level):
@@ -334,6 +339,15 @@ class Dot:
 
     def update(self, dt):
         self.t += dt
+
+
+        for el in list_enemy:
+            dis_enemy = math.sqrt(((el.pos[1] - el.size[1] / 2) - self.coord[1]) ** 2 +
+                                  ((el.pos[0] - el.size[0] / 2) - self.coord[0]) ** 2)
+            # If they are in range, we damage them
+            if dis_enemy <= 75:
+                el.burned = True
+
         #If it's been 0.5 seconds since the last tick and it is not the eight tick
         if self.t >= self.next_tick_time and self.ticks < 8:
 
@@ -346,11 +360,12 @@ class Dot:
                 self.current_dot = dot2_img
             #We go through the enemy list and get the coordinates of all of them
             for el in list_enemy:
-                dis_enemy = math.sqrt(((el.pos[1]-el.size[1]/2) - self.coord[1])**2 + ((el.pos[0]-el.size[0]/2) - self.coord[0])**2)
+                dis_enemy = math.sqrt(((el.pos[1] - el.size[1] / 2) - self.coord[1]) ** 2 +
+                                      ((el.pos[0] - el.size[0] / 2) - self.coord[0]) ** 2)
                 #If they are in range, we damage them
                 if dis_enemy <= 75:
                     el.damaged(self.damage)
-                    el.burned()
+
 
         #We deactivate the dot after 4 seconds
         if time() - self.chrono >= 4:
@@ -414,13 +429,14 @@ class Bombers:
                 self.target_waypoint += 1
 
         if self.target_waypoint >= len(self.waypoints):  # if the enemy attain his last target point he disappear and make the player lose a life
+            screen.blit(explosion_img, self.pos)
             self.active = False
 
 
     def update(self, dt):
         self.move()
-        print(self.animation_row)
-        print(self.animation_col)
+        #print(self.animation_row)
+        #print(self.animation_col)
 
         #We get the coordinates of each enemy in list_enemy and check its coordinates : if the distance between
         #one of them and the bomber is short enough, the bomber explodes. We get through the list a second time,
@@ -438,6 +454,7 @@ class Bombers:
                     )
                     if dis <= 150:
                         target.damaged(self.damage[self.level])
+                screen.blit(explosion_img, el.pos )
                 self.active = False
                 return
 

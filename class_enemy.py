@@ -28,11 +28,14 @@ def Display_Hp_player():
 
 def Coins():
     global score_text
+    global last_currency
+    global currency
 
-    if currency > last_currency :
+    if last_currency > currency or currency > last_currency :
         score_text = font_score.render(str(currency), True, "gold")
     screen.blit(score_text, (60, 45))
     screen.blit(coin, (-8, 25))
+    print(currency )
 
 
 
@@ -80,6 +83,7 @@ class Enemy:
 
         self.base_image.set_colorkey((113, 107, 104))
         self.image_frozen.set_colorkey((113, 107, 104))
+        self.image_burned.set_colorkey((113, 107, 104))
 
     def enemy_management(self):
         """Centralization of every function to make enemies work, however it is to be completed"""
@@ -116,11 +120,14 @@ class Enemy:
         if time() - self.chrono_slowed < 2:
             self.speed = self.base_speed / 2
             self.image = self.image_frozen
+        elif self.burned :
+            self.image = self.image_burned
         else :
             self.image = self.base_image
 
-        if self.burned :
-            self.image_burned = self.image_burned
+
+
+
 
 
 
@@ -146,6 +153,7 @@ class Enemy:
         image = get_sprite_from_sheet(self.image, self.animation_row, self.animation_col, 90, 120)
         image = pygame.transform.scale(image, self.size)
         screen.blit(image, self.pos)
+        self.burned = False
         self.healthbar_zombie()
 
 
@@ -248,12 +256,12 @@ def wave(tempura):
 
 
     if 2000> tempura :
-        if tempura%300 == 0:
+        if tempura%100 == 0:
             spawn(randint(1,7))
 
 
     if 4000> tempura > 2500 :
-        if not (tempura%250):
+        if not (tempura%150):
             spawn(randint(1,7))
 
 
