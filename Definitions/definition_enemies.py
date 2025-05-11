@@ -12,7 +12,7 @@ class Currency():
     def get_value(self):
         return self.value
 
-currency = Currency(100)
+currency = Currency(200)
 last_currency = Currency(currency.value)
 
 
