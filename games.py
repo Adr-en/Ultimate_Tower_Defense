@@ -93,19 +93,19 @@ def game_map_1(dragging,main_menu_boolean, choosen_map):
                     else :
                         upgrade_panel_tower_5 = False
 
-                if tower_emp1_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_1:
+                if tower_emp1_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_1 and currency.value >= tower1.value:
                     tower1.upgrade()
 
-                if tower_emp2_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_2:
+                if tower_emp2_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_2 and currency.value >= tower1.value:
                     tower2.upgrade()
 
-                if tower_emp3_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_3:
+                if tower_emp3_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_3 and currency.value >= tower1.value:
                     tower3.upgrade()
 
-                if tower_emp4_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_4:
+                if tower_emp4_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_4 and currency.value >= tower1.value:
                     tower4.upgrade()
 
-                if tower_emp5_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_5:
+                if tower_emp5_upgrade_rect.collidepoint(event.pos) and upgrade_panel_tower_5 and currency.value >= tower1.value:
                     tower5.upgrade()
 
                 if tower_emp1_delete_rect.collidepoint(event.pos) and upgrade_panel_tower_1:
