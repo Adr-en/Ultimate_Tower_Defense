@@ -6,6 +6,7 @@ from Definitions.definitions_choose_menu import*
 main_menu_boolean = True
 choose_menu_boolean = False
 choosen_map = 0
+credits_bool = False
 
 #Map pointer is a variable used to navigate and choose between the maps in the maps menu
 map_pointer = 0
@@ -15,6 +16,7 @@ map_pointer = 0
 #It takes defined elements in "definitions_main_menu" and display them in order to create the main menu of the game
 def main_menu() :
 
+    global credits_bool
     exit_game = True
     mouse_x, mouse_y = pygame.mouse.get_pos()       #Save the mouse position in the x/y plan
 
@@ -48,10 +50,17 @@ def main_menu() :
                 print("Option")
 
             if credits_button_rect.collidepoint(event.pos):     #If the user is clicking ON the credits button
-                print("Credits")
+                credits_bool = True
 
             if quit_button_rect.collidepoint(event.pos):        #If the user is clicking ON the option button
                 exit_game = False
+
+            if credits_exit_rect.collidepoint(event.pos) and credits_bool :
+                credits_bool = False
+
+
+    if credits_bool :
+        screen.blit(credits, (0,0))
 
     return exit_game, main_menu_boolean, choose_menu_boolean, choosen_map        #Return the values of the different booleans used to navigate between menus
 
