@@ -1,13 +1,14 @@
 import pygame.draw
 
 from Definitions.definitions_game_map import*
+from menu import main_menu_boolean
 from tower_class import*
 import time
 
 tempura = -5 ## temporaire
 
 
-def game_map_1(dragging):
+def game_map_1(dragging,main_menu_boolean, choosen_map):
 
     global dragging_card
     global card_archer_rect
@@ -31,6 +32,9 @@ def game_map_1(dragging):
     global hut_built_boolean
     global time_counting
     global currency
+    global tutorials_open
+    global current_tutorial
+
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
     screen.blit(background_map_1, (0, 0))
@@ -132,6 +136,23 @@ def game_map_1(dragging):
             if play_pause_continue_button_rect.collidepoint(event.pos) and not game_active and button == "Start":
                 game_active = True
                 button = "Pause"
+
+            if game_paused and pause_continue_rect.collidepoint(event.pos) :
+                game_paused = False
+
+            if game_paused and pause_menu_rect.collidepoint(event.pos) :
+
+                return False, True, 0
+
+            if game_paused and pause_quit_rect.collidepoint(event.pos) :
+                pygame.quit()
+
+            if tutorial_button_rect.collidepoint(event.pos) :
+                tutorials_open = True
+                current_tutorial = 1
+
+            #if tutorials_open and
+
 
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -285,26 +306,44 @@ def game_map_1(dragging):
     if not hut_built_boolean :                      #afficher la hut en construction si elle est en construction
         screen.blit(hut_available, hut_available_rect)
 
-    screen.blit(card_archer, card_archer_rect)
-    screen.blit(card_firemage, card_firemage_rect)
-    screen.blit(card_icemage, card_icemage_rect)
-    screen.blit(card_rockshooter, card_rockshooter_rect)
-    screen.blit(card_adriboom,card_adriboom_rect)
+    if tutorials_open :
+        game_paused = True
+        if current_tutorial == 1 :
+            screen.blit(tutorial_1, (0, 0))
+
+    else :
+        screen.blit(tree, (0, 0))
+        screen.blit(card_archer, card_archer_rect)
+        screen.blit(card_firemage, card_firemage_rect)
+        screen.blit(card_icemage, card_icemage_rect)
+        screen.blit(card_rockshooter, card_rockshooter_rect)
+        screen.blit(card_adriboom,card_adriboom_rect)
+        screen.blit(tutorial_button,(0,0))
+
+        if 1320 <= mouse_x <= 1370 and 15 <= mouse_y <= 75:
+            screen.blit(tutorial_button_selected,(0,0))
 
     if hut_built_boolean:
         screen.blit(hut_built, hut_built_rect)
 
-    if game_paused:
-        pause_font = pygame.font.Font(None, 100)
-        pause_text = pause_font.render("PAUSE", True, (255, 255, 255))
-        screen.blit(pause_text, (screen.get_width() // 2 - 150, screen.get_height() // 2 - 50))
+    if game_paused and not tutorials_open:
 
-    return dragging
+        screen.blit(pause_screen,(0,0))
+        if 600 <= mouse_x <= 920 and 320 <= mouse_y <= 395:
+            screen.blit(pause_continue,(0,0))
+
+        if 600 <= mouse_x <= 920 and 400 <= mouse_y <= 475:
+            screen.blit(pause_menu,(0,0))
+
+        if 600 <= mouse_x <= 920 and 490 <= mouse_y <= 565:
+            screen.blit(pause_quit,(0,0))
+
+    return dragging, main_menu_boolean, choosen_map
 
 def draw_upgrade_panel(screen, tower, panel_pos, can_afford, upgrade_panel, upgrade_panel_gray):
     # Draw tower range circle
     circle_surf = pygame.Surface((tower.range * 2, tower.range * 2), pygame.SRCALPHA)
-    pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower.range, tower.range), tower.range)
+    pygame.draw.circle(circle_surf, (220, 215, 100, 128), (tower.range, tower.range), tower.range, 5)
     screen.blit(circle_surf, (tower.dest[0] - tower.range + 35, tower.dest[1] - tower.range + 50))
 
     # Draw appropriate panel
@@ -313,3 +352,4 @@ def draw_upgrade_panel(screen, tower, panel_pos, can_afford, upgrade_panel, upgr
     if can_afford:
         panel = upgrade_panel
     screen.blit(panel, panel_pos)
+

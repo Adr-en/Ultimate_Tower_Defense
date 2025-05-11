@@ -98,3 +98,41 @@ initial_adriboom_card_pos = (1370, 600)
 card_adriboom = pygame.image.load("Assets/cards_adriboom.png").convert_alpha()
 card_adriboom = pygame.transform.smoothscale(card_adriboom, (125,175))
 card_adriboom_rect = card_adriboom.get_rect(topleft=(initial_adriboom_card_pos))
+
+tree = pygame.image.load("Assets/tree.png").convert_alpha()
+tree = pygame.transform.smoothscale(tree, size)
+
+pause_screen = pygame.image.load("Assets/pause_screen.png").convert_alpha()
+pause_screen = pygame.transform.smoothscale(pause_screen, size)
+
+pause_continue = pygame.image.load("Assets/pause_continue.png").convert_alpha()
+pause_continue = pygame.transform.smoothscale(pause_continue, size)
+pause_continue_surface = pygame.Surface((320,75)).convert_alpha()
+pause_continue_rect = pause_continue_surface.get_rect(topleft=(600,320))
+
+pause_menu = pygame.image.load("Assets/pause_menu.png").convert_alpha()
+pause_menu = pygame.transform.smoothscale(pause_menu, size)
+pause_menu_surface = pygame.Surface((320,75)).convert_alpha()
+pause_menu_rect = pause_menu_surface.get_rect(topleft=(600,400))
+
+pause_quit = pygame.image.load("Assets/pause_quit.png").convert_alpha()
+pause_quit = pygame.transform.smoothscale(pause_quit, size)
+pause_quit_surface = pygame.Surface((320,75)).convert_alpha()
+pause_quit_rect = pause_quit_surface.get_rect(topleft=(600,490))
+
+tutorial_button = pygame.image.load("Assets/tutorials.png").convert_alpha()
+tutorial_button = pygame.transform.smoothscale(tutorial_button, size)
+tutorial_button_surface = pygame.Surface((50,60)).convert_alpha()
+tutorial_button_rect =tutorial_button_surface.get_rect(topleft=(1320,15))
+
+tutorial_button_selected = pygame.image.load("Assets/tutorials_selected.png").convert_alpha()
+tutorial_button_selected = pygame.transform.smoothscale(tutorial_button_selected, size)
+
+tutorials_open = False
+current_tutorial = 1
+
+tutorial_1 = pygame.image.load("Assets/tutorials1.png").convert_alpha()
+tutorial_1 = pygame.transform.smoothscale(tutorial_1, size)
+
+tutorial_2 = pygame.image.load("Assets/tutorials2.png").convert_alpha()
+tutorial_2 = pygame.transform.smoothscale(tutorial_2, size)

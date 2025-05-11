@@ -131,7 +131,8 @@ class Tower:
         self.value = 100
         if self.ammo == self.list_ammo[4]:
             self.surf = p.image.load("Assets/hut1.png.png").convert_alpha()
-        self.surf = p.image.load("Assets/available_tower.png")
+        else:
+            self.surf = p.image.load("Assets/available_tower.png")
         self.built = False
         self.ammo = None
         self.screen.blit(self.surf, self.dest)

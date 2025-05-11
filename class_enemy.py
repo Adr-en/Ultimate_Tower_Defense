@@ -168,7 +168,7 @@ class Enemy:
 
         proportion = self.health / self.health_init
 
-        healthbar = pygame.Rect(self.pos[0] - 5, self.pos[1] - 20, 75 * proportion, 10)
+        healthbar = pygame.Rect(self.pos[0] +5 , self.pos[1] - 20, 75 * proportion, 10)
         color = (0, 255, 0)
 
         if proportion < 0.80:
@@ -183,7 +183,7 @@ class Enemy:
         pygame.draw.rect(screen, color, healthbar)
 
         color_border = (0, 0, 0)
-        border = pygame.Rect(self.pos[0] - 5, self.pos[1] - 20, 76, 11)
+        border = pygame.Rect(self.pos[0] +5 , self.pos[1] - 20, 76, 11)
         pygame.draw.rect(screen, color_border, border, 1)
 
 
@@ -310,5 +310,3 @@ def wave(tempura):
 
         if not (tempura%1500):
             spawn(9)
-
-
