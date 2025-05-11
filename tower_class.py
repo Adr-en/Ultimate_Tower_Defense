@@ -144,7 +144,8 @@ class Tower:
 
     def spawn_bombers(self):
         global time_counting
-        if time_counting % self.attspd[0] == 0:
+        print(self.attspd)
+        if time_counting % self.attspd[self.level] == 0:
             bombers.append(Bombers(self.level))
 
 # Création de tours

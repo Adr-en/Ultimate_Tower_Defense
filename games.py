@@ -11,6 +11,7 @@ def game_map_1(dragging):
     global card_firemage_rect
     global card_icemage_rect
     global card_rockshooter_rect
+    global card_adriboom_rect
     global tempura
     global active_towers
     global projectiles
@@ -36,11 +37,6 @@ def game_map_1(dragging):
 
         if event.type == pygame.MOUSEBUTTONDOWN:
 
-            if hut_available_rect.collidepoint(event.pos):
-                hut_built_boolean = True
-                hut.adrien()
-
-
             if not dragging:
                 if card_archer_rect.collidepoint(event.pos):
                     dragging = True
@@ -54,6 +50,10 @@ def game_map_1(dragging):
                 elif card_rockshooter_rect.collidepoint(event.pos) :
                     dragging = True
                     dragging_card = "rockshooter"
+
+                elif card_adriboom_rect.collidepoint(event.pos) :
+                    dragging = True
+                    dragging_card = "adriboom"
 
                 if tower_emp1_rect.collidepoint(event.pos) and tower1.built :
                     if not upgrade_panel_tower_1:
@@ -124,15 +124,6 @@ def game_map_1(dragging):
                 game_active = True
                 button = "Pause"
 
-            if play_pause_continue_button_rect.collidepoint(event.pos) and button == "Pause" and time.time() % 0.0001 == 0 :
-                game_paused = True
-                button = "Continue"
-
-            if play_pause_continue_button_rect.collidepoint(event.pos) and button == "Continue" and time.time() % 0.0001 == 0 :
-                game_paused = False
-                button = "Pause"
-                print(game_paused)
-
         if event.type == pygame.QUIT:
             pygame.quit()
 
@@ -145,6 +136,8 @@ def game_map_1(dragging):
                 card_icemage_rect.center = event.pos
             elif dragging_card == "rockshooter":
                 card_rockshooter_rect.center = event.pos
+            elif dragging_card == "adriboom" :
+                card_adriboom_rect.center = event.pos
 
         elif event.type == pygame.MOUSEBUTTONUP and dragging:
             if dragging_card == "archer" and card_archer_rect.collidepoint(event.pos):
@@ -199,18 +192,23 @@ def game_map_1(dragging):
                     tower5.bomber()
                 card_rockshooter_rect = card_rockshooter.get_rect(topleft=initial_rockshooter_card_pos)
 
+            elif dragging_card == "adriboom" and card_adriboom_rect.collidepoint(event.pos) :
+                if not hut_built_boolean and hut_available_rect.collidepoint(event.pos) and currency >= hut.value:
+                    hut_built_boolean = True
+                card_adriboom_rect = card_adriboom.get_rect(topleft=initial_adriboom_card_pos)
+
             dragging = False
             dragging_card = None
+
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+
+            game_paused = not game_paused
 
     if not game_active:
         if 1380 <= mouse_x <= 1440 and 15 <= mouse_y <= 70:
             screen.blit(play_button_selected, (0, 0))
         else:
             screen.blit(play_button, (0, 0))
-    elif button == "Pause":
-        screen.blit(pause_button, (0, 0))
-    elif button == "Continue":
-        screen.blit(continue_button, (0, 0))
 
     if not game_paused:
         for el in active_towers:
@@ -276,7 +274,6 @@ def game_map_1(dragging):
 
     if game_active:
 
-
         for element in list_enemy:
             if not game_paused:
                 element.enemy_management()
@@ -306,8 +303,10 @@ def game_map_1(dragging):
     screen.blit(card_icemage, card_icemage_rect)
     screen.blit(card_rockshooter, card_rockshooter_rect)
     screen.blit(card_adriboom,card_adriboom_rect)
+
     if hut_built_boolean:
         screen.blit(hut_built, hut_built_rect)
+
     if game_paused:
         pause_font = pygame.font.Font(None, 100)
         pause_text = pause_font.render("PAUSE", True, (255, 255, 255))

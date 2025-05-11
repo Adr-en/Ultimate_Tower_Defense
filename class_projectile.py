@@ -381,6 +381,7 @@ class Bombers:
         self.active = True
         self.damage = [30, 40, 50]
         self.level = level
+        self.attspd = [40, 40, 30]
 
     def move(self):
 
@@ -395,8 +396,6 @@ class Bombers:
             self.animation_row = 2
         else:
             self.animation_row = 1
-
-
 
         self.animation()
         image = get_sprite_from_sheet(self.image, self.animation_row, self.animation_col, 200, 200)
@@ -414,8 +413,7 @@ class Bombers:
             else:
                 self.target_waypoint += 1
 
-        if self.target_waypoint >= len(
-                self.waypoints):  # if the enemy attain his last target point he disappear and make the player lose a life
+        if self.target_waypoint >= len(self.waypoints):  # if the enemy attain his last target point he disappear and make the player lose a life
             self.active = False
 
 
@@ -442,6 +440,7 @@ class Bombers:
                         target.damaged(self.damage[self.level])
                 self.active = False
                 return
+
     def animation(self):
 
         if time() - self.chrono_animation > 0.7:
