@@ -14,7 +14,9 @@ def Display_Hp_player():
     global Hp_text
 
     if HP_player <= 0 :
-        print("Player died")
+        global game_active
+        game_active = False
+        return True
 
     if HP_player < last_HP_player:
         Hp_text = font_hp.render(str(HP_player) + " .hp", True, color)
@@ -252,8 +254,8 @@ def wave(tempura):
     """Make zombies spawn in function of a patern"""
 
 
-    if 2000> tempura :
-        if tempura%100 == 0:
+    if 4000> tempura :
+        if tempura%10 == 0:
             spawn(randint(1,7))
 
 

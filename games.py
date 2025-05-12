@@ -6,6 +6,7 @@ from tower_class import*
 import time
 
 tempura = -5 ## temporaire
+defeat = False
 
 
 def game_map_1(dragging,main_menu_boolean, choosen_map):
@@ -34,12 +35,14 @@ def game_map_1(dragging,main_menu_boolean, choosen_map):
     global currency
     global tutorials_open
     global current_tutorial
+    global defeat
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
     screen.blit(background_map_1, (0, 0))
-    en.Display_Hp_player()
+
     en.Coins()
+    defeat = en.Display_Hp_player()
 
     for event in pygame.event.get():
 
@@ -241,13 +244,18 @@ def game_map_1(dragging,main_menu_boolean, choosen_map):
 
             game_paused = not game_paused
 
-    if not game_active:
+
+
+    if not game_active and not defeat:
         if 1380 <= mouse_x <= 1440 and 15 <= mouse_y <= 70:
             screen.blit(play_button_selected, (0, 0))
         else:
             screen.blit(play_button, (0, 0))
 
+
+
     if not game_paused:
+        print(active_towers)
 
         for el in active_towers:
             """
@@ -344,6 +352,12 @@ def game_map_1(dragging,main_menu_boolean, choosen_map):
         if 600 <= mouse_x <= 920 and 490 <= mouse_y <= 565:
             screen.blit(pause_quit,(0,0))
 
+    if defeat:
+        img_dead = pygame.image.load('Assets/defeat_screen.png')
+        screen.blit(img_dead, (0, 0))
+
+
+
     return dragging, main_menu_boolean, choosen_map
 
 
@@ -359,4 +373,6 @@ def draw_upgrade_panel(screen, tower, panel_pos, can_afford, upgrade_panel, upgr
     if can_afford:
         panel = upgrade_panel
     screen.blit(panel, panel_pos)
+
+
 
